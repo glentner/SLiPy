@@ -1,5 +1,6 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+*.pyc
+*.swp
+*~
+NSFplot.py
+.DS_store
+__pycache__
