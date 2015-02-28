@@ -30,6 +30,11 @@ class SPlot:
 		"""
 		Assign `options` in `kwargs` and initialize the plot.
 		"""
+		# grab offset formatters
+		xoffset = plt.get_xaxis().get_major_formatter().setOffset
+		yoffset = plt.get_yaxis().get_major_formatter().setOffset
+		usetex  = False 
+
 		try:
 			# available options
 			self.options = Options( kwargs,
@@ -50,7 +55,7 @@ class SPlot:
 			self.title    = self.options('title')
 			self.labelpad = self.options('labelpad')
 			self.fontsize = self.options('fontsize')
-			self.usetex   = self.options('usetex')
+			usetex        = self.options('usetex')
 
 			if type(spectra) is not Fits.Spectra:
 				raise PlotError('Splot expects type Fits.Spectra!')
@@ -83,6 +88,7 @@ class SPlot:
 		"""
 		Handle to pyplot.xlim
 		"""
+		self.xlimits = [ xmin, xmax ]
 		plt.xlim(xmin, xmax)
 
 	def ylim(self, ymin, ymax ):
@@ -110,7 +116,7 @@ class SPlot:
 
 		self.xlim( *self.xlimits )
 
-		if self.usetex:
+		if usetex:
 			plt.rc('text', usetex=True)
 			plt.rc('font', family='serif')
 		
@@ -161,6 +167,7 @@ class SPlot:
 		Same as pyplot.legend.
 		"""
 		plt.legend(*args, **kwargs)
+		plt.draw()
 	
 	def save(self, filename):
 		"""
@@ -179,7 +186,7 @@ class SPlot:
 		"""
 		# check data type 
 		for a, plot in enumerate(splots):
-			if type(plot) is not Splot:
+			if type(plot) is not SPlot:
 				raise PlotError('Splot.overlay expects '
 					'type Splot! (from argument {})'.format(a))
 			
