@@ -36,22 +36,22 @@ class SPlot:
 				{
 					'marker': 'b-'        , # marker for plot 
 					'label' : ''          , # label for data 
-					'xlabel': 'Wavelength', # label for x-axis
-					'ylabel': ''          , # label for y-axis
-					'title' : ''          , # title of plot 
-					'labelpad': 10        , # label pad for x,y axis 
-					'fontsize': 12        , # font size
 					'usetex': False         # pdflatex setting
 				})
 
 			# assign options 
-			self.xlabel   = self.options('xlabel')
-			self.ylabel   = self.options('ylabel')
-			self.title    = self.options('title')
-			self.labelpad = self.options('labelpad')
-			self.fontsize = self.options('fontsize')
-			self.usetex        = self.options('usetex')
-
+			self.usetex  = self.options('usetex')
+			self.ylimits = None
+			self.gridv   = None
+			self.yargs   = None
+			self.xargs   = None
+			self.targs   = None
+			self.largs   = None
+			self.xkwargs = None
+			self.ykwargs = None 
+			self.tkwargs = None
+			self.lkwargs = None
+			
 			if type(spectra) is not Fits.Spectra:
 				raise PlotError('Splot expects type Fits.Spectra!')
 
@@ -85,12 +85,51 @@ class SPlot:
 		"""
 		self.xlimits = [ xmin, xmax ]
 		plt.xlim(xmin, xmax)
+		plt.draw()
 
 	def ylim(self, ymin, ymax ):
 		"""
 		Handle to pyplot.ylim
 		"""
+		self.ylimits = [ ymin, ymax ]
 		plt.ylim(ymin, ymax)
+		plt.draw()
+
+	def xlabel(self, *args, **kwargs ):
+		"""
+		x axis label.
+		"""
+		self.xargs = args 
+		self.xkwargs = kwargs 
+		plt.xlabel( *args, **kwargs )
+		plt.draw()
+	
+	def ylabel(self, *args, **kwargs ):
+		"""
+		y axis label.
+		"""
+		self.ylargs = args
+		self.ylkwargs = kwargs 
+		plt.ylabel( *args, **kwargs )
+		plt.draw()
+
+	def title(self, *args, **kwargs ):
+		"""
+		title for plot.
+		"""
+		self.targs = args 
+		self.tkwargs = kwargs
+		plt.title( *args, **kwargs )
+		plt.draw()
+
+	def legend(self, *args, **kwargs):
+		"""
+		legend for plot.
+		"""
+		self.largs = args 
+		self.lkwargs = kwargs 
+		plt.legend( *args, **kwargs )
+		plt.draw()
 
 	def __build(self):
 		"""
@@ -101,16 +140,13 @@ class SPlot:
 			
 			plt.plot(x, y, m, label=l)
 				
-		plt.xlabel(self.xlabel, labelpad = self.labelpad,
-			fontsize = self.fontsize )
-
-		plt.ylabel(self.ylabel, labelpad = self.labelpad,
-			fontsize = self.fontsize )
-				
-		plt.title( self.title, fontsize = self.fontsize )
-
-		self.xlim( *self.xlimits )
-
+		if self.xargs: self.xlabel( *self.xargs, **self.xkwargs ) 
+		if self.yargs: self.ylabel( *self.yargs, **self.ykwargs )
+		if self.targs: self.title( *self.targs, **self.tkwargs )
+		if self.lkwargs: self.legend( *self.largs, **self.lkwargs )
+		if self.xlimits: self.xlim( *self.xlimits )
+		if self.ylimits: self.ylim( *self.ylimits )
+		if self.gridv: self.grid(self.gridv)
 		if self.usetex:
 			plt.rc('text', usetex=True)
 			plt.rc('font', family='serif')
@@ -134,6 +170,7 @@ class SPlot:
 		Clear the plot.
 		"""
 		plt.clf()
+		plt.draw()
 
 	def close(self):
 		"""
@@ -141,29 +178,14 @@ class SPlot:
 		"""
 		plt.close()
 
-	def gridon(self):
+	def grid(self, value):
 		"""
 		Show grid on plot.
 		"""
-		plt.grid(True)
+		self.gridv = value
+		plt.grid(value)
 		plt.draw()
 
-	def gridoff(self):
-		"""
-		Turn off grid for plot.
-		"""
-		plt.grid(False)
-		plt.draw()
-
-	def legend(self, *args, **kwargs):
-		"""
-		legend(*args, **kwargs):
-
-		Same as pyplot.legend.
-		"""
-		plt.legend(*args, **kwargs)
-		plt.draw()
-	
 	def save(self, filename):
 		"""
 		Save plot to `filename`. Must have extension for formatting.
