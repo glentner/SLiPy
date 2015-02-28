@@ -221,6 +221,26 @@ def Sptype(identifier, **kwargs):
 
 	else: return query()
 
+def IDList(identifier, **kwargs):
+	"""
+	IDList(identifier, **kwargs):
+
+	Handle to the Query class with criteria='%IDLIST'.
+	With `parse` = True, return a list of alternate IDs for 
+	the `identifier` provided.
+	"""
+	query = Query(identifier, '%IDLIST', **kwargs)
+
+	if query.parse:
+		# extract relavent data 
+		query.data = query.data.split(':')[-1].strip().split('\n')
+
+	if query.is_main:
+		for line in query.data:
+			print(line)
+
+	else: return query()
+
 def Main( clargs ):
 	"""
 	Main function. See __doc__ for details.
@@ -233,9 +253,10 @@ def Main( clargs ):
 	
 	# Available functions for execution
 	executable = {
-			'Distance' : Distance, # Distance function 
-			'Position' : Position, # Position function 
-			'Sptype'   : Sptype    # Sptype   function 
+			'Distance' : Distance, # search for parsecs
+			'Position' : Position, # search for ra, dec
+			'Sptype'   : Sptype  , # search for spectral types
+			'IDList'   : IDList    # search for IDs
 		}
 
 

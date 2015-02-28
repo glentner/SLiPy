@@ -62,7 +62,7 @@ def WaveVector( rpix, rval, delt, npix ):
 		`delt` : resolutions (delta lambda)
 		`npix` : length of desired array 
 	"""
-	if type(rpix) is not int or rpix < 0:
+	if rpix < 0:
 		raise FitsError('`rpix` must be a positive integer '
 				'for WaveVector().'.format(rpix))
 
@@ -74,7 +74,7 @@ def WaveVector( rpix, rval, delt, npix ):
 		raise FitsError('`delt` wavelength should be a positive '
 				'value for Wavevector().'.format(delt))
 
-	if type(npix) is not int or npix < 1:
+	if npix < 1:
 		raise FitsError('`npix` must be a positive integer '
 				'for WaveVector().'.format(npix))
 
@@ -115,7 +115,7 @@ class Spectra:
 					self.rval = hdulist[0].header[self.crval1]
 					self.delt = hdulist[0].header[self.cdelt1]
 					self.wave = WaveVector( 
-							self.rpix, self.rval, self.delt, len( self.data ) 
+							self.rpix, self.rval, self.delt, np.shape(self.data)[0]
 						)
 				
 		except OptionsError as err:
