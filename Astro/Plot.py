@@ -63,7 +63,7 @@ class SPlot:
 				self.wave    = [ spectra.wave ]
 
 			else: self.wave = [ 
-						np.arange( np.shape(spectra.data)[0] ) ]
+				np.arange( np.shape(spectra.data)[0] ) ]
 
 			self.label  = [ self.options('label')  ]
 			self.marker = [ self.options('marker') ]
