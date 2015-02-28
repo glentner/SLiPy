@@ -30,11 +30,6 @@ class SPlot:
 		"""
 		Assign `options` in `kwargs` and initialize the plot.
 		"""
-		# grab offset formatters
-		xoffset = plt.get_xaxis().get_major_formatter().setOffset
-		yoffset = plt.get_yaxis().get_major_formatter().setOffset
-		usetex  = False 
-
 		try:
 			# available options
 			self.options = Options( kwargs,
@@ -55,7 +50,7 @@ class SPlot:
 			self.title    = self.options('title')
 			self.labelpad = self.options('labelpad')
 			self.fontsize = self.options('fontsize')
-			usetex        = self.options('usetex')
+			self.usetex        = self.options('usetex')
 
 			if type(spectra) is not Fits.Spectra:
 				raise PlotError('Splot expects type Fits.Spectra!')
@@ -116,7 +111,7 @@ class SPlot:
 
 		self.xlim( *self.xlimits )
 
-		if usetex:
+		if self.usetex:
 			plt.rc('text', usetex=True)
 			plt.rc('font', family='serif')
 		
@@ -179,6 +174,20 @@ class SPlot:
 			raise PlotError('`filename` needs an extension.')
 
 		plt.savefig(filename, format=filename.split('.')[-1])
+
+	def xoffset(self, value):
+		"""
+		Toggle the offset for the x axis
+		"""
+		plt.gca().get_xaxis().get_major_formatter().set_useOffset(value)
+		plt.draw()
+	
+	def yoffset(self, value):
+		"""
+		Toggle the offset for the y axis 
+		"""
+		plt.gca().get_yaxis().get_major_formatter().set_useOffset(value)
+		plt.draw()
 
 	def overlay(self, *splots ):
 		"""
