@@ -9,6 +9,7 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt 
 from Python import BaseError
 from Python.General.Options import *
+from Python.General import Display
 from Python.Astro import Fits
 
 mpl.rcParams['figure.facecolor'] = 'w'
@@ -34,24 +35,26 @@ class SPlot:
 			# available options
 			self.options = Options( kwargs,
 				{
-					'marker': 'b-'        , # marker for plot 
-					'label' : ''          , # label for data 
-					'usetex': False         # pdflatex setting
+					'marker': 'b-'          , # marker for plot 
+					'label' : 'unspecified' , # label for data 
+					'usetex': False           # pdflatex setting
 				})
 
 			# assign options 
-			self.usetex  = self.options('usetex')
-			self.ylimits = None
-			self.gridv   = None
-			self.yargs   = None
-			self.xargs   = None
-			self.targs   = None
-			self.largs   = None
-			self.xkwargs = None
-			self.ykwargs = None 
-			self.tkwargs = None
-			self.lkwargs = None
-			
+			self.usetex   = self.options('usetex')
+			self.ylimits  = None
+			self.gridv    = None
+			self.yargs    = None
+			self.xargs    = None
+			self.largs    = None
+			self.targs    = None
+			self.xkwargs  = None
+			self.ykwargs  = None 
+			self.tkwargs  = None
+			self.lkwargs  = None
+			self.txargs   = []
+			self.txkwargs = []
+
 			if type(spectra) is not Fits.Spectra:
 				raise PlotError('Splot expects type Fits.Spectra!')
 
@@ -65,6 +68,9 @@ class SPlot:
 			else: self.wave = [ 
 				np.arange( np.shape(spectra.data)[0] ) ]
 
+			# `name` always retains `label`
+			self.name   = self.options('label')
+			# `label` and `marker`s same as data
 			self.label  = [ self.options('label')  ]
 			self.marker = [ self.options('marker') ]
 
@@ -108,8 +114,8 @@ class SPlot:
 		"""
 		y axis label.
 		"""
-		self.ylargs = args
-		self.ylkwargs = kwargs 
+		self.yargs = args
+		self.ykwargs = kwargs 
 		plt.ylabel( *args, **kwargs )
 		plt.draw()
 
@@ -131,22 +137,56 @@ class SPlot:
 		plt.legend( *args, **kwargs )
 		plt.draw()
 
+	def text(self, *args, **kwargs):
+		"""
+		display text over plot.
+		"""
+		self.txargs.append( args )
+		self.txkwargs.append( kwargs )
+		plt.text( *args, **kwargs )
+		plt.draw()
+
+	def txtclear(self):
+		"""
+		Clear all `text` from figure.
+		"""
+		self.txargs = []
+		self.txkwargs = []
+		self.draw()
+
 	def __build(self):
 		"""
 		Make the plot.
 		"""
 		for x, y, m, l in zip(
 			self.wave, self.data, self.marker, self.label):
-			
 			plt.plot(x, y, m, label=l)
 				
-		if self.xargs: self.xlabel( *self.xargs, **self.xkwargs ) 
-		if self.yargs: self.ylabel( *self.yargs, **self.ykwargs )
-		if self.targs: self.title( *self.targs, **self.tkwargs )
-		if self.lkwargs: self.legend( *self.largs, **self.lkwargs )
-		if self.xlimits: self.xlim( *self.xlimits )
-		if self.ylimits: self.ylim( *self.ylimits )
-		if self.gridv: self.grid(self.gridv)
+		if self.xargs or self.xkwargs: 
+			self.xlabel( *self.xargs, **self.xkwargs ) 
+		
+		if self.yargs or self.ykwargs: 
+			self.ylabel( *self.yargs, **self.ykwargs )
+		
+		if self.targs or self.tkwargs: 
+			self.title( *self.targs, **self.tkwargs )
+		
+		if self.largs or self.lkwargs: 
+			self.legend( *self.largs, **self.lkwargs )
+		
+		if self.txargs or self.txkwargs:
+			for args, kwargs in zip(self.txargs, self.txkwargs):
+				plt.text( *args, **kwargs )
+
+		if self.xlimits: 
+			self.xlim( *self.xlimits )
+		
+		if self.ylimits: 
+			self.ylim( *self.ylimits )
+		
+		if self.gridv: 
+			self.grid(self.gridv)
+		
 		if self.usetex:
 			plt.rc('text', usetex=True)
 			plt.rc('font', family='serif')
@@ -240,5 +280,79 @@ class SPlot:
 		self.marker = [ self.marker[0] ]
 		self.label  = [ self.label[0]  ]
 
+def desired( plot ):
+	"""
+	desired( plot ):
 
-			
+	Helper function for Iterate. Prompts user to keep `plot`;
+	returns True or False.
+	"""
+	plot.draw()
+	prompt = input('\033[1A\r\033[K keep -> `{}` (y/[n]/x): '
+			.format(plot.name)).strip()
+	while True:
+		if prompt not in ['y','n','','x']:
+			print('`{}` was not a recognized response.'.format(prompt))
+			prompt = input(' keep -> `{}` (y/[n]/x): '
+					.format(plot.name)).strip()
+		else: break
+	
+	if prompt in ['n', '']:
+		return False
+
+	elif prompt in ['y']:
+		return True
+
+	else: raise KeyboardInterrupt('User exitted early.')
+	
+
+def Iterate( *plots, **kwargs ):
+	"""
+	Iterate( *plots, **kwargs ):
+
+	Iterate thru `plots` to inspect data, the user marks `plots` of 
+	interest. The function returns a list of `names` marked.
+	"""
+	try:
+		options = Options( kwargs,
+			{
+				'keep' : 'name' # alternatively, `plot`
+			})
+
+		keep = options('keep')
+
+		if keep not in ['name', 'plot']:
+			raise PlotError('Iterate expects either `name` or `plot` for '
+				'keyword argument `keep`.')
+
+		# check input arguments
+		for plot in plots:
+			if not hasattr(plot, 'draw'):
+				raise PlotError('Iterate expects objects to '
+					'have a `draw` method.')
+			if not hasattr(plot, 'name'):
+				raise PlotError('Iterate expects objects to '
+					'have a `name` method.')
+
+		keepers = []
+		display = Display.Monitor()
+		print(' Iterating thru {} plots ...'.format(len(plots))
+		for a, plot in enumerate(plots):
+			display.progress(a, len(plots) )
+			if desired( plot ):
+				
+				if keep == 'name':
+					keepers.append( plot.name )
+
+				elif keep == 'plot':
+					keepers.append( plot )
+
+		return keepers
+
+	except OptionsError as err:
+		print(' --> OptionsError:', err.msg)
+		raise PlotError('Failed to initialize Iterate.')
+
+	except KeyboardInterrupt as x:
+		print(x)
+		return keepers
