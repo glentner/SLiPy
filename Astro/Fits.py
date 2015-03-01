@@ -7,7 +7,7 @@ Fits:
 
 Module for importing data and header information from FITS image files.
 """
-import os, sys, pyfits, fnmatch, numpy as np
+import os, sys, pyfits, fnmatch, shutil, numpy as np
 from Python import BaseError
 from Python.General.Interface import *
 from Python.General.Options import *
@@ -200,37 +200,59 @@ def GetData( *files, **kwargs ):
 		print(' --> OptionsError:', err.msg)
 		raise FitsError('Data retrieval failure.')
 
-def Move( *files, **kwargs ):
+def Shell( *files, **kwargs ):
 	"""
-	Move ( *files, **kwargs ):
+	Shell ( *files, **kwargs ):
 
-	Move Fits `files` to new `location`. `location` is a keyword 
+	Perform `op`eration to Fits `files`. `location` is a keyword 
 	argument and must be specified, it should be a path to a 
-	directory available to the user.
+	directory available to the user. `op` should be `move` or `copy`.
 	"""
 	try:
 
 		# available keyword arguments 
 		options = Options( kwargs, 
 			{
-				'location' : '' # new directory path
+				'verbose' : False, # display messages, progress
+				'location': ''   , # new directory path
+				'op'      : ''     # shell operation performed on `files`
 			})
 		
 		# assignments
+		verbose  = options('verbose')
 		location = options('location')
+		op       = options('op')
 
 		if not files:
 			raise FitsError('No file names given.')
 
-		if not location:
+		if not op:
+			raise FitsError('An `op`eration must be specified.')
+			
+		if op in ['move','copy'] and not location:
 			raise FitsError('`location` must be specified')
 
-		if not os.path.isdir(location):
-			raise FitsError('`{}` is not a directory.'
-					.format(location))
+		elif op in ['move','copy'] and not os.path.isdir(location):
+			raise FitsError('`{}` is not a directory.'.format(location))
 
-		for fitsfile in files:
-			Move(fitsfile, location)
+		# available shell operations
+		operation = {
+				'move': shutil.move, # move files to `location`
+				'copy': shutil.copy  # copy files to `location`
+			}
+
+		# check if `op` is an available operation
+		if op not in operation:
+			raise FitsError('`{}` is not an available operation.'
+			.format(op))
+		
+		if verbose:
+			print('`{}`ing {} files ... '.format(op,len(files)))
+			display = Display.Monitor()
+
+		for a, fitsfile in enumerate(files):
+			if verbose: display.progress(a, len(files))
+			shutil.Move(fitsfile, location)
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err.msg)
