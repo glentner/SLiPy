@@ -9,7 +9,6 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt 
 from Python import BaseError
 from Python.General.Options import *
-from Python.General import Display
 from Python.Astro import Fits
 
 mpl.rcParams['figure.facecolor'] = 'w'
@@ -287,15 +286,22 @@ def desired( plot ):
 	Helper function for Iterate. Prompts user to keep `plot`;
 	returns True or False.
 	"""
+	# draw the plot
 	plot.draw()
-	prompt = input('\033[1A\r\033[K keep -> `{}` (y/[n]/x): '
+	# prompt the user for input
+	prompt = input('\r\033[K keep -> `{}` (y/[n]/x)?: '
 			.format(plot.name)).strip()
+	# insure valid response
 	while True:
 		if prompt not in ['y','n','','x']:
-			print('`{}` was not a recognized response.'.format(prompt))
-			prompt = input(' keep -> `{}` (y/[n]/x): '
+			# invalid input, prompt again
+			print('\r\033[K `{}` was not a recognized response.'.format(prompt))
+			prompt = input('\033[2A\r\033[K keep -> `{}` (y/[n]/x)?: '
 					.format(plot.name)).strip()
-		else: break
+		else: 
+			# clear the error message
+			print('\r\033[K\033[1A')
+			break
 	
 	if prompt in ['n', '']:
 		return False
@@ -303,7 +309,9 @@ def desired( plot ):
 	elif prompt in ['y']:
 		return True
 
-	else: raise KeyboardInterrupt('User exitted early.')
+	else: 
+		# the user input `x`
+		raise KeyboardInterrupt('\r\033[K User exitted early, saving results.')
 	
 
 def Iterate( *plots, **kwargs ):
@@ -334,16 +342,16 @@ def Iterate( *plots, **kwargs ):
 				raise PlotError('Iterate expects objects to '
 					'have a `name` method.')
 
+		# clear some space
+		print('\n')
+
 		keepers = []
-		display = Display.Monitor()
-		print(' Iterating thru {} plots ...'.format(len(plots))
 		for a, plot in enumerate(plots):
-			display.progress(a, len(plots) )
+			print('\033[2A\r\033[K Showing plot {} of {} ... '
+					.format(a, len(plots)) )
 			if desired( plot ):
-				
 				if keep == 'name':
 					keepers.append( plot.name )
-
 				elif keep == 'plot':
 					keepers.append( plot )
 
