@@ -1,23 +1,21 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/General/Arguments.py
+# Python/Framework/Arguments.py
 """
 Module contains `Argument` class for handling conversions and type 
 checking for function/class keyword argument options.
 """
 
-from Python import BaseError
-
-class ArgumentError(BaseError):
+class ArgumentError(Exception):
+	"""
+	Exception specific to Argument module.
+	"""
 	pass
 
 class Argument:
 	"""
-	Type checking and conversions for arguments.
+	`Argument` object has type and value management.
 	"""
-	# exception belongs to class 
-	ArgumentError = ArgumentError
-
 	def __init__(self, value, name = 'unspecified', **kwargs ):
 		"""
 		Build Argument `value`, `type`, and set `options`.
@@ -66,7 +64,7 @@ class Argument:
 					self.value = True if value else False
 			
 			elif type(value) is not bool:
-				raise ArgumentError('Invalid conversion from {} '
+				raise Error('Invalid conversion from {} '
 					'for Argument `{}`.'.format(self.T, self.name))
 			
 			else: self.value = value 

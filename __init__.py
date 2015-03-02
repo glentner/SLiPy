@@ -2,19 +2,17 @@
 # See LICENSE (GPLv2)
 # Python/__init__.py
 """
-Python Library (of Geoffrey Lentner)
+ - Computational Astronomy Package for Python -
+
+This Python package contains my code for performing computational work in 
+astronomy research. I've originally named this package simply `Python` because
+there seems to be an over abundance of acronyms in the current state of 
+astronomy computing with Python that I didn't want to pollute it any further.
+As such, I've implemented this project with `relative` imports within the 
+package source such that you can rename it whatever you please (i.e.,
+git clone http://github.com/glentner/Python; scp -r Python Susy)
+
 """
 
-class BaseError(Exception):
-	"""
-	Base Exception class for the Python Library 
-	"""
-	def __init__(self, msg = 'undefined', arg = None):
-		"""
-		Construct the error with a message and an optional argument
-		"""
-		self.msg = msg
-		self.arg = arg
-
-# all subpackages
-__all__ = ['Astro','astrolibpy','General']
+# exposed modules
+from .Astro import Fits, Simbad, Plot, DataType

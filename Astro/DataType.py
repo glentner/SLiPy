@@ -5,9 +5,10 @@
 Class object representations for astronomical data.
 """
 import pyfits, numpy as np 
-from Python import BaseError 
 
-class DataError(BaseError):
+from ..Framework.Options import Options, OptionsError
+
+class DataError(Exception):
 	"""
 	Exception specific to Python.Astro.DataType's.
 	"""
@@ -97,9 +98,9 @@ class Spectrum:
 		if type(spectra) is not Spectrum:
 			raise TypeError('Spectrum.__resample needs type Spectrum')
 		elif not spectra.wavecal:
-			raise DataError('Spectrum.__resample received a Spectrum' 
+			raise DataError('Spectrum.__resample received a Spectrum'
 			' without a WaveVector.')
 
 		# quick check 
-		if ( len(spectra.wave) == len(self.wave) and 
+        #if ( len(spectra.wave) == len(self.wave) and
 

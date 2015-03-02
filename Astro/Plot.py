@@ -7,14 +7,14 @@ Plotting facility for astronomy.
 """
 import matplotlib as mpl
 from matplotlib import pyplot as plt 
-from Python import BaseError
-from Python.General.Options import *
-from Python.Astro import Fits
+
+from ..Framework.Options import Options, OptionsError
+from . import Fits, DataType
 
 mpl.rcParams['figure.facecolor'] = 'w'
 plt.ion()
 
-class PlotError(BaseError):
+class PlotError(Exception):
 	"""
 	Exception specific to Plot module.
 	"""
@@ -22,11 +22,11 @@ class PlotError(BaseError):
 
 class SPlot:
 	"""
-	SPlot( spectra, **kwargs )
+	SPlot( spectrum, **kwargs )
 
-	Spectrum Plot - Plot the data in `spectra`.
+	Spectrum Plot - Plot the data in `spectrum`.
 	"""
-	def __init__(self, spectra, **kwargs):
+	def __init__(self, spectrum, **kwargs):
 		"""
 		Assign `options` in `kwargs` and initialize the plot.
 		"""
@@ -54,18 +54,18 @@ class SPlot:
 			self.txargs   = []
 			self.txkwargs = []
 
-			if type(spectra) is not Fits.Spectra:
+			if type(spectrum) is not DataType.Spectrum:
 				raise PlotError('Splot expects type Fits.Spectra!')
 
 			# data in `list` allows for overplotting
-			self.data = [ spectra.data ]
+			self.data = [ spectrum.data ]
 			
-			if spectra.wavecal:
+			if spectrum.wavecal:
 				self.wavecal = True
-				self.wave    = [ spectra.wave ]
+				self.wave    = [ spectrum.wave ]
 
 			else: self.wave = [ 
-				np.arange( np.shape(spectra.data)[0] ) ]
+				np.arange( np.shape(spectrum.data)[0] ) ]
 
 			# `name` always retains `label`
 			self.name   = self.options('label')
@@ -75,10 +75,9 @@ class SPlot:
 
 			# set x limits to the data 
 			if self.wavecal: self.xlimits = [ 
-				spectra.wave.min(), spectra.wave.max() ]
+				spectrum.wave.min(), spectrum.wave.max() ]
 
-			else: self.xlimits = [
-					0, np.shape(spectra.data)[0] ]
+			else: self.xlimits = [ 0, len(spectrum.data) ]
 
 		except OptionsError as err:
 			print(' --> OptionsError:', err.msg)

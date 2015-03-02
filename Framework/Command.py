@@ -1,16 +1,15 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2).
-# General/Interface.py 
+# Python/Framework/Interface.py 
 """
 Interface.py
 
 Command Line Interface tools.
 """
 
-from Python import BaseError
-from Python.General.Options import * 
+from .Options import Options, OptionsError
 
-class CommandError(BaseError):
+class CommandError(Exception):
 	"""
 	Exception for Interface module.
 	"""

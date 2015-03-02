@@ -21,20 +21,20 @@ These should be specific to the 'Attribute' being pointed to.
 """
 
 from sys import version_info, argv, exit
+
+if version_info < (3,0):
+    raise SimbadError('Simbad needs Python 3.x.')
+
 from urllib.request import urlopen
 
-from Python import BaseError
-from Python.General.Interface import *
-from Python.General.Options import *
+from ..Framework.Command import Parse, CommandError
+from ..Framework.Options import Options, OptionsError
 
-class SimbadError(BaseError):
+class SimbadError(Exception):
 	"""
-	Module specific exception 
+	Module specific exception.
 	"""
 	pass
-
-if version_info < (3,0): 
-	raise SimbadError('Simbad needs Python 3.x.')
 
 def PercentEncoded( string ):
 	"""

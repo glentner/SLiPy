@@ -1,18 +1,17 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Display/General/Display.py
+# Python/Framework/Display.py
 """
-Display.py - Python module for displaying content to the screen.
+Display - Python module for displaying content to the screen.
 """
 
 import os, sys, math
 from time import time
 from datetime import datetime, timedelta
 
-from Python import BaseError
-from Python.General.Options import *
+from .Options import Options, OptionsError
 
-class DisplayError(BaseError):
+class DisplayError(Exception):
 	"""
 	Module specific exception.
 	"""

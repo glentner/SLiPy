@@ -1,14 +1,13 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/General/Options.py
+# Python/Framework/Options.py
 """
 Class object for handling kwargs in classes and functions.
 """
 
-from Python import BaseError
-from Python.General.Arguments import Argument as Arg, ArgumentError
+from .Argument import Argument as Arg, ArgumentError
 
-class OptionsError(BaseError):
+class OptionsError(Exception):
 	"""
 	Module specific exception.
 	"""

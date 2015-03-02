@@ -3,20 +3,17 @@
 # See LICENSE (GPLv2)
 # Python/Astro/Fits.py 
 """
-Fits:
-
-Module for importing data and header information from FITS image files.
+Fits - FITS file handling module.
 """
 import os, sys, pyfits, fnmatch
-from Python import BaseError
-from Python.General.Interface import Parse, CommandError
-from Python.General.Options import Options, OptionsError
-from Python.General.Display import Display, DisplayError
-from Python.Astro.DataType import Spectrum, DataError
-from Python.Astro.Simbad import Position, Distance, \
-		Sptype, IDList, SimbadError
 
-class FitsError(BaseError):
+from ..Framework.Command import Parse, CommandError
+from ..Framework.Options import Options, OptionsError
+from ..Framework.Display import Monitor, DisplayError
+from .DataType import Spectrum, DataError
+from .Simbad import Position, Distance, Sptype, IDList, SimbadError
+
+class FitsError(Exception):
 	"""
 	Exception for Fits module.
 	"""

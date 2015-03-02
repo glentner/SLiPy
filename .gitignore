@@ -4,3 +4,4 @@
 NSFplot.py
 .DS_store
 __pycache__
+*.xcodeproj
