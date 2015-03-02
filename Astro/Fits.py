@@ -200,64 +200,6 @@ def GetData( *files, **kwargs ):
 		print(' --> OptionsError:', err.msg)
 		raise FitsError('Data retrieval failure.')
 
-def Shell( *files, **kwargs ):
-	"""
-	Shell ( *files, **kwargs ):
-
-	Perform `op`eration to Fits `files`. `location` is a keyword 
-	argument and must be specified, it should be a path to a 
-	directory available to the user. `op` should be `move` or `copy`.
-	"""
-	try:
-
-		# available keyword arguments 
-		options = Options( kwargs, 
-			{
-				'verbose' : False, # display messages, progress
-				'location': ''   , # new directory path
-				'op'      : ''     # shell operation performed on `files`
-			})
-		
-		# assignments
-		verbose  = options('verbose')
-		location = options('location')
-		op       = options('op')
-
-		if not files:
-			raise FitsError('No file names given.')
-
-		if not op:
-			raise FitsError('An `op`eration must be specified.')
-			
-		if op in ['move','copy'] and not location:
-			raise FitsError('`location` must be specified')
-
-		elif op in ['move','copy'] and not os.path.isdir(location):
-			raise FitsError('`{}` is not a directory.'.format(location))
-
-		# available shell operations
-		operation = {
-				'move': shutil.move, # move files to `location`
-				'copy': shutil.copy  # copy files to `location`
-			}
-
-		# check if `op` is an available operation
-		if op not in operation:
-			raise FitsError('`{}` is not an available operation.'
-			.format(op))
-		
-		if verbose:
-			print('`{}`ing {} files ... '.format(op,len(files)))
-			display = Display.Monitor()
-
-		for a, fitsfile in enumerate(files):
-			if verbose: display.progress(a, len(files))
-			shutil.Move(fitsfile, location)
-
-	except OptionsError as err:
-		print(' --> OptionsError:', err.msg)
-		raise FitsError('Failed to move files.')
-
 def Header( filename, keyword, **kwargs ):
 	"""
 	Header( filename, keyword, **kwargs ):
