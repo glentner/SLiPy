@@ -26,13 +26,10 @@ def Find(toplevel, pattern):
 	Search for file paths below `toplevel` fitting `pattern`.
 	"""
 	if not os.path.isdir(toplevel):
-		raise FitsError('`{}` does not name a directory.'
-				.format(toplevel))
+		raise FitsError('`{}` does not name a directory.'.format(toplevel))
 
-	return [
-			os.path.join(toplevel, filename)
-			for filename in fnmatch.filter(os.listdir(toplevel), pattern)
-		]
+	return [ os.path.join(toplevel, filename)
+		for filename in fnmatch.filter(os.listdir(toplevel), pattern) ]
 
 def RFind(toplevel, pattern):
 	"""
@@ -41,14 +38,11 @@ def RFind(toplevel, pattern):
 	Recursively search for paths below `toplevel` fitting `pattern`.
 	"""
 	if not os.path.isdir(toplevel):
-		raise FitsError('`{}` does not name a directory.'
-				.format(toplevel))
+		raise FitsError('`{}` does not name a directory.'.format(toplevel))
 
-	return [
-			os.path.join(dirpath, filename)
-			for dirpath, dirnames, filenames in os.walk(toplevel)
-			for filename in fnmatch.filter(filenames, pattern)
-		]
+	return [ os.path.join(dirpath, filename)
+		for dirpath, dirnames, filenames in os.walk(toplevel)
+		for filename in fnmatch.filter(filenames, pattern) ]
 
 def GetData( *files, **kwargs ):
 	"""
@@ -83,6 +77,7 @@ def GetData( *files, **kwargs ):
 				'crval1'   : 'crval1', # value at reference pixel 
 				'cdelt1'   : 'cdelt1', # resolution (delta lambda)
 			})
+		
 		# assignment options 
 		verbose   = options('verbose')
 		toplevel  = options('toplevel')
@@ -107,18 +102,15 @@ def GetData( *files, **kwargs ):
 					.format(nfiles) )
 			for a, filename in enumerate(files):
 				display.progress(a, nfiles)
-				data.append(
-						Spectrum(filename, wavecal=wavecal, crpix1=crpix1,
-							crval1=crval1, cdelt1=cdelt1)	
-					)
+				data.append( Spectrum(filename, wavecal=wavecal,
+					crpix1=crpix1, crval1=crval1, cdelt1=cdelt1) )
+
 			display.complete()
 			return data
 
 		# import spectra 'silently'
-		return [
-				Spectrum(filename, wavecal=wavecal, crpix1=crpix1,
-					crval1=crval1, cdelt1=cdelt1) for filename in files
-			]
+		return [ Spectrum(filename, wavecal=wavecal, crpix1=crpix1,
+			crval1=crval1, cdelt1=cdelt1) for filename in files ]
 	
 	except OptionsError as err:
 		print(' --> OptionsError:', err.msg)

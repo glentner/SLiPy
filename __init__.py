@@ -15,4 +15,5 @@ git clone http://github.com/glentner/Python; scp -r Python Susy)
 """
 
 # exposed modules
-from .Astro import Fits, Simbad, Plot, DataType
+from .Astro import Fits, Simbad, Plot, DataType, Correlate, \
+		Telluric
