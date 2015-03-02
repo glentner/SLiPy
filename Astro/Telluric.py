@@ -108,18 +108,18 @@ def Correct(spectrum, *calibration, **kwargs):
 		index = best[1] # amplitude
 		shift = best[2] # XCorr 
 		cal   = best[3] # which calibration spectrum
-
-		# create new spectrum for return value
-		corrected = Spectrum( spectrum.data )
-		corrected.wave = spectrum.wave
+	
+		# make a new spectrum 
+		corrected = Spectrum( np.copy(spectrum.data) )
+		corrected.wave = np.copy( spectrum.wave )
 
 		# divide spectrum 
 		if shift < 0:
-			corrected.data[-shift:] /= 1 - (1-cal.data[:shift])*amp[index]
+			corrected.data[-shift:] /= 1 -  (1 - cal.data[:shift]) * amp[index]
 		elif shift > 0:
-			corrected.data[:-shift] /= 1 - (1-cal.data[shift:])*amp[index]
+			corrected.data[:-shift] /= 1 - (1 - cal.data[shift:]) * amp[index]
 		else:
-			corrected.data /= 1 - (1-cal.data)*amp[index]
+			corrected.data /= 1 - (1 - cal.data) * amp[index]
 
 		return corrected
 
