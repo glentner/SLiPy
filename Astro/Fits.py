@@ -7,12 +7,14 @@ Fits:
 
 Module for importing data and header information from FITS image files.
 """
-import os, sys, pyfits, fnmatch, shutil, numpy as np
+import os, sys, pyfits, fnmatch
 from Python import BaseError
-from Python.General.Interface import *
-from Python.General.Options import *
-from Python.General.Display import *
-from Python.Astro import Simbad 
+from Python.General.Interface import Parse, CommandError
+from Python.General.Options import Options, OptionsError
+from Python.General.Display import Display, DisplayError
+from Python.Astro.DataType import Spectrum, DataError
+from Python.Astro.Simbad import Position, Distance, \
+		Sptype, IDList, SimbadError
 
 class FitsError(BaseError):
 	"""
@@ -50,81 +52,6 @@ def RFind(toplevel, pattern):
 			for dirpath, dirnames, filenames in os.walk(toplevel)
 			for filename in fnmatch.filter(filenames, pattern)
 		]
-
-def WaveVector( rpix, rval, delt, npix ):
-	"""
-	WaveVector(rpix, rval, delt, npix):
-
-	Construct numpy array of wavelength values based on:
-
-		`rpix` : reference pixel index
-		`rval` : wavelength at reference pixel
-		`delt` : resolutions (delta lambda)
-		`npix` : length of desired array 
-	"""
-	if rpix < 0:
-		raise FitsError('`rpix` must be a positive integer '
-				'for WaveVector().'.format(rpix))
-
-	if rval <= 0:
-		raise FitsError('`rval` wavelength should be a positive '
-				'value for WaveVector().'.format(rval))
-
-	if delt <= 0:
-		raise FitsError('`delt` wavelength should be a positive '
-				'value for Wavevector().'.format(delt))
-
-	if npix < 1:
-		raise FitsError('`npix` must be a positive integer '
-				'for WaveVector().'.format(npix))
-
-	return rval + ( np.array(range(npix)) - rpix + 1 ) * delt
-
-
-class Spectra:
-	"""
-	Spectra consist of a `data` vector, optionally match a  
-	`wavelength` vector (accessed with .data and .wave respectively).
-	"""
-	def __init__(self, filename, **kwargs ):
-		"""
-		Hold spectrum `data` from `filename`, optionally build `wave` 
-		vector.
-		"""
-		try:
-
-			self.options = Options( kwargs,
-				{
-					'wavecal': True     , # fit wavelength vector to data
-					'crpix1' : 'crpix1' , # reference pixel header keyword 
-					'crval1' : 'crval1' , # value at reference pixel 
-					'cdelt1' : 'cdelt1' , # resolution (delta lambda)
-				})
-
-			self.wavecal = self.options('wavecal')
-			self.crpix1  = self.options('crpix1')
-			self.crval1  = self.options('crval1')
-			self.cdelt1  = self.options('cdelt1')
-
-			self.data = pyfits.getdata(filename)
-
-			if self.wavecal:
-
-				with pyfits.open(filename) as hdulist:
-					self.rpix = hdulist[0].header[self.crpix1]
-					self.rval = hdulist[0].header[self.crval1]
-					self.delt = hdulist[0].header[self.cdelt1]
-					self.wave = WaveVector( 
-							self.rpix, self.rval, self.delt, np.shape(self.data)[0]
-						)
-				
-		except OptionsError as err:
-			print(' --> OptionsError:', err.msg)
-			raise FitsError('Failed to construct spectrum.')
-
-		except IOError as err:
-			print(' --> IOError:', err)
-			raise FitsError('Failed to construct spectrum.')
 
 def GetData( *files, **kwargs ):
 	"""
@@ -184,7 +111,7 @@ def GetData( *files, **kwargs ):
 			for a, filename in enumerate(files):
 				display.progress(a, nfiles)
 				data.append(
-						Spectra(filename, wavecal=wavecal,
+						Spectrum(filename, wavecal=wavecal, crpix1=crpix1,
 							crval1=crval1, cdelt1=cdelt1)	
 					)
 			display.complete()
@@ -192,13 +119,17 @@ def GetData( *files, **kwargs ):
 
 		# import spectra 'silently'
 		return [
-				Spectra(filename, wavecal=wavecal, crpix1=crpix1,
+				Spectrum(filename, wavecal=wavecal, crpix1=crpix1,
 					crval1=crval1, cdelt1=cdelt1) for filename in files
 			]
 	
 	except OptionsError as err:
 		print(' --> OptionsError:', err.msg)
 		raise FitsError('Data retrieval failure.')
+
+	except DataError as err:
+		print(' --> DataError:', err.msg)
+		raise FitsError('Failed to construct spectrum.')
 
 def Header( filename, keyword, **kwargs ):
 	"""
@@ -274,9 +205,10 @@ def Search( *files, **kwargs ):
 
 		# Available search functions from Simbad.py
 		SimbadSearch = {
-				'Position': Simbad.Position, # ra, dec	(degrees)
-				'Distance': Simbad.Distance, # in parsecs
-				'Sptype'  : Simbad.Sptype    # spectral type
+				'Position': Position, # ra, dec	(degrees)
+				'Distance': Distance, # in parsecs
+				'Sptype'  : Sptype  , # spectral type
+				'IDList'  : IDList    # alternate IDs
 			}
 
 		if not attribute:
@@ -343,6 +275,10 @@ def Search( *files, **kwargs ):
 	except OptionsError as err:
 		print(' --> OptionsError:', err.msg)
 		raise FitsError('Failed assignment for Search().')
+
+	except SimbadError as err:
+		print(' --> SimbadError:', err.msg)
+		raise FitsError('Simbad failed.')
 
 def Main( clargs ):
 	"""
