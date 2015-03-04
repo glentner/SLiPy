@@ -8,9 +8,9 @@ may find it helpful.
 
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least). 
-I found it useful for performing velocity corrections on my spectroscopic data. I've
-modified several modules such that it can be imported and used in Python 3.x. 
-See his README file.
+I found it useful for performing velocity corrections on my spectroscopic 
+data. I've modified several modules such that it can be imported and used in 
+Python 3.x. See his README file.
 
 ## Contents:
 
