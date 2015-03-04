@@ -6,6 +6,8 @@ up my work flow. It mostly just contains functions for doing spectroscopy.
 It will continue to be developed. I'm sharing it in the hope that others 
 may find it helpful. 
 
+**Dependencies:** Python 3.x, astropy, matplotlib, numpy, scipy
+
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least). 
 I found it useful for performing velocity corrections on my spectroscopic 
