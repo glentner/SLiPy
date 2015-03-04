@@ -1,8 +1,8 @@
 from numpy import *
-from Pylib.astrolibpy.astrolib.baryvel import baryvel
-from Pylib.astrolibpy.astrolib.daycnv import daycnv
-from Pylib.astrolibpy.astrolib.precess import precess
-from Pylib.astrolibpy.astrolib.helio_jd import helio_jd
+from .baryvel import baryvel
+from .daycnv import daycnv
+from .precess import precess
+from .helio_jd import helio_jd
 _radeg = 180.0 / pi
 
 def helcorr(obs_long, obs_lat, obs_alt, ra2000, dec2000, jd, debug=False):
@@ -76,27 +76,26 @@ def helcorr(obs_long, obs_lat, obs_alt, ra2000, dec2000, jd, debug=False):
 	vbar = vb[0] * cos(dec / _radeg) * cos(ra / _radeg) + vb[1] * cos(dec / _radeg) * sin(ra / _radeg) + vb[2] * sin(dec / _radeg)
 	vhel = vh[0] * cos(dec / _radeg) * cos(ra / _radeg) + vh[1] * cos(dec / _radeg) * sin(ra / _radeg) + vh[2] * sin(dec / _radeg)
 	
-	corr = (vdiurnal + vbar) #using baricentric velocity for correction
-   
+	barycorr = (vdiurnal + vbar) #using baricentric velocity for correction
+	helicorr = (vdiurnal + vhel) # using heliocentric velocity (Geoffrey Lentner)
 	if debug:   
-    	#print ''
-    	#print '----- HELCORR.PRO - DEBUG INFO - START ----'
-		#print '(obs_long,obs_lat,obs_alt) Observatory coordinates [deg,m]: ', obs_long, obs_lat, obs_alt
-		#print '(ra,dec) Object coordinates (for epoch 2000.0) [deg]: ', ra, dec
-		#print '(ut) Universal time (middle of exposure) [hrs]: ', ut#, format='(A,F20.12)'
-		#print '(jd) Julian date (middle of exposure) (JD-2400000): ', jd#, format='(A,F20.12)'
-		#print '(hjd) Heliocentric Julian date (middle of exposure) (HJD-2400000): ', hjd#, format='(A,F20.12)'
-		#print '(gmst) Greenwich mean siderial time [hrs]: ', gmst % 24
-		#print '(lmst) Local mean siderial time [hrs]: ', lmst
-		#print '(dlat) Latitude correction [deg]: ', dlat
-		#print '(lat) Geocentric latitude of observer [deg]: ', lat
-		#print '(r) Distance of observer from center of earth [m]: ', r
-		#print '(v) Rotational velocity of earth at the position of the observer [km/s]: ', v
-		#print '(vdiurnal) Projected earth rotation and earth-moon revolution [km/s]: ', vdiurnal
-		#print '(vbar) Baricentric velocity [km/s]: ', vbar
-		#print '(vhel) Heliocentric velocity [km/s]: ', vhel
-		#print '(corr) Vdiurnal+vbar [km/s]: ', corr#, format='(A,F12.9)'
-		#print '----- HELCORR.PRO - DEBUG INFO - END -----'
-		print (" ")
-
-	return (corr, hjd)
+		print ('')
+		print ('----- HELCORR.PRO - DEBUG INFO - START ----')
+		print ('(obs_long,obs_lat,obs_alt) Observatory coordinates [deg,m]: ', obs_long, obs_lat, obs_alt)
+		print ('(ra,dec) Object coordinates (for epoch 2000.0) [deg]: ', ra, dec)
+		print ('(ut) Universal time (middle of exposure) [hrs]: ', ut)
+		print ('(jd) Julian date (middle of exposure) (JD-2400000): ', jd)
+		print ('(hjd) Heliocentric Julian date (middle of exposure) (HJD-2400000): ', hjd)
+		print ('(gmst) Greenwich mean siderial time [hrs]: ', gmst % 24)
+		print ('(lmst) Local mean siderial time [hrs]: ', lmst)
+		print ('(dlat) Latitude correction [deg]: ', dlat)
+		print ('(lat) Geocentric latitude of observer [deg]: ', lat)
+		print ('(r) Distance of observer from center of earth [m]: ', r)
+		print ('(v) Rotational velocity of earth at the position of the observer [km/s]: ', v)
+		print ('(vdiurnal) Projected earth rotation and earth-moon revolution [km/s]: ', vdiurnal)
+		print ('(vbar) Baricentric velocity [km/s]: ', vbar)
+		print ('(vhel) Heliocentric velocity [km/s]: ', vhel)
+		print ('(corr) Vdiurnal+vbar [km/s]: ', corr)
+		print ('----- HELCORR.PRO - DEBUG INFO - END -----')
+	
+	return (barycorr, helicorr) # modified by GL

@@ -5,8 +5,8 @@
 """
 Fits - FITS file handling module.
 """
-import os, sys, pyfits, fnmatch
-
+import os, sys, fnmatch
+from astropy.io import fits as pyfits
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError

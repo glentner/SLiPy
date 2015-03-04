@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import sin, cos, array, reshape, transpose, dot, pi, sqrt
-from Pylib.astrolibpy.astrolib.premat import premat
+from .premat import premat
 def baryvel(dje, deq=0):
    """
     NAME:

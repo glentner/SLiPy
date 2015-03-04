@@ -1,5 +1,5 @@
 from numpy import sin, cos, arctan2, sqrt, arcsin
-from Pylib.astrolibpy.astrolib.precess import precess
+from .precess import precess
 
 def precess_xyz(x, y, z, equinox1, equinox2):
 #+

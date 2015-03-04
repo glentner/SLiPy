@@ -1,5 +1,5 @@
 from numpy import sqrt, pi, cos, sin
-from Pylib.astrolibpy.astrolib.precess_xyz import precess_xyz
+from .precess_xyz import precess_xyz
 
 def xyz(date, equinox=None):
    """

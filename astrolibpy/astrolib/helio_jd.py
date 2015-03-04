@@ -1,6 +1,6 @@
 from numpy import array, cos, sin, tan, pi, poly1d, deg2rad
-from Pylib.astrolibpy.astrolib.xyz import xyz
-from Pylib.astrolibpy.astrolib.bprecess import bprecess
+from .xyz import xyz
+from .bprecess import bprecess
 
 def helio_jd(date, ra, dec, b1950=False, time_diff=False):
    """

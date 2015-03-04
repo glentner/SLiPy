@@ -89,7 +89,6 @@ class SPlot:
 		"""
 		self.xlimits = [ xmin, xmax ]
 		plt.xlim(xmin, xmax)
-		plt.draw()
 
 	def ylim(self, ymin, ymax ):
 		"""
@@ -97,7 +96,6 @@ class SPlot:
 		"""
 		self.ylimits = [ ymin, ymax ]
 		plt.ylim(ymin, ymax)
-		plt.draw()
 
 	def xlabel(self, *args, **kwargs ):
 		"""
@@ -106,7 +104,6 @@ class SPlot:
 		self.xargs = args 
 		self.xkwargs = kwargs 
 		plt.xlabel( *args, **kwargs )
-		plt.draw()
 	
 	def ylabel(self, *args, **kwargs ):
 		"""
@@ -115,7 +112,6 @@ class SPlot:
 		self.yargs = args
 		self.ykwargs = kwargs 
 		plt.ylabel( *args, **kwargs )
-		plt.draw()
 
 	def title(self, *args, **kwargs ):
 		"""
@@ -124,7 +120,6 @@ class SPlot:
 		self.targs = args 
 		self.tkwargs = kwargs
 		plt.title( *args, **kwargs )
-		plt.draw()
 
 	def legend(self, *args, **kwargs):
 		"""
@@ -133,7 +128,6 @@ class SPlot:
 		self.largs = args 
 		self.lkwargs = kwargs 
 		plt.legend( *args, **kwargs )
-		plt.draw()
 
 	def text(self, *args, **kwargs):
 		"""
@@ -142,7 +136,6 @@ class SPlot:
 		self.txargs.append( args )
 		self.txkwargs.append( kwargs )
 		plt.text( *args, **kwargs )
-		plt.draw()
 
 	def txtclear(self):
 		"""
@@ -150,7 +143,6 @@ class SPlot:
 		"""
 		self.txargs = []
 		self.txkwargs = []
-		self.draw()
 
 	def __build(self):
 		"""
@@ -188,10 +180,16 @@ class SPlot:
 		if self.usetex:
 			plt.rc('text', usetex=True)
 			plt.rc('font', family='serif')
-		
+	
+	def refresh(self):
+		"""
+		pyplot.draw()
+		"""
+		plt.draw()
+	
 	def draw(self):
 		"""
-		Remake plot and run pyplot.draw 
+		Re-build the plot
 		"""
 		plt.clf()
 		self.__build()
@@ -222,7 +220,6 @@ class SPlot:
 		"""
 		self.gridv = value
 		plt.grid(value)
-		plt.draw()
 
 	def save(self, filename):
 		"""
@@ -240,14 +237,12 @@ class SPlot:
 		Toggle the offset for the x axis
 		"""
 		plt.gca().get_xaxis().get_major_formatter().set_useOffset(value)
-		plt.draw()
 	
 	def yoffset(self, value):
 		"""
 		Toggle the offset for the y axis 
 		"""
 		plt.gca().get_yaxis().get_major_formatter().set_useOffset(value)
-		plt.draw()
 
 	def overlay(self, *splots ):
 		"""

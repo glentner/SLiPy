@@ -4,8 +4,8 @@
 """
 Class object representations for astronomical data.
 """
-import pyfits, numpy as np 
-
+import numpy as np 
+from astropy.io import fits as pyfits
 from ..Framework.Options import Options, OptionsError
 
 class DataError(Exception):
