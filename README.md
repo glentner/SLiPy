@@ -1,5 +1,5 @@
-Python Library
-==============
+Astronomy Python Library
+========================
 
 This is a Python package containing modules I've developed to speed 
 up my work flow. It mostly just contains functions for doing spectroscopy. 
@@ -16,11 +16,12 @@ See his README file.
 
 * [**Astro:**](##Astro/) 
 A subpackage containing modules pertaining to astronomy and 
-spectroscopy. Modules include **Fits**, **Calibrate**, **Plot**, and **Simbad**.
+spectroscopy. Modules include **Fits**, **Simbad**, **Plot**, 
+**DataType**, **Correlate**, **Telluric**, and **Velocity**.
 
-* [**General:**](##General/)
-A subpackage containing general framework items. Modules include **Arguments**,
-**Options**, **Display**.
+* [**Framework:**](##Framework/)
+A subpackage containing general framework code that I use in the packeage. 
+Modules include **Arguments**, **Options**, **Command**, and **Display**.
 
 * [**astrolibpy:**](##astro/)
 As stated previously, this package was not developed by me, only modified. I'm
