@@ -1,5 +1,7 @@
-Astronomy Python Library
-========================
+AstroPython
+===========
+
+#### A Computational Astronomy Package for Python 
 
 This is a Python package containing modules I've developed to speed 
 up my work flow. It mostly just contains functions for doing spectroscopy. 
