@@ -23,7 +23,7 @@ These should be specific to the 'Attribute' being pointed to.
 from sys import version_info, argv, exit
 
 if version_info < (3,0):
-    raise SimbadError('Simbad needs Python 3.x.')
+    raise ImportError('Simbad needs Python 3.x.')
 
 from urllib.request import urlopen
 
