@@ -6,8 +6,11 @@ Radial velocity corrections for 1D spectra.
 """
 
 from astropy.io import fits as pyfits
+from astropy.constants import c
+from astrolibpy.astrolib.helcorr import helcorr  
 from .Fits import Find, RFind
 from ..Framework.Options import Options, OptionsError
+from ..Framework.Display import Monitor, DisplayError
 
 class VelocityError(Exception):
 	"""
@@ -100,7 +103,7 @@ def IrafInput( *files, **kwargs):
 
 def HelioCorrect( obs, *spectra, **kwargs ):
 	"""
-	Return heliocentric velocity corrected `spectra` based on 
+	Perform heliocentric velocity corrects on `spectra` based on 
 	`obs`ervatory information (longitude, latitude, altitude) and the 
 	member attributes, ra (right ascension), dec (declination), and jd
 	(julian date) from the `spectra`.
@@ -130,12 +133,27 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 			if type(spectrum) is not Spectrum:
 				raise VelocityError('HelioCorrect() expects all `spectrum` '
 				'arguments to be of type Spectrum.')
-			if ( not hasattr(spectrum,'ra') or not hasattr(spectrum,'dec') or
-				not hasattr(spectrum,'jd') ):
-				raise VelocityError('From HelioCorrect(), `spectrum` #{} does not '
-				'have the necessary attributes (`ra`, `dec`, and `jd`).')
+			if not spectrum.ra or not spectrum.dec or not spectrum.jd:
+				raise VelocityError('Spectrum {} lacks one or all of `ra`, '
+				'`dec`, and `jd`; from HelioCorrect().')
 
-		# not coded yet	
+		display = Monitor()
+		for a, spectrum in enumerate(spectra):
+			# heliocentric velocity correction in km s^-1
+			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
+				spectrum.ra, spectrum.dec, spectrum.jd)
+			# apply correction to wave vector
+			spectrum.wave += spectrum.wave * 1000 * hcorr / c
+			# show progress if desired
+			if verbose: display.progress(a, len(spectra))
+
+		# finalize progress bar (erase)
+		if verbose: display.complete()
+
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
 		raise VelocityError('Failed to perform HelioCorrect() task.')
+
+	except DisplayError as err:
+		print(' --> DisplayError:', err)
+		raise VelocityError('Exception from Display.Monitor in HelioCorrect().')

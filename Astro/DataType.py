@@ -5,6 +5,8 @@
 Class object representations for astronomical data.
 """
 import numpy as np 
+from scipy.interpolate import interp1d
+from copy import deepcopy
 from astropy.io import fits as pyfits
 from ..Framework.Options import Options, OptionsError
 
@@ -45,7 +47,7 @@ def WaveVector( rpix, rval, delt, npix ):
 
 class Spectrum:
 	"""
-	Spectra consist of a `data` vector, optionally match a  
+	Spectrum objects consist of a `data` vector, optionally match a  
 	`wavelength` vector (accessed with .data and .wave respectively).
 	"""
 	def __init__(self, argument, **kwargs ):
@@ -106,19 +108,90 @@ class Spectrum:
 			print(' --> IOError:', err)
 			raise DataError('Failed to construct Spectrum() object.')
 
-	def __resample(self, spectra):
+	def resample(self, first, last, npix, **kwargs):
 		"""
-		Verify wavelength vector of `spectra` for operator
-		overloading. Resample `spectra` onto `self.wave` before 
-		applying operator to `self.data`.
-		"""
-		# check that we have a WaveVector 
-		if type(spectra) is not Spectrum:
-			raise DataError('Spectrum.__resample() needs type Spectrum.')
-		elif not spectra.wavecal:
-			raise DataError('Spectrum.__resample() received a Spectrum'
-			' without a WaveVector.')
+		Resample onto new wavelength pixel space. Built with numpy.linspace 
+		using `first`, `last`, and `npix` as arguments.
 
-		# quick check 
-        #if ( len(spectra.wave) == len(self.wave) and
+		kwargs = {
+				kind : 'linear' # same argument from scipy.interpolate.interp1d
+			}
+		"""
+		try:
+			# default function parameters
+			options = Options( kwargs,
+				{
+					'kind':'linear' # same argument from scipy.interpolate.interp1d
+				})
+			# assign function parameters
+			kind = options('kind')
+
+			# check function arguments
+			if first < self.wave[0] or last > self.wave[-1]:
+				raise DataError('Spectrum.resample() cannot interplate outside '
+				'the original domain of the flux data.')
+			if npix < 1:
+				raise DataError('Spectrum.resample() expects a positive '
+				'integer for `npix` argument.')
+
+			# build interplant
+			f = interp1d(self.wave, self.data, kind=kind)
+			# build new wave vector
+			self.wave = np.linspace(first, last, npix)
+			# resample data 
+			self.data = f(self.wave)
+
+		except OptionsError as err:
+			print(' --> OptionsError:', err)
+			raise DataError('Failed keyword assignment from '
+			'Spectrum.resample().')
+
+	def copy(self):
+		"""
+		Call to copy.deepcopy on `self`.
+		"""
+		return deepcopy(self)
+
+	def __new_pair(self, other):
+		"""
+		Create `copy`s of `self` and `other` for operator overloading.
+		"""
+		operand = other.copy()
+		operand.resample(self.wave[0], self.wave[-1], len(self.wave))
+		return self.copy(), operand 
+
+	def __add__(self, other):
+		"""
+		Addition
+		"""
+		if type(other) is self:
+			# ensure we are operating on the same pixel space 
+			result, operand = self.__new_pair(other)
+			# operate on the data 
+			result.data += operand.data 
+			# return Spectrum object 
+			return result
+
+		# otherwise, assume we have a scalar (be careful)
+		result = self.copy()
+		result.data += other 
+		return result 
+
+	def __sub__(self, other):
+		"""
+		Subtraction
+		"""
+		if type(other) is self:
+			# ensure we are operating on the same pixel space 
+			result, operand = self.__new_pair(other)
+			# operate on the data 
+			result.data -= operand.data 
+			# return Spectrum object 
+			return result
+
+		# otherwise, assume we have a scalar (be careful)
+		result = self.copy()
+		result.data -= other 
+		return result 
+
 
