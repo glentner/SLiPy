@@ -75,7 +75,6 @@ def Correct(spectrum, *calibration, **kwargs):
 			'than 10**8 elements.')
 
 		# find best XCorr and amplitude adjustment
-		fit  = []
 		best = None
 		for cal in calibration:
 			# best horizontal pixel shift 
@@ -109,23 +108,15 @@ def Correct(spectrum, *calibration, **kwargs):
 		shift = best[2] # XCorr 
 		cal   = best[3] # which calibration spectrum
 	
-		# make a new spectrum 
-		corrected = Spectrum( np.copy(spectrum.data) )
-		corrected.wave = np.copy( spectrum.wave )
-
 		# divide spectrum 
 		if shift < 0:
-			corrected.data[-shift:] /= 1 -  (1 - cal.data[:shift]) * amp[index]
+			spectrum.data[-shift:] /= 1 -  (1 - cal.data[:shift]) * amp[index]
 		elif shift > 0:
-			corrected.data[:-shift] /= 1 - (1 - cal.data[shift:]) * amp[index]
+			spectrum.data[:-shift] /= 1 - (1 - cal.data[shift:]) * amp[index]
 		else:
-			corrected.data /= 1 - (1 - cal.data) * amp[index]
-
-		return corrected
+			spectrum.data /= 1 - (1 - cal.data) * amp[index]
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
 		raise TelluricError('Inappropriate keyword arguments in '
 		'Telluric.Correct().')
-
-

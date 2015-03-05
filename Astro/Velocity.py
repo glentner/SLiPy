@@ -9,6 +9,8 @@ from astropy.io import fits as pyfits
 from astropy.constants import c
 from ..astrolibpy.astrolib.helcorr import helcorr  
 from .Fits import Find, RFind
+from .Observatory import Observatory 
+from .DataType import Spectrum
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
 
@@ -120,7 +122,7 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 		verbose = options('verbose')
 
 		# check `obs` type 
-		if not issubclass(obs, observatory):
+		if not issubclass( type(obs), Observatory):
 			raise VelocityError('HelioCorrect() expects its first argument to '
 			'be derived from the Observatory class.')
 		elif ( not hasattr(obs, 'latitude') or not hasattr(obs,'longitude') or
@@ -137,13 +139,17 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 				raise VelocityError('Spectrum {} lacks one or all of `ra`, '
 				'`dec`, and `jd`; from HelioCorrect().'.format(a))
 
-		display = Monitor()
+		if verbose:
+				display = Monitor()
+				print(' Running HelioCorrect on {} spectra ...'
+				.format(len(spectra)))
+
 		for a, spectrum in enumerate(spectra):
 			# heliocentric velocity correction in km s^-1
 			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
-				spectrum.ra, spectrum.dec, spectrum.jd)
+				spectrum.ra, spectrum.dec, spectrum.jd)[1]
 			# apply correction to wave vector
-			spectrum.wave += spectrum.wave * 1000 * hcorr / c
+			spectrum.wave += spectrum.wave * 1000 * hcorr / c.value
 			# show progress if desired
 			if verbose: display.progress(a, len(spectra))
 

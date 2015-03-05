@@ -169,7 +169,7 @@ class Spectrum:
 		"""
 		Addition
 		"""
-		if type(other) is self:
+		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
 			result.data += operand.data 
@@ -184,7 +184,7 @@ class Spectrum:
 		"""
 		Subtraction
 		"""
-		if type(other) is self:
+		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
 			result.data -= operand.data 
@@ -193,6 +193,122 @@ class Spectrum:
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
 		result.data -= other 
+		return result 
+
+	def __mul__(self, other):
+		"""
+		Multiplication
+		"""
+		if type(other) is Spectrum:
+			# resample the data and return `new` spectrum
+			result, operand = self.__new_pair(other)
+			result.data *= operand.data 
+			return result
+
+		# otherwise, assume we have a scalar (be careful)
+		result = self.copy()
+		result.data *= other 
+		return result 
+
+	def __div__(self, other):
+		"""
+		Division
+		"""
+		if type(other) is Spectrum:
+			# resample the data and return `new` spectrum
+			result, operand = self.__new_pair(other)
+			result.data /= operand.data 
+			return result
+
+		# otherwise, assume we have a scalar (be careful)
+		result = self.copy()
+		result.data /= other 
+		return result 
+
+	def __iadd__(self, other):
+		"""
+		In-place addition
+		"""
+		if type(other) is Spectrum:
+			# resample operand before operation
+			operand = other.copy()
+			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
+			self.data += operand.data 
+
+		# otherwise, assume we have a scalar (be careful)
+		else: self.data += other 
+
+	def __isub__(self, other):
+		"""
+		In-place subtraction 
+		"""
+		if type(other) is Spectrum:
+			# resample operand before operation
+			operand = other.copy()
+			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
+			self.data -= operand.data 
+
+		# otherwise, assume we have a scalar (be careful)
+		else: self.data -= other 
+
+	def __imul__(self, other):
+		"""
+		In-place multiplication 
+		"""
+		if type(other) is Spectrum:
+			# resample operand before operation
+			operand = other.copy()
+			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
+			self.data *= operand.data 
+
+		# otherwise, assume we have a scalar (be careful)
+		else: self.data *= other 
+
+	def __itruediv__(self, other):
+		"""
+		In-place division 
+		"""
+		if type(other) is Spectrum:
+			# resample operand before operation
+			operand = other.copy()
+			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
+			self.data /= operand.data 
+
+		# otherwise, assume we have a scalar (be careful)
+		else: self.data /= other 
+
+	def __radd__(self, other):
+		"""
+		Right-hand Addition
+		"""
+		result = self.copy()
+		result.data += other 
+		return result 
+
+	def __rsub__(self, other):
+		"""
+		Right-hand subtraction
+		"""
+		# otherwise, assume we have a scalar (be careful)
+		result = self.copy()
+		result.data = other - result.data 
+		return result 
+
+	def __rmul__(self, other):
+		"""
+		Right-hand multiplication
+		"""
+		# otherwise, assume we have a scalar (be careful)
+		result = self.copy()
+		result.data *= other 
+		return result 
+
+	def __rdiv__(self, other):
+		"""
+		Right-hand division
+		"""
+		result = self.copy()
+		result.data = other / result.data
 		return result 
 
 
