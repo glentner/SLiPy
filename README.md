@@ -21,7 +21,7 @@ Python 3.x. See his README file.
 * [**Astro:**](##Astro/) 
 A subpackage containing modules pertaining to astronomy and 
 spectroscopy. Modules include **Fits**, **Simbad**, **Plot**, 
-**DataType**, **Correlate**, **Telluric**, and **Velocity**.
+**DataType**, **Correlate**, **Telluric**, **Velocity**, **Observatory**.
 
 * [**Framework:**](##Framework/)
 A subpackage containing general framework code that I use in the packeage. 
