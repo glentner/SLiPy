@@ -71,6 +71,11 @@ class Spectrum:
 			self.crval1  = self.options('crval1')
 			self.cdelt1  = self.options('cdelt1')
 
+			# observables (needed for corrections)
+			self.ra  = None # right ascension
+			self.dec = None # declination
+			self.jd  = None # julian date
+
 			if type(argument) is str:
 				# assume we are importing from a file
 				self.data = pyfits.getdata(argument)
@@ -165,11 +170,9 @@ class Spectrum:
 		Addition
 		"""
 		if type(other) is self:
-			# ensure we are operating on the same pixel space 
+			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			# operate on the data 
 			result.data += operand.data 
-			# return Spectrum object 
 			return result
 
 		# otherwise, assume we have a scalar (be careful)
@@ -182,11 +185,9 @@ class Spectrum:
 		Subtraction
 		"""
 		if type(other) is self:
-			# ensure we are operating on the same pixel space 
+			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			# operate on the data 
 			result.data -= operand.data 
-			# return Spectrum object 
 			return result
 
 		# otherwise, assume we have a scalar (be careful)

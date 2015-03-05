@@ -7,7 +7,7 @@ Radial velocity corrections for 1D spectra.
 
 from astropy.io import fits as pyfits
 from astropy.constants import c
-from astrolibpy.astrolib.helcorr import helcorr  
+from ..astrolibpy.astrolib.helcorr import helcorr  
 from .Fits import Find, RFind
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
@@ -120,10 +120,10 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 		verbose = options('verbose')
 
 		# check `obs` type 
-		if not issubclass(obj, observatory):
+		if not issubclass(obs, observatory):
 			raise VelocityError('HelioCorrect() expects its first argument to '
 			'be derived from the Observatory class.')
-		elif ( not hasattr(obj, 'latitude') or not hasattr(obs,'longitude') or
+		elif ( not hasattr(obs, 'latitude') or not hasattr(obs,'longitude') or
 			not hasattr(obs, 'altitude') ):
 			raise VelocityError('HelioCorrect expects `obs`ervatory to have '
 			'all three: latitude, longitude, and altitude attributes.')
@@ -135,7 +135,7 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 				'arguments to be of type Spectrum.')
 			if not spectrum.ra or not spectrum.dec or not spectrum.jd:
 				raise VelocityError('Spectrum {} lacks one or all of `ra`, '
-				'`dec`, and `jd`; from HelioCorrect().')
+				'`dec`, and `jd`; from HelioCorrect().'.format(a))
 
 		display = Monitor()
 		for a, spectrum in enumerate(spectra):
