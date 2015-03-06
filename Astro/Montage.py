@@ -109,7 +109,7 @@ class SubField:
 			self.num_dec_sites = len(dec_site_centers) 
 
 			# build arguments for subprocess call
-			self.ArchiveList = [
+			self.commandlist = [
 					['mArchiveList', survey, band, 
 						'{:.2f} {:.2f}'.format(ra_site, dec_site), str(scale), 
 						str(scale), 'remote.tbl']
@@ -120,7 +120,7 @@ class SubField:
 			print(' --> OptionsError:', err)
 			raise MontageError('Failed keyword assignment in Subfield().')
 
-	def archive(self, **kwargs):
+	def ArchiveList(self, **kwargs):
 		"""
 		Run the `mArchiveList` command on the `site` grid.
 		"""
@@ -135,23 +135,23 @@ class SubField:
 			verbose = options('verbose')
 
 			# create directory trees
-			subdirs = [ 
+			self.folders = [ 
 					'SubField_{}{}/raw'.format(a, b) 
 					for a in range(self.num_ra_sites) 
 					for b in range(self.num_dec_sites) 
 				]
 			
-			for tree in subdirs:
+			for tree in self.folders:
 				os.makedirs(tree)
 
 			if verbose:
 				display = Monitor()
-				nargs   = len(self.ArchiveList)
+				nargs   = len(self.commandlist)
 				print(' Running `mArchiveList` at {} sites ... '.format(nargs))
 
-			for a, command in enumerate(self.ArchiveList):
+			for a, command in enumerate(self.commandlist):
 				# navigate to `raw` directory 
-				os.chdir( subdirs[a] )
+				os.chdir( self.folders[a] )
 				# submit subprocess call
 				output = subprocess.check_output(command).decode('utf-8')
 				# check output for success
@@ -159,7 +159,7 @@ class SubField:
 					raise MontageError('Failed archive list from archive() '
 					'(command: {}), (output: {}).'.format(command, output))
 				# display progress 
-				if verbose: display.progress(a, nargs)
+				if verbose: display.progress(a, nargs )
 				# move up directory tree 
 				os.chdir('../../')
 
@@ -172,4 +172,53 @@ class SubField:
 
 		except DisplayError as err:
 			print(' --> DisplayError:', err)
-			raise MontageError('Display.Monitor() failure in SubField.exec().')
+			raise MontageError('Display.Monitor() failure in SubField.'
+			'ArchiveList().')
+
+	def ArchiveExec(self, **kwargs):
+		"""
+		Run `mArchiveExec` on each site in the SubField.
+		"""
+		try:
+			# function parameter defaults 
+			options = Options( kwargs,
+				{
+					'verbose': True # display messages, progress
+				})
+
+			# function parameter assignments
+			verbose = options('verbose')
+
+			# initialize display 
+			if verbose: 
+				display  = Monitor()
+				nfolders = len(self.folders)
+				print(' Running `mArchiveExec` on {} sites ... '
+					.format(nfolders))
+
+			for a, folder in enumerate(self.folders):
+				# navigate to site folder 
+				os.chdir(folder)
+				# run `mArchiveExec`
+				output = subprocess.check_output(['mArchiveExec','remote.tbl']
+					).decode('utf-8')
+				# check for errors
+				if 'ERROR' in output:
+					raise MontageError('Failed `mArchiveExec` in folder `{}`.'
+					'Output: {}'.format(folder, output))
+				# display progress 
+				if verbose: display.progress(a, nfolders)
+				# move back up tree 
+				os.chdir('../../')
+
+			# erase progress bar 
+			if verbose: display.complete()
+
+		except OptionsError as err:
+			print(' --> OptionsError:', err)
+			raise MontageError('Failed keyword assigment in ArchiveExec().')
+
+		except DisplayError as err:
+			print(' --> DisplayError:', err)
+			raise MontageError('Display.Monitor failure in SubField.'
+			'ArchiveExec().')
