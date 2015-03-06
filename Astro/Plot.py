@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/Astro/Plot.py 
+# AstroPython/Astro/Plot.py 
 """
 Plotting facility for astronomy. 
 """

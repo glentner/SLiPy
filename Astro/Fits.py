@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/Astro/Fits.py 
+# AstroPython/Astro/Fits.py 
 """
 Fits - FITS file handling module.
 """

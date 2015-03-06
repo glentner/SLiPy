@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/Astro/Correlate.py
+# AstroPython/Astro/Correlate.py
 """
 Correlate - Module of correlation functions for astronomical data.
 """

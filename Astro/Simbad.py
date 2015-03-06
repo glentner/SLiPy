@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# Astro/Simbad.py
+# AstroPython/Astro/Simbad.py
 """
 usage: Simbad.py @Attribute <identifier> [**kwargs]
 

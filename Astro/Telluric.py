@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/Astro/Tellucic.Py 
+# AstroPython/Astro/Tellucic.Py 
 """
 Telluric - Corrections for atmospheric absoption lines.
 """
