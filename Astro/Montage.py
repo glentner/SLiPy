@@ -10,6 +10,7 @@ The user should have Montage`s executables available on their path.
 
 import os, shutil as sh, numpy as np 
 from subprocess import check_output as call
+from sys import stdout
 from numbers import Number
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
@@ -117,9 +118,9 @@ class SubField:
 
 			# build arguments for subprocess call
 			self.archive_command_list = [
-					['mArchiveList', survey, band, 
-						'{:.2f} {:.2f}'.format(ra_site, dec_site), str(scale), 
-						str(scale), 'remote.tbl']
+					['mArchiveList', survey, band, '{:.2f} {:.2f}'.format(ra_site, 
+						dec_site), str(sides[0]/grid[0]), str(sides[1]/grid[1]), 
+						'remote.tbl']
 					for ra_site in ra_site_centers for dec_site in dec_site_centers
 				]
 			
@@ -143,14 +144,16 @@ class SubField:
 
 			# new tree structure
 			self.folders = [ os.path.join( os.path.abspath('.'),
-					'SubField_{}{}/images'.format(a + 1, b + 1) )
+					'SubField_{}{}'.format(a + 1, b + 1) )
 					for a in range(self.num_ra_sites) 
 					for b in range(self.num_dec_sites) 
 				]
-			
+		
+			# initialize folder structure with `images` directory
 			for folder in self.folders:
-				if not os.path.exists(folder):
-					os.makedirs(folder)
+				abspath = os.path.join(folder,'images')
+				if not os.path.exists(abspath):
+					os.makedirs(abspath)
 
 			if verbose:
 				display = Monitor()
@@ -159,7 +162,7 @@ class SubField:
 
 			for a, command in enumerate(self.archive_command_list):
 				# navigate to `raw` directory 
-				os.chdir( self.folders[a] )
+				os.chdir( os.path.join(self.folders[a],'images') )
 				# submit subprocess call
 				output = call(command).decode('utf-8')
 				# check output for success
@@ -204,7 +207,7 @@ class SubField:
 
 			for a, folder in enumerate(self.folders):
 				# navigate to site folder 
-				os.chdir(folder)
+				os.chdir( os.path.join(folder,'images') )
 				# run `mArchiveExec`
 				output = call(['mArchiveExec','remote.tbl']).decode('utf-8')
 				# check for errors
@@ -248,15 +251,19 @@ class SubField:
 			raise MontageError('Failed keyword assignment in SubField.Build().')
 	
 		# setup folder structure 
-		if verbose: print(' Setting up folder structure ... ', end='')
-		dirs = ['corrected','projected','differences','final']
-		for folder in self.folders:
-			for subdir in dirs:
-				abspath = os.path.join('folder',subdir)
+		if verbose: 
+			stdout.write(' Setting up folder structure ... ')
+			stdout.flush()
+		
+		for subdir in ['corrected','projected','differences','final']:
+			for folder in self.folders:
+				abspath = os.path.join(folder,subdir)
 				if not os.path.exists(abspath):
 					os.makedirs(abspath)
 		
-		if verbose: print('done')
+		if verbose: 
+			stdout.write('done\n')
+			stdout.flush()
 
 		# build mosaics at all sites 
 		for a, folder in enumerate(self.folders):
@@ -265,26 +272,31 @@ class SubField:
 			os.chdir(folder)
 
 			# display message
-			if verbose: print(' Building mosaic for SubField-site: {} / {} ... '
-				.format(a, len(self.folders)))
-				print( ''.join(['-']*70))
-				print(' Generating image meta-data table ... ', end='')
+			if verbose: 
+				stdout.write(' Building mosaic for SubField-site: {} / {} ... \n'
+				.format(a + 1, len(self.folders)))
+				stdout.write( '-' * 70 + '\n' )
+				stdout.write(' Generating image meta-data table ... ')
+				stdout.flush()
 			
 			# generate image meta-data table
 			output = call(['mImgtbl','images','images.tbl']).decode('utf-8')
 			if 'ERROR' in output: raise MontageError('Failed `mImgtbl` from `{}`'
 				.format(folder))
 
-			if verbose: print('done.\n Generating FITS header template ... ', 
-				end='')
+			if verbose: 
+				stdout.write('done.\n Generating FITS header template ... ')
+				stdout.flush()
 
 			# create mosaic FITS header template
 			output = call(['mMakeHdr','-p','{}'.format(1 / res),
-				'-n','images.tbl','template.hd']).decode('utf-8')
+				'-n','images.tbl','template.hdr']).decode('utf-8')
 			if 'ERROR' in output: raise MontageError('Failed `mMakeHdr` from '
 				'`{}`'.format(folder))
 			
-			if verbose: print('done\n Reprojecting images ... ', end='')
+			if verbose: 
+				stdout.write('done\n Reprojecting images ... ')
+				stdout.flush()
 
 			# reproject images 
 			output = call(['mProjExec','-p','images','images.tbl',
@@ -292,8 +304,10 @@ class SubField:
 			if 'ERROR' in output: raise MontageError('Failed `mProjExec` in '
 				'`{}`'.format(folder))
 
-			if verbose: print('done\n Generating new image meta-data table '
-				'for projected images ... ', end='')
+			if verbose: 
+				stdout.write('done\n Generating new image meta-data table '
+					'for projected images ... ')
+				stdout.flush()
 
 			# create new meta-data table for reprojected images 
 			output = call(['mImgtbl','projected','proj-images.tbl'
@@ -304,7 +318,9 @@ class SubField:
 			
 			if not bkmodel:
 				# simply co-add images 
-				if verbose: print('done\n Co-adding images ... ', end='')
+				if verbose: 
+					stdout.write('done\n Co-adding images ... ')
+					stdout.flush()
 				output = call(['mAdd','-p','projected','proj-images.tbl',
 					'template.hdr','final/mosaic.fits']).decode('utf-8')
 				if 'ERROR' in output: raise MontageError('Failed `mAdd` in '
@@ -312,27 +328,61 @@ class SubField:
 
 			else:
 				# Fit overlaps for background corrections
-				if verbose: print('done\n Fitting overlaps for background '
-					'corrections ... ', end='')
+				if verbose: 
+					stdout.write('done\n Fitting overlaps for background '
+						'corrections ... ')
+					stdout.flush()
 				output = call(['mOverlaps','proj-images.tbl','diffs.tbl'
 					]).decode('utf-8')
 				if 'ERROR' in output: raise MontageError('Failed `mOverlaps` in '
 					'`{}`'.format(folder))
 
 				# perform background subtractions on overlaps
-				if verbose: print('done\n Performing background subtractions '
-					'on overlaps ... ', end='')
+				if verbose: 
+					stdout.write('done\n Performing background subtractions '
+						'on overlaps ... ')
+					stdout.flush()
 				output = call(['mDiffExec','-p','projected','diffs.tbl',
 					'template.hdr','differences']).decode('utf-8')
 				if 'ERROR' in output: raise MontageError('Failed `mDiffExec` in '
 					'`{}`'.format(folder))
 	
-				# Computing plane-fitting coefficients
-				if verbose: print('done\n Computing plane-fitting '
-					'coefficients ... ', end='')
+				# computing plane-fitting coefficients
+				if verbose: 
+					stdout.write('done\n Computing plane-fitting coefficients ... ')
+					stdout.flush()
 				output = call(['mFitExec','diffs.tbl','fits.tbl',
 					'differences']).decode('utf-8')
 				if 'ERROR' in output: raise MontageError('Failed `mFitExec` in '
 					'`{}`'.format(folder))
 
-	
+				# create table of background corrections
+				if verbose: 
+					stdout.write('done\n Creating table of background '
+						'corrections ... ')
+					stdout.flush()
+				output = call(['mBgModel','proj-images.tbl','fits.tbl',
+					'corrections.tbl']).decode('utf-8')
+				if 'ERROR' in output: raise MontageError('Failed `mBgModel` in '
+					'`{}`'.format(folder))
+
+				# apply background matching to reprojected images 
+				if verbose: 
+					stdout.write('done\n Applying background matching to '
+						'reprojected images ... ')
+					stdout.flush()
+				output = call(['mBgExec','-p','projected','proj-images.tbl',
+					'corrections.tbl','corrected']).decode('utf-8')
+				if 'ERROR' in output: raise MontageError('Failed `mBgExec` in '
+					'`{}`'.format(folder))
+
+				# co-add images for final mosaic 
+				if verbose: 
+					stdout.write('done\n Co-adding corrected images ... ')
+					stdout.flush()
+				output = call(['mAdd','-p','corrected','proj-images.tbl',
+					'template.hdr','final/mosaic.fits']).decode('utf-8')
+				if 'ERROR' in output: raise MontageError('Failed `mAdd` in '
+					'`{}`'.format(folder))
+
+
