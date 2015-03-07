@@ -19,14 +19,8 @@ sure to use quotation to enclose it.
 The **kwargs is the conventional reference to Python keyword arguments. 
 These should be specific to the 'Attribute' being pointed to.
 """
-
 from sys import version_info, argv, exit
-
-if version_info < (3,0):
-    raise ImportError('Simbad needs Python 3.x.')
-
 from urllib.request import urlopen
-
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
 
@@ -113,7 +107,7 @@ class Query:
 			self.dtype   = self.options('dtype')
 			self.is_main = self.options('is_main')
 
-			# retrieve SIMBAD response file
+			# query SIMBAD database
 			with urlopen( Script(identifier, criteria) ) as response:
 				self.data = str( response.read().decode('utf-8') ).strip()
 
