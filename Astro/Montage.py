@@ -278,11 +278,8 @@ class SubField:
 			self.location = os.path.abspath('.')
 
 			# new tree structure
-			self.folders = [ os.path.join( self.location,
-					'Site-{}{}'.format(a + 1, b + 1) )
-					for a in range(self.num_ra_sites) 
-					for b in range(self.num_dec_sites) 
-				]
+			self.folders = [os.path.join(self.location,'Site-{:03d}'.format(a+1)) 
+				for a in range(len(self.archive_command_list)) ]
 		
 			# initialize folder structure with `images` directory
 			for folder in self.folders:
@@ -325,6 +322,10 @@ class SubField:
 					'(command: {}), (output: {}).'.format(command, output))
 
 				if verbose: stdout.write('done')
+
+			if verbose:
+				stdout.write('\n')
+				stdout.flush()
 
 		except OptionsError as err:
 			print(' --> OptionsError:', err)
@@ -542,6 +543,7 @@ class Field:
 				})
 
 			# function parameter assignments 
+			verbose = options('verbose')
 			survey  = options('survey')
 			band    = options('band')
 		
@@ -579,8 +581,8 @@ class Field:
 			raise MontageError('Field() expects arguments to be length two.')
 
 		if verbose:
-			stdout.write('\n Setting up {:d}x{:d} Field around ({:2f}, {:2f})... '
-				.format(grid[0], grid[1], center[0], center[1]))
+			stdout.write('\n Setting up {:d}x{:d} Field around ({:.2f}, '
+				'{:.2f}) ... '.format(grid[0], grid[1], center[0], center[1]))
 			stdout.flush()
 
 		# SolveGrid()
@@ -596,10 +598,8 @@ class Field:
 		self.location = os.path.abspath('.')
 
 		# name SubField directories 
-		self.folders = [ os.path.join( self.location, 
-			'SubField-{}{}'.format(a + 1, b + 1) )
-			for a in range(len(ra_centers)) 
-			for b in range(len(dec_centers)) ]
+		self.folders = [os.path.join(self.location,'SubField-{:03d}'.format(a+1))
+			for a in range(len(self.ra_centers) * len(self.dec_centers)) ]
 
 		# create SubField directories
 		for folder in self.folders:
@@ -608,7 +608,7 @@ class Field:
 
 		# zip together all ra, dec pairs
 		self.sub_centers = [ (ra, dec) 
-			for ra in ra_centers for dec in dec_centers ]
+			for ra in self.ra_centers for dec in self.dec_centers ]
 
 		# initialize empty list of SubField`s
 		self.subfields = []
@@ -618,8 +618,8 @@ class Field:
 			self.sub_centers):
 
 			if verbose:
-				stdout.write('\n Initializing `{}`: {} / {} ... '
-					.format(os.path.basename(folder), a+1, len(self.folders)))
+				stdout.write('\n Initializing {} ... '.format(
+					os.path.basename(folder)))
 				stdout.flush()
 
 			# change directories
@@ -657,16 +657,15 @@ class Field:
 
 		if verbose:
 			stdout.write('\n Running ArchiveList() on all SubFields ... ')
-			stdout.write('\n' + '-' * 70 + '\n')
+			stdout.write('\n ' + '-' * 70 + '\n')
 			stdout.flush()
 
 		# Run ArchiveList() on all SubField`s
 		for a, subfield in enumerate(self.subfields):
 
 			if verbose:
-				stdout.write('\n Running ArchiveList() on `{}`: {} / {} ... '
-					.format(os.path.basename(self.folders[a]), a + 1, 
-					len(self.folders)))
+				stdout.write('\n Running ArchiveList() on {} ... '
+					.format(os.path.basename(self.folders[a])))
 				stdout.flush()
 			
 			# run ArchiveList()
