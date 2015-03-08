@@ -454,8 +454,8 @@ class SubField:
 		for a, folder in enumerate(self.folders):
 
 			if verbose:
-				stdout.write('\n Copying from `{}`: {} / {} ... '.format(
-					os.path.basename(folder), a + 1, len(self.folders)))
+				stdout.write('\n Copying image from {} ... '.format(
+					os.path.basename(folder)))
 				stdout.flush()
 
 			# Copy over image 
@@ -914,7 +914,7 @@ class Field:
 
 			# copy image to Field `master` image directory
 			sh.copy(image, os.path.join(master_dir, 'images/mosaic_{}.fits'
-				.format(a)))
+				.format(a + 1)))
 
 			if verbose: stdout.write('done')
 
