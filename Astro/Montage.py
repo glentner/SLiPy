@@ -461,7 +461,7 @@ class SubField:
 
 			# Copy over image 
 			sh.copy( os.path.join(folder,'final/mosaic.fits'), os.path.join(
-				master_images, 'mosaic_{}.fits'.format(a + 1)) )
+				master_images, 'mosaic-{}.fits'.format(a + 1)) )
 
 			if verbose: stdout.write('done')
 
@@ -912,10 +912,14 @@ class Field:
 				.format(os.path.basename(folder)))
 
 			# copy image to Field `master` image directory
-			sh.copy(image, os.path.join(master_dir, 'images/mosaic_{}.fits'
+			sh.copy(image, os.path.join(master_dir, 'images/mosaic-{}.fits'
 				.format(a + 1)))
 
 			if verbose: stdout.write('done')
+
+		if verbose:
+			stdout.write('\n')
+			stdout.flush()
 
 		# change directories to `master`
 		os.chdir(master_dir)
