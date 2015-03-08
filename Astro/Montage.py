@@ -892,16 +892,34 @@ class Field:
 		# create master directory sub-structure
 		for subdir in ['images','projected','differences','corrected','final']:
 			path = os.path.join(master_dir,subdir)
-			if not os.path.exists(path)
+			if not os.path.exists(path):
 				os.makedirs(path)
 
 		
 		# collect master mosaics 
 		for a, folder in enumerate(self.folders):
 
+			if verbose:
+				stdout.write('\n Copying image from {} ... '.format(
+					os.path.basename(folder)))
+				stdout.flush()
+				
 			# SubField mosaic 
 			image = os.path.join(folder,'master/final/mosaic.fits')
 
+			# ensure Merge() was run 
+			if not os.path.exists(image):
+				raise MontageError('Missing `master` mosaic image in `{}`.'
+				.format(os.path.basename(folder)))
+
+			# copy image to Field `master` image directory
 			sh.copy(image, os.path.join(master_dir, 'images/mosaic_{}.fits'
 				.format(a)))
 
+			if verbose: stdout.write('done')
+
+		# change directories to `master`
+		os.chdir(master_dir)
+
+		# run Mosaic() on all SubField `master`s
+		Mosaic(resolution, '.', verbose=verbose, bkmodel=bkmodel)
