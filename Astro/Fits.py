@@ -114,11 +114,11 @@ def GetData( *files, **kwargs ):
 			crval1=crval1, cdelt1=cdelt1) for filename in files ]
 	
 	except OptionsError as err:
-		print(' --> OptionsError:', err.msg)
+		print(' --> OptionsError:', err)
 		raise FitsError('Data retrieval failure.')
 
 	except DataError as err:
-		print(' --> DataError:', err.msg)
+		print(' --> DataError:', err)
 		raise FitsError('Failed to construct spectrum.')
 
 def Header( filename, keyword, **kwargs ):
@@ -146,7 +146,7 @@ def Header( filename, keyword, **kwargs ):
 		else: return element
 
 	except OptionsError as err:
-		print(' --> OptionsError:', err.msg)
+		print(' --> OptionsError:', err)
 		raise FitsError('Failed keyword assignment in Header().')
 
 	except KeyError as key:
@@ -233,20 +233,15 @@ def Search( *files, **kwargs ):
 
 		if verbose:
 			# query for `attribute` iteratively
-			print(' Searching for `{}`s with SIMBAD ...'
-					.format(attribute))
+			print(' Searching for `{}`s with SIMBAD ...'.format(attribute))
 			results = []
 			for a, obj in enumerate(obj_ids):
 				display.progress(a, nfiles)
-				results.append(
-						SimbadSearch[attribute](obj)	
-					)
+				results.append( SimbadSearch[attribute](obj) )
+			
 			display.complete()
 
-		else: results = [
-					SimbadSearch[attribute](obj)
-					for obj in obj_ids
-				]
+		else: results = [ SimbadSearch[attribute](obj) for obj in obj_ids ]
 
 		if is_main:
 			formatted = {
@@ -263,11 +258,11 @@ def Search( *files, **kwargs ):
 		else: return results
 
 	except OptionsError as err:
-		print(' --> OptionsError:', err.msg)
+		print(' --> OptionsError:', err)
 		raise FitsError('Failed assignment for Search().')
 
 	except SimbadError as err:
-		print(' --> SimbadError:', err.msg)
+		print(' --> SimbadError:', err)
 		raise FitsError('Simbad failed.')
 
 def PositionSort( center, radius, *files, **kwargs ):
@@ -423,7 +418,7 @@ def Main( clargs ):
 		return 0
 
 	except CommandError as err:
-		print(' --> CommandError:', err.msg)
+		print(' --> CommandError:', err)
 		return 1
 
 	except KeyError as key:

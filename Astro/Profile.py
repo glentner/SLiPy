@@ -66,11 +66,11 @@ def Fit(spectrum, xmin, xmax, **kwargs):
 
 		# create Spectrum of profile 
 		x = local.wave 
-		x = x[ x[ x < xmax + buff ] < xmin - buff ]
-		line = Spectrum( igauss(x, *coeff) )
-		line.wave = x
+		x = x[ x[ x < xmax + pad ] < xmin - pad ]
+		profile_fit = Spectrum( igauss(x, *coeff) )
+		profile_fit.wave = x
 
-		return line
+		return profile_fit
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
