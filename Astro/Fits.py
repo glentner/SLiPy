@@ -99,8 +99,7 @@ def GetData( *files, **kwargs ):
 			display = Monitor()
 			nfiles  = len(files)
 			data    = []
-			print(' Importing data from {} Fits files ...'
-					.format(nfiles) )
+			print(' Importing data from {} Fits files ...'.format(nfiles) )
 			for a, filename in enumerate(files):
 				display.progress(a, nfiles)
 				data.append( Spectrum(filename, wavecal=wavecal,
@@ -218,8 +217,7 @@ def Search( *files, **kwargs ):
 		
 		if verbose:
 			# read object names iteratively
-			print(' Reading object names for {} Fits files ...'
-					.format(nfiles))
+			print(' Reading object names for {} Fits files ...'.format(nfiles))
 			obj_ids = []
 			for a, name in enumerate(files):
 				display.progress(a, nfiles)
@@ -227,9 +225,7 @@ def Search( *files, **kwargs ):
 		
 			display.complete()
 
-		else: obj_ids = [
-					Header(name, 'object') for name in files
-				]
+		else: obj_ids = [ Header(name, 'object') for name in files ]
 
 		if verbose:
 			# query for `attribute` iteratively
