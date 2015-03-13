@@ -361,17 +361,19 @@ def PositionSort( center, radius, *files, **kwargs ):
 			display.complete()
 			print(' Compiling list of files ... ')
 
-		# find seperations
+		# keep files for targets within range
 		keepers = [ f for p1, p2, f in zip(pos1, pos2, files) 
 			if abs(p1 - center[0]) < radius and abs(p2 - center[1]) < radius ]
 
-		# account for p1 ~ 360 && center ~ 0 like comparisons
+		# account for p1 ~ 0 && center ~ 360 like comparisons
 		keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
-			if center[0] - p1 + 360 < radius and abs(p2 - center[1]) < radius ]
+			if abs(p1 + 360 - center[0]) < radius and 
+			abs(p2 - center[1]) < radius ]
 
-		# account for p1 ~ 0  && center ~ 360 like comparisons
+		# account for p1 ~ 360  && center ~ 0 like comparisons
 		keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
-			if p1 - center[0] + 360 < radius and abs(p2 - center[1]) < radius ]
+			if abs(p1 - center[0] - 360) < radius and 
+			abs(p2 - center[1]) < radius ]
 
 		if verbose:
 			print('\033[1A\r Compiling list of files ... done')
