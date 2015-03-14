@@ -5,9 +5,10 @@
 Methods for data retrieval from the Elodie Archive.
 """
 
-import os, numpy as np
+import os, shutil, numpy as np
 from urllib.request import urlopen
 from ..Framework.Options import Options, OptionsError 
+from ..Framework.Display import Monitor, DisplayError
 
 class ElodieError(Exception):
 	"""
@@ -110,14 +111,24 @@ def Download( *files, **kwargs ):
 		resample  = options('resample')
 		normalize = options('normalize')
 		outpath   = options('outpath')
+		names     = options('names')
 
 		# check for `resampled` assignment 
 		if 'resample' not in kwargs:
 			resample = None
+		elif len(resample) != 3:
+			raise ElodieError('Download() expects `resample` to be of length '
+			'three.')
 
 		# set default names 
 		if not names:
-			names = '-'.join(fname.split(':'))
+			names = [ '-'.join(fname.split(':')) for fname in files ]
+			names = [ '-'.join(fname.split('/')) for fname in names ]
+			names = [            fname + '.fits' for fname in names ]
+
+		elif len(names) != len(files):
+			raise ElodieError('Download() expects `names` option to be of '
+			'length equal to that of the number of `files` arguments.')
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
@@ -147,7 +158,7 @@ def Download( *files, **kwargs ):
 			    shutil.copyfileobj(response, outfile)
 
 		# show progress 
-		if verbose: display.progress(a, nfiles)
+		if verbose: display.progress(a + 1, nfiles)
 
 	if verbose:
 		display.complete()
