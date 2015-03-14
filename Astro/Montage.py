@@ -221,11 +221,13 @@ class SubField:
 				{
 					'survey': 'DSS'  , # DSS, SDSS, 2MASS
 					'band'  : 'DSS2B', # filter for `survey`, see `bands` dict
+					'pad'   : 0.0      # amount to add (degrees) around `sites`
 				})
 
 			# function parameter assigments
 			survey = options('survey').upper()
 			band   = options('band').upper()
+			pad    = options('pad')
 
 			# available bands for each survey 
 			bands = {
@@ -269,8 +271,8 @@ class SubField:
 			# build arguments for subprocess call
 			self.archive_command_list = [
 					['mArchiveList', survey, band, '{:.2f} {:.2f}'.format(ra_site, 
-						dec_site), str(sides[0]/grid[0]), str(sides[1]/grid[1]), 
-						'remote.tbl']
+						dec_site), str(pad + sides[0]/grid[0]), 
+						str(pad + sides[1]/grid[1]), 'remote.tbl']
 					for ra_site in ra_site_centers for dec_site in dec_site_centers
 				]
 		
