@@ -146,12 +146,12 @@ def Download( *files, **kwargs ):
 		pipeline += '|wrs[1,' + ','.join(resample) + ']'
 
 	if verbose:
-		display = Monitor()
+		display = Monitor(ETC=True)
 		nfiles  = len(files)
 		print('\n Downloading {} files from Elodie ...'.format(nfiles))
 
 	for a, spectra in enumerate(files):
-		print(Script(spectra,pipeline))
+		
 		# download file
 		with urlopen( Script(spectra, pipeline) ) as response, open(
 			os.path.join(outpath, names[a]), 'wb') as outfile:
@@ -162,4 +162,5 @@ def Download( *files, **kwargs ):
 
 	if verbose:
 		display.complete()
+		display.elapsed()
 

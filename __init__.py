@@ -13,7 +13,7 @@ astronomy research.
 # exposed modules
 from .Astro import Fits, Simbad, Correlate, Telluric, Velocity, \
 		Observatory, Montage
-
+from .Data           import Elodie
 from .Astro.Plot     import SPlot, Iterate
 from .Astro.DataType import Spectrum
 from .Framework      import Display
