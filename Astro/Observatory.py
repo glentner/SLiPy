@@ -15,7 +15,7 @@ class Observatory:
 
 class OHP(Observatory):
 	"""
-	The Observatoire de Haute-Provence.
+	The Observatoire de Haute-Provence, France.
 	"""
 	def __init__(self):
 		self.name      = 'Observatoire de Haute-Provence'
