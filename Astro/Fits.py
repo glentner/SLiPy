@@ -20,10 +20,8 @@ class FitsError(Exception):
 	"""
 	pass
 
-def Find(toplevel, pattern):
+def Find(toplevel = './', pattern = '*.fits'):
 	"""
-	Find(toplevel, pattern):
-
 	Search for file paths below `toplevel` fitting `pattern`.
 	"""
 	if not os.path.isdir(toplevel):
@@ -32,10 +30,8 @@ def Find(toplevel, pattern):
 	return [ os.path.join(toplevel, filename)
 		for filename in fnmatch.filter(os.listdir(toplevel), pattern) ]
 
-def RFind(toplevel, pattern):
+def RFind(toplevel = './', pattern = '*.fits'):
 	"""
-	RFind(toplevel, pattern):
-
 	Recursively search for paths below `toplevel` fitting `pattern`.
 	"""
 	if not os.path.isdir(toplevel):
@@ -47,8 +43,6 @@ def RFind(toplevel, pattern):
 
 def GetData( *files, **kwargs ):
 	"""
-	GetData( *files, **kwargs ):
-
 	Import data from FITS `files`.
 
 	kwargs = {
@@ -122,9 +116,7 @@ def GetData( *files, **kwargs ):
 
 def Header( filename, keyword, **kwargs ):
 	"""
-	Header( filename, keyword, **kwargs ):
-
-	Retrieve `keyword` from Fits `filename`.
+	Retrieve `keyword` from FITS header in `filename`.
 	"""
 	try:
 
@@ -154,8 +146,6 @@ def Header( filename, keyword, **kwargs ):
 	
 def Search( *files, **kwargs ):
 	"""
-	Search( *files, **kwargs ):
-
 	Exctract object names from Fits `files` and use Simbad.py 
 	to resolve the `attribute` (a required keyword argument)
 	from the SIMBAD astronomical database.
@@ -441,7 +431,6 @@ def Main( clargs ):
 		print(' --> Unrecognized error from Fits module.')
 		print(' --> Exception: `{}`'.format(err))
 		return 1
-
 
 if __name__ == '__main__':
 	# call Main function, exit 0 or 1
