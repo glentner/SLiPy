@@ -34,8 +34,8 @@ class Archive:
 			# parameter defaults
 			options = Options( kwargs, 
 				{
-					'infile' : default_infile       , # path to input file 
-					'catalog': ['HD','BD','GC','GJ']  # catalogues to keep
+					'infile' : default_infile            , # path to input file 
+					'catalog': ['HD','BD','HR','GC','GJ']  # catalogues to keep
 				})
 
 			# parameter assignments 
@@ -143,7 +143,7 @@ def Download( *files, **kwargs ):
 		pipeline += '|fca[1,nor]'
 
 	if resample:
-		pipeline += '|wrs[1' + ','.join(resample) + ']'
+		pipeline += '|wrs[1,' + ','.join(resample) + ']'
 
 	if verbose:
 		display = Monitor()
@@ -151,9 +151,9 @@ def Download( *files, **kwargs ):
 		print('\n Downloading {} files from Elodie ...'.format(nfiles))
 
 	for a, spectra in enumerate(files):
-
+		print(Script(spectra,pipeline))
 		# download file
-		with urlopen( Script(spectra) ) as response, open(
+		with urlopen( Script(spectra, pipeline) ) as response, open(
 			os.path.join(outpath, names[a]), 'wb') as outfile:
 			    shutil.copyfileobj(response, outfile)
 
