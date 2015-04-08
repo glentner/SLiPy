@@ -1,7 +1,8 @@
 *.pyc
 *.swp
 *~
-NSFplot.py
+NSFplot.py 
+HSTplot.py
 .DS_store
 __pycache__
 *.xcodeproj

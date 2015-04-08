@@ -15,10 +15,10 @@ from .DataType import Spectrum, DataError
 from .Simbad import Position, Distance, Sptype, IDList, SimbadError
 
 class FitsError(Exception):
-	"""
-	Exception for Fits module.
-	"""
-	pass
+    """
+    Exception for Fits module.
+    """
+    pass
 
 def Find(toplevel = './', pattern = '*.fits'):
 	"""
@@ -252,138 +252,133 @@ def Search( *files, **kwargs ):
 		raise FitsError('Simbad failed.')
 
 def PositionSort( center, radius, *files, **kwargs ):
-	"""
-	Return a list of files from `files` that lie in a `radius` (in degrees)
-	from `center`, based on the `ra` (right ascension) and `dec` (declination).
-	
-	kwargs = {
-			'ra'       : 'pos1'  , # header element for right ascension 
-			'dec'      : 'pos2'  , # header element for declination
-			'obj'      : 'object', # header element for object id
-			'raconvert': True    , # convert decimal hours to decimal degrees
-			'verbose'  : True    , # display messages, progress
-			'toplevel' : ''      , # `toplevel` directory to look for files in 
-			'recursive': False   , # search `recursive`ly below `toplevel`
-			'pattern'  : '*.fits', # glob `pattern` for file search 
-			'useSimbad': False     # use Simbad instead of header elements
-		}
-	"""
-	try:
-		# function parameter defaults
-		options = Options( kwargs,
-			{
-				'ra'       : 'pos1'  , # header element for right ascension 
-				'dec'      : 'pos2'  , # header element for declination
-				'obj'      : 'object', # header element for object id
-				'raconvert': True    , # convert decimal hours to decimal degrees
-				'verbose'  : True    , # display messages, progress
-				'toplevel' : ''      , # `toplevel` directory for file search
-				'recursive': False   , # search `recursive`ly below `toplevel`
-				'pattern'  : '*.fits', # glob `pattern` for file search 
-				'useSimbad': False     # use Simbad instead of header elements
-			})
+    """
+    Return a list of files from `files` that lie in a `radius` (in degrees)
+    from `center`, based on the `ra` (right ascension) and `dec` (declination).
+    
+    kwargs = {
+            'ra'       : 'pos1'  , # header element for right ascension 
+            'dec'      : 'pos2'  , # header element for declination
+            'obj'      : 'object', # header element for object id
+            'raconvert': True    , # convert decimal hours to decimal degrees
+            'verbose'  : True    , # display messages, progress
+            'toplevel' : ''      , # `toplevel` directory to look for files in 
+            'recursive': False   , # search `recursive`ly below `toplevel`
+            'pattern'  : '*.fits', # glob `pattern` for file search 
+            'useSimbad': False     # use Simbad instead of header elements
+        }
+    """
+    try:
+        # function parameter defaults
+        options = Options( kwargs,
+            {
+                'ra'       : 'pos1'  , # header element for right ascension 
+                'dec'      : 'pos2'  , # header element for declination
+                'obj'      : 'object', # header element for object id
+                'raconvert': True    , # convert decimal hours to decimal degrees
+                'verbose'  : True    , # display messages, progress
+                'toplevel' : ''      , # `toplevel` directory for file search
+                'recursive': False   , # search `recursive`ly below `toplevel`
+                'pattern'  : '*.fits', # glob `pattern` for file search 
+                'useSimbad': False     # use Simbad instead of header elements
+            })
+        
+        # function parameter assignments
+        ra        = options('ra')
+        dec       = options('dec')
+        obj       = options('obj')
+        raconvert = options('raconvert')
+        verbose   = options('verbose')
+        toplevel  = options('toplevel')
+        recursive = options('recursive')
+        pattern   = options('pattern')
+        useSimbad = options('useSimbad')
+        
+    except OptionsError as err:
+        print(' --> OptionsError:', err)
+        raise FitsError('Failed keyword assignment in PositionSort().')
 
-		# function parameter assignments
-		ra        = options('ra')
-		dec       = options('dec')
-		obj       = options('obj')
-		raconvert = options('raconvert')
-		verbose   = options('verbose')
-		toplevel  = options('toplevel')
-		recursive = options('recursive')
-		pattern   = options('pattern')
-		useSimbad = options('useSimbad')
+    # check arguments 
+    if not hasattr( center, '__iter__'):
+        raise FitsError('PositionSort() expects `center` argument to be '
+        '`iterable` and have two elements.')
+    if len(center) != 2:
+        raise FitsError('PositionSort() expects `center` argument to have '
+        'exactly two elements.')
+    if not isinstance( radius, Number ):
+        raise FitsError('PositionSort() expects `radius` argument to '
+        'be a `Number`.')
+    for a, f in enumerate(files):
+        if not isinstance(f, str):
+            raise FitsError('PositionSort() expects `str` like arguments '
+            'for all `files` (from argument {})'.format(a))
 
-	except OptionsError as err:
-		print(' --> OptionsError:', err)
-		raise FitsError('Failed keyword assignment in PositionSort().')
-
-	# check arguments 
-	if not hasattr( center, '__iter__'):
-		raise FitsError('PositionSort() expects `center` argument to be '
-		'`iterable` and have two elements.')
-	if len(center) != 2:
-		raise FitsError('PositionSort() expects `center` argument to have '
-		'exactly two elements.')
-	if not isinstance( radius, Number ):
-		raise FitsError('PositionSort() expects `radius` argument to '
-		'be a `Number`.')
-	for a, f in enumerate(files):
-		if not isinstance(f, str):
-			raise FitsError('PositionSort() expects `str` like arguments '
-			'for all `files` (from argument {})'.format(a))
-
-	# convert `files` to list type 
-	files = list(files)
+    # convert `files` to list type 
+    files = list(files)
 
 	# look under `toplevel` if requested
-	if toplevel:
-		find = RFind if recursive else Find
-		files += find(toplevel, pattern)
+    if toplevel:
+        find   = RFind if recursive else Find
+        files += find(toplevel, pattern)
+        
+    if verbose:
+        # create display object 
+        display = Monitor()
+        nfiles  = len(files)
+        
+    # initialize blank lists
+    pos1, pos2 = [], []
+    
+    if not useSimbad:	
+        if verbose: print(' Retrieving position information from {} files ... '.format(nfiles))
+        # check file headers for requested information
+        for a, fitsfile in enumerate(files):
+            try:
+                alpha = Header(fitsfile, ra)
+                delta = Header(fitsfile, dec)
+                if raconvert: alpha *= 180 / 12
+                pos1.append(alpha)
+                pos2.append(delta)
+            except FitsError as err:
+                # attempt to get info from SIMBAD instead
+                print('\n Failed to retrieve position from file {}, contacted SIMBAD ...'.format(a))
+                pos = Position( Header(fitsfile, obj) )
+                print('\033[A\r\033[K\033[2A')
+                pos1.append( pos[0] )
+                pos2.append( pos[1] )
+                
+            if verbose: display.progress(a + 1, nfiles)
+            
+    else:
+        # use the Simbad module to search for positions 
+        if verbose: print(' Retrieving {} positions from SIMBAD ... '.format(nfiles))
+        for a, fitsfile in enumerate(files):
+            pos = Position( Header(fitsfile, obj) )
+            pos1.append( pos[0] )
+            pos2.append( pos[1] )
+            if verbose: display.progress(a, nfiles)
+            
+    # erase progress bar
+    if verbose: 
+        display.complete()
+        print('\r\033[K Compiling list of files ... ')
 
-	if verbose:
-		# create display object 
-		display = Monitor()
-		nfiles  = len(files)
+    # keep files for targets within range
+    keepers = [ f for p1, p2, f in zip(pos1, pos2, files) 
+        if abs(p1 - center[0]) < radius and abs(p2 - center[1]) < radius ]
 
-	# initialize blank lists
-	pos1, pos2, = [], []
-
-	if not useSimbad:	
-		if verbose: print(' Retrieving {} positions from files ... '
-			.format(nfiles))
-		# check file headers for requested information
-		for a, fitsfile in enumerate(files):
-			try:
-				pos1.append( Header(fitsfile, ra)  )
-				pos2.append( Header(fitsfile, dec) )
-			except FitsError as err:
-				# attempt to get info from SIMBAD instead
-				print('\nFailed to retrieve position information from file, '
-					'`{}`, contacted SIMBAD ... \033[2A'.format(fitsfile))
-				pos = Position( Header(fitsfile, obj) )
-				pos1.append( pos[0] )
-				pos2.append( pos[1] )
-
-			if verbose: display.progress( a, nfiles )
-
-	else:
-		# use the Simbad module to search for positions 
-		if verbose: print(' Retrieving {} positions from SIMBAD ... '
-			.format(nfiles))
-		for a, fitsfile in enumerate(files):
-			pos = Position( Header(fitsfile, obj) )
-			pos1.append( pos[0] )
-			pos2.append( pos[1] )
-			if verbose: display.progress(a, nfiles)
-
-	# erase progress bar
-	if verbose: 
-		display.complete()
-		print('\033[K\r Compiling list of files ... ')
-
-	# transform to degrees 
-	if raconvert:
-		pos1 = [ ra*180/12 for ra in pos1 ]
-
-	# keep files for targets within range
-	keepers = [ f for p1, p2, f in zip(pos1, pos2, files) 
-		if abs(p1 - center[0]) < radius and abs(p2 - center[1]) < radius ]
-
-	# account for p1 ~ 0 && center ~ 360 like comparisons
-	keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
-		if abs(p1 + 360 - center[0]) < radius and 
-			abs(p2 - center[1]) < radius ]
-
-	# account for p1 ~ 360  && center ~ 0 like comparisons
-	keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
-		if abs(p1 - center[0] - 360) < radius and 
-			abs(p2 - center[1]) < radius ]
-
-	if verbose: print('\033[1A\r Compiling list of files ... done')
-
-	# exclude any potential double countings
-	return list(set(keepers))
+    # account for p1 ~ 0 && center ~ 360 like comparisons
+    keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
+        if abs(p1 + 360 - center[0]) < radius and abs(p2 - center[1]) < radius ]
+    
+    # account for p1 ~ 360  && center ~ 0 like comparisons
+    keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
+        if abs(p1 - center[0] - 360) < radius and abs(p2 - center[1]) < radius ]
+    
+    if verbose: print('\033[A\r\033[K Compiling list of files ... done')
+    
+    # exclude any potential double countings
+    return list(set(keepers))
 
 def Main( clargs ):
 	"""
