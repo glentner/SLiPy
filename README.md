@@ -15,6 +15,8 @@ I found it useful for performing velocity corrections on my spectroscopic
 data. I've modified several modules such that it can be imported and used in 
 Python 3.x. See his README file.
 
+[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
+
 ## Contents:
 
 * [**Astro:**](##Astro/) 
