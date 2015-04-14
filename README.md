@@ -131,7 +131,7 @@ def PositionSort( center, radius, *files, **kwargs ):
 ```
 #<a name=DataType></a>[DataType](AstroPython/DataType.py)
 
-Objects for representing astronomical data
+Objects for representing astronomical data.
 
 ```Python
 def WaveVector( rpix, rval, delt, npix ):
@@ -149,6 +149,9 @@ class Spectrum:
 	"""
 	Spectrum objects consist of a `data` vector, and optionally a  
 	`wavelength` vector (accessed with .data and .wave respectively).
+    (+, -, *, /, +=, -=, *=, /=) are overloaded. The LHS spectrum is the
+    reference and the RHS spectrum is resampled onto the wavelength space
+    of the LHS spectrum before applying operations pixel-wise.
 	"""
 	def __init__(self, argument, **kwargs ):
 		"""
