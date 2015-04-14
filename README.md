@@ -70,6 +70,13 @@ def GetData( *files, **kwargs ):
 	"""
 ```
 
+```Python
+def Header( filename, keyword, **kwargs ):
+	"""
+	Retrieve `keyword` from FITS header in `filename`. Return type depends on
+    the value.
+	"""
+```
 ###[Simbad](AstroPython/Simbad.py)
 
 
