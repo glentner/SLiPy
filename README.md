@@ -19,8 +19,6 @@ Python 3.x. See his README file.
 
 ## Modules
 
-Table of Contents:
-
 * [**Fits**](#Fits) [Find, RFind, GetData, ]
 
 * [**Correlate**](#Correlate) [XCorr, ]
@@ -51,7 +49,6 @@ to import:
 
 Import data from, handle, and manipulate FITS format files.
 
-#<a name=Find></a>
 ```Python
 def Find(toplevel = './', pattern = '*.fits'):
     """
@@ -59,7 +56,6 @@ def Find(toplevel = './', pattern = '*.fits'):
     of string values.
     """
 ```
-#<a name=RFind></a>
 ```Python
 def RFind(toplevel = './', pattern = '*.fits'):
     """
@@ -67,7 +63,6 @@ def RFind(toplevel = './', pattern = '*.fits'):
     a list of string values.
     """
 ```
-
 ```Python
 def GetData( *files, **kwargs ):
 	"""
@@ -85,7 +80,6 @@ def GetData( *files, **kwargs ):
 		}
 	"""
 ```
-
 ```Python
 def Header( filename, keyword, **kwargs ):
 	"""
@@ -93,7 +87,6 @@ def Header( filename, keyword, **kwargs ):
     the value.
 	"""
 ```
-
 ```Python
 def Search( *files, **kwargs ):
 	"""
@@ -112,7 +105,6 @@ def Search( *files, **kwargs ):
 		}
 	"""
 ```
-
 ```Python
 def PositionSort( center, radius, *files, **kwargs ):
     """
@@ -135,7 +127,6 @@ def PositionSort( center, radius, *files, **kwargs ):
 ```
 
 #<a name=Simbad></a>[Fits](AstroPython/Simbad.py)
-##[Simbad](AstroPython/Simbad.py)
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts.
