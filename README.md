@@ -300,6 +300,12 @@ def Correct(spectrum, *calibration, **kwargs):
 	"""
 ```
 
+![example](Figures/HD192640.png "Results of Telluric.Correct()")
+
+**Figure 1:** The above figure is an example of applying the Telluric.Correct()
+algorithm to a spectrum. In this case, 6 spectra of Regulus from the Elodie
+archive were used as calibration spectra.
+
 #<a name=Velocity></a>[Velocity](AstroPython/Velocity.py)
 
 #<a name=Observatory></a>[Observatory](AstroPython/Observatory.py)
