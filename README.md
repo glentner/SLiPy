@@ -21,8 +21,7 @@ Python 3.x. See his README file.
 
 * [Fits](#Fits)
 
-    - [Find](#Find)
-    - [RFind](#Rfind)
+    [Find](#Find), [RFind](#Rfind), [GetData](#GetData)
 
 * [Simbad](#Simbad)
 * [Correlate](#Correlate)
@@ -46,7 +45,9 @@ The following modules are elevated to the package level and are available
 to import:
 
 #<a name=Fits></a>[Fits](AstroPython/Fits.py)
+
 Import data from, handle, and manipulate FITS format files.
+
 #<a name=Find></a>
 ```Python
 def Find(toplevel = './', pattern = '*.fits'):
