@@ -32,9 +32,11 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import whole:
 
-1. **Fits**
+- **Fits**
+  Import data from, handle, and manipulate FITS format files.
 
-...Import data from, handle, and manipulate FITS format files.
+  * *Find*
+    Find files below toplevel directory that fit a pattern.
 
 - Simbad
 
