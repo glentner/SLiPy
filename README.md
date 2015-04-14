@@ -36,9 +36,12 @@ to import:
 
   Import data from, handle, and manipulate FITS format files.
 
-  * Find( *toplevel* = "./", *pattern* = "\*.fits" )
-
-    Find files below toplevel directory that fit a pattern.
+    ```Python
+    Find(toplevel = './', pattern = '\*.fits'):
+    """
+    Search for file paths below `toplevel` fitting `pattern`.
+    """
+    ```
 
 
 ###Simbad
