@@ -19,7 +19,7 @@ Python 3.x. See his README file.
 
 ## Modules
 
-* [Fits](#Fits) [Find, RFind, GetData, ]
+* [**Fits**](#Fits) [Find, RFind, GetData, ]
 
 * [Correlate](#Correlate) [XCorr, ]
 
