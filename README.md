@@ -33,6 +33,7 @@ The following modules are elevated to the package level and are available
 to import whole:
 
 1. **Fits**
+
 ...Import data from, handle, and manipulate FITS format files.
 
 - Simbad
