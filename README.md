@@ -38,15 +38,36 @@ Import data from, handle, and manipulate FITS format files.
 
 ```Python
 def Find(toplevel = './', pattern = '*.fits'):
-"""
-Search for file paths below `toplevel` fitting `pattern`.
-"""
+    """
+    Search for file paths below `toplevel` fitting `pattern`. Returns a list
+    of string values.
+    """
 ```
+
 ```Python
 def RFind(toplevel = './', pattern = '*.fits'):
-"""
-Recursively search for paths below `toplevel` fitting `pattern`.
-"""
+    """
+    Recursively search for paths below `toplevel` fitting `pattern`. Returns
+    a list of string values.
+    """
+```
+
+```Python
+def GetData( *files, **kwargs ):
+	"""
+	Import data from FITS `files`. Returns a list of Spectrum objects.
+
+	kwargs = {
+			verbose   : True    , # display messages, progress
+			toplevel  : ''      , # request import from directory `toplevel`
+			pattern   : '*.fits', # pattern matching with `toplevel`
+			recursive : False   , # search recursively below `toplevel`
+			wavecal   : True    , # fit wavelength vector to data
+			crpix1    : 'crpix1', # reference pixel header keyword
+			crval1    : 'crval1', # value at reference pixel
+			cdelt1    : 'cdelt1', # resolution (delta lambda)
+		}
+	"""
 ```
 
 ###[Simbad](AstroPython/Simbad.py)
