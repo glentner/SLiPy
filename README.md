@@ -77,6 +77,26 @@ def Header( filename, keyword, **kwargs ):
     the value.
 	"""
 ```
+
+```Python
+def Search( *files, **kwargs ):
+	"""
+	Extract object names from Fits `files` and use Simbad module
+	to resolve the `attribute` (a required keyword argument)
+	from the SIMBAD astronomical database. Currently available attributes
+    are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
+    results (type depends on the values).
+
+	kwargs = {
+			verbose   : True    , # display messages, progress
+			toplevel  : ''      , # search under `toplevel` directory
+			pattern   : '*.fits', # for files under `toplevel`
+			recursive : False   , # search recusively under `toplevel`
+			attribute : ''      , # attribute to search for (no default)
+		}
+	"""
+```
+
 ###[Simbad](AstroPython/Simbad.py)
 
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# AstroPython/Astro/Fits.py 
+# AstroPython/Astro/Fits.py
 """
 Fits - FITS file handling module.
 """
 import os, sys, fnmatch
-from astropy.io import fits as pyfits 
+from astropy.io import fits as pyfits
 from numbers import Number
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
@@ -50,30 +50,30 @@ def GetData( *files, **kwargs ):
 			toplevel  : ''      , # request import from directory `toplevel`
 			pattern   : '*.fits', # pattern matching with `toplevel`
 			recursive : False   , # search recursively below `toplevel`
-			wavecal   : True    , # fit wavelength vector to data 
-			crpix1    : 'crpix1', # reference pixel header keyword 
-			crval1    : 'crval1', # value at reference pixel 
+			wavecal   : True    , # fit wavelength vector to data
+			crpix1    : 'crpix1', # reference pixel header keyword
+			crval1    : 'crval1', # value at reference pixel
 			cdelt1    : 'cdelt1', # resolution (delta lambda)
 		}
 	"""
 	try:
-		# convert `files` to list 
+		# convert `files` to list
 		files = list(files)
 
-		# available key word arguments 
+		# available key word arguments
 		options = Options( kwargs,
 			{
 				'verbose'  : True    , # display messages, progress
 				'toplevel' : ''      , # request import from `toplevel` dir
 				'pattern'  : '*.fits', # pattern matching with `toplevel`
 				'recursive': False   , # search recursively below `toplevel`
-				'wavecal'  : True    , # fit wavelength vector to data 
-				'crpix1'   : 'crpix1', # reference pixel header keyword 
-				'crval1'   : 'crval1', # value at reference pixel 
+				'wavecal'  : True    , # fit wavelength vector to data
+				'crpix1'   : 'crpix1', # reference pixel header keyword
+				'crval1'   : 'crval1', # value at reference pixel
 				'cdelt1'   : 'cdelt1', # resolution (delta lambda)
 			})
-		
-		# assignment options 
+
+		# assignment options
 		verbose   = options('verbose')
 		toplevel  = options('toplevel')
 		pattern   = options('pattern')
@@ -82,12 +82,12 @@ def GetData( *files, **kwargs ):
 		crpix1    = options('crpix1')
 		crval1    = options('crval1')
 		cdelt1    = options('cdelt1')
-		
+
 		if toplevel:
 			# search for files matching `pattern`
-			find   = RFind if recursive else Find 
+			find   = RFind if recursive else Find
 			files += find( toplevel, pattern )
-		
+
 		if verbose:
 			# import iteratively, displaying progress
 			display = Monitor()
@@ -105,7 +105,7 @@ def GetData( *files, **kwargs ):
 		# import spectra 'silently'
 		return [ Spectrum(filename, wavecal=wavecal, crpix1=crpix1,
 			crval1=crval1, cdelt1=cdelt1) for filename in files ]
-	
+
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
 		raise FitsError('Data retrieval failure.')
@@ -126,7 +126,7 @@ def Header( filename, keyword, **kwargs ):
 			})
 
 		is_main = options('is_main')
-	
+
 		with pyfits.open(filename) as hdulist:
 			element = hdulist[0].header[keyword]
 
@@ -143,38 +143,38 @@ def Header( filename, keyword, **kwargs ):
 	except KeyError as key:
 		raise FitsError('Header element `{}` was not accessible '
 			'from `{}`'.format(keyword, filename))
-	
+
 def Search( *files, **kwargs ):
 	"""
-	Exctract object names from Fits `files` and use Simbad.py 
+	Exctract object names from Fits `files` and use Simbad.py
 	to resolve the `attribute` (a required keyword argument)
 	from the SIMBAD astronomical database.
 
 	kwargs = {
-			verbose   : True    , # display messages, progress 
-			toplevel  : ''      , # search under `toplevel` directory 
+			verbose   : True    , # display messages, progress
+			toplevel  : ''      , # search under `toplevel` directory
 			pattern   : '*.fits', # for files under `toplevel`
-			recursive : False   , # search recusively under `toplevel` 
+			recursive : False   , # search recusively under `toplevel`
 			attribute : ''      , # attribute to search for (no default)
 		}
 	"""
 	try:
-		
-		# convert `files` to list 
+
+		# convert `files` to list
 		files = list(files)
 
 		# available keyword arguments
 		options = Options( kwargs,
 			{
-				'verbose'   : True    , # display messages, progress 
-				'toplevel'  : ''      , # search under `toplevel` directory 
+				'verbose'   : True    , # display messages, progress
+				'toplevel'  : ''      , # search under `toplevel` directory
 				'pattern'   : '*.fits', # for files under `toplevel`
-				'recursive' : False   , # search recusively under `toplevel` 
+				'recursive' : False   , # search recusively under `toplevel`
 				'attribute' : ''      , # attribute to search for (no default)
 				'is_main'   : False     # reserved for calls from Main()
 			})
 
-		# assign parameters 
+		# assign parameters
 		verbose   = options('verbose')
 		toplevel  = options('toplevel')
 		pattern   = options('pattern')
@@ -192,7 +192,7 @@ def Search( *files, **kwargs ):
 
 		if not attribute:
 			raise FitsError('An `attribute` must be specified for Search().')
-		
+
 		if attribute not in SimbadSearch:
 			raise FitsError('`{}` is not an available search criteria.'
 					.format(attribute))
@@ -204,7 +204,7 @@ def Search( *files, **kwargs ):
 
 		nfiles = len(files)
 		display = Monitor()
-		
+
 		if verbose:
 			# read object names iteratively
 			print(' Reading object names for {} Fits files ...'.format(nfiles))
@@ -212,7 +212,7 @@ def Search( *files, **kwargs ):
 			for a, name in enumerate(files):
 				display.progress(a, nfiles)
 				obj_ids.append( Header(name, 'object') )
-		
+
 			display.complete()
 
 		else: obj_ids = [ Header(name, 'object') for name in files ]
@@ -224,7 +224,7 @@ def Search( *files, **kwargs ):
 			for a, obj in enumerate(obj_ids):
 				display.progress(a, nfiles)
 				results.append( SimbadSearch[attribute](obj) )
-			
+
 			display.complete()
 
 		else: results = [ SimbadSearch[attribute](obj) for obj in obj_ids ]
@@ -255,16 +255,16 @@ def PositionSort( center, radius, *files, **kwargs ):
     """
     Return a list of files from `files` that lie in a `radius` (in degrees)
     from `center`, based on the `ra` (right ascension) and `dec` (declination).
-    
+
     kwargs = {
-            'ra'       : 'pos1'  , # header element for right ascension 
+            'ra'       : 'pos1'  , # header element for right ascension
             'dec'      : 'pos2'  , # header element for declination
             'obj'      : 'object', # header element for object id
             'raconvert': True    , # convert decimal hours to decimal degrees
             'verbose'  : True    , # display messages, progress
-            'toplevel' : ''      , # `toplevel` directory to look for files in 
+            'toplevel' : ''      , # `toplevel` directory to look for files in
             'recursive': False   , # search `recursive`ly below `toplevel`
-            'pattern'  : '*.fits', # glob `pattern` for file search 
+            'pattern'  : '*.fits', # glob `pattern` for file search
             'useSimbad': False     # use Simbad instead of header elements
         }
     """
@@ -272,17 +272,17 @@ def PositionSort( center, radius, *files, **kwargs ):
         # function parameter defaults
         options = Options( kwargs,
             {
-                'ra'       : 'pos1'  , # header element for right ascension 
+                'ra'       : 'pos1'  , # header element for right ascension
                 'dec'      : 'pos2'  , # header element for declination
                 'obj'      : 'object', # header element for object id
                 'raconvert': True    , # convert decimal hours to decimal degrees
                 'verbose'  : True    , # display messages, progress
                 'toplevel' : ''      , # `toplevel` directory for file search
                 'recursive': False   , # search `recursive`ly below `toplevel`
-                'pattern'  : '*.fits', # glob `pattern` for file search 
+                'pattern'  : '*.fits', # glob `pattern` for file search
                 'useSimbad': False     # use Simbad instead of header elements
             })
-        
+
         # function parameter assignments
         ra        = options('ra')
         dec       = options('dec')
@@ -293,12 +293,12 @@ def PositionSort( center, radius, *files, **kwargs ):
         recursive = options('recursive')
         pattern   = options('pattern')
         useSimbad = options('useSimbad')
-        
+
     except OptionsError as err:
         print(' --> OptionsError:', err)
         raise FitsError('Failed keyword assignment in PositionSort().')
 
-    # check arguments 
+    # check arguments
     if not hasattr( center, '__iter__'):
         raise FitsError('PositionSort() expects `center` argument to be '
         '`iterable` and have two elements.')
@@ -313,23 +313,23 @@ def PositionSort( center, radius, *files, **kwargs ):
             raise FitsError('PositionSort() expects `str` like arguments '
             'for all `files` (from argument {})'.format(a))
 
-    # convert `files` to list type 
+    # convert `files` to list type
     files = list(files)
 
 	# look under `toplevel` if requested
     if toplevel:
         find   = RFind if recursive else Find
         files += find(toplevel, pattern)
-        
+
     if verbose:
-        # create display object 
+        # create display object
         display = Monitor()
         nfiles  = len(files)
-        
+
     # initialize blank lists
     pos1, pos2 = [], []
-    
-    if not useSimbad:	
+
+    if not useSimbad:
         if verbose: print(' Retrieving position information from {} files ... '.format(nfiles))
         # check file headers for requested information
         for a, fitsfile in enumerate(files):
@@ -346,37 +346,37 @@ def PositionSort( center, radius, *files, **kwargs ):
                 print('\033[A\r\033[K\033[2A')
                 pos1.append( pos[0] )
                 pos2.append( pos[1] )
-                
+
             if verbose: display.progress(a + 1, nfiles)
-            
+
     else:
-        # use the Simbad module to search for positions 
+        # use the Simbad module to search for positions
         if verbose: print(' Retrieving {} positions from SIMBAD ... '.format(nfiles))
         for a, fitsfile in enumerate(files):
             pos = Position( Header(fitsfile, obj) )
             pos1.append( pos[0] )
             pos2.append( pos[1] )
             if verbose: display.progress(a, nfiles)
-            
+
     # erase progress bar
-    if verbose: 
+    if verbose:
         display.complete()
         print('\r\033[K Compiling list of files ... ')
 
     # keep files for targets within range
-    keepers = [ f for p1, p2, f in zip(pos1, pos2, files) 
+    keepers = [ f for p1, p2, f in zip(pos1, pos2, files)
         if abs(p1 - center[0]) < radius and abs(p2 - center[1]) < radius ]
 
     # account for p1 ~ 0 && center ~ 360 like comparisons
     keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
         if abs(p1 + 360 - center[0]) < radius and abs(p2 - center[1]) < radius ]
-    
+
     # account for p1 ~ 360  && center ~ 0 like comparisons
     keepers += [ f for p1, p2, f in zip(pos1, pos2, files)
         if abs(p1 - center[0] - 360) < radius and abs(p2 - center[1]) < radius ]
-    
+
     if verbose: print('\033[A\r\033[K Compiling list of files ... done')
-    
+
     # exclude any potential double countings
     return list(set(keepers))
 
@@ -384,12 +384,12 @@ def Main( clargs ):
 	"""
 	Main function. See __doc__ for details.
 	"""
-	
+
 	if len(clargs) < 2:
-		# show usage 
+		# show usage
 		print( __doc__ )
 		return 0
-	
+
 	# Available functions for execution
 	executable = {
 			'Header' : Header, # Header function
@@ -398,14 +398,14 @@ def Main( clargs ):
 
 	try:
 
-		# Parse command line arguments 
+		# Parse command line arguments
 		function, args, kwargs = Parse( clargs[1:] )
 		if not args and not kwargs:
 			# show function usage
 			print( executable[function].__doc__ )
 			return 0
 
-		# run execution 
+		# run execution
 		executable[function]( *args, is_main=True, **kwargs )
 		return 0
 
