@@ -160,6 +160,20 @@ class Query:
 	"""
 ```
 
+```Python
+def Position( identifier, **kwargs ):
+	"""
+	Position( identifier, **kwargs ):
+
+	Handle to the Query class with criteria='%C00(d;C)'. Return right
+    ascension and declination in decimal degrees of `identifier`.
+
+    Example:
+
+    ra, dec = Position('Sirius')
+	"""
+
+```
 ###[Correlate](AstroPython/Correlate.py)
 
 
