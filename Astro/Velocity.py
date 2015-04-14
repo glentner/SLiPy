@@ -149,7 +149,7 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
 				spectrum.ra, spectrum.dec, spectrum.jd)[1]
 			# apply correction to wave vector
-			spectrum.wave += spectrum.wave * 1000 * hcorr / c.value
+			spectrum.wave -= spectrum.wave * 1000 * hcorr / c.value
 			# show progress if desired
 			if verbose: display.progress(a, len(spectra))
 
