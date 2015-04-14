@@ -21,6 +21,10 @@ Python 3.x. See his README file.
 
 * [**Fits**](#Fits) [Find, RFind, GetData, ]
 
+* [**DataType**](#DataType) [WaveVector, Spectrum, ]
+
+* [**Simbad**](#Simbad) [Query, Position, Distance, Sptype, IDList, ]
+
 * [**Correlate**](#Correlate) [XCorr, ]
 
 * [**Telluric**](#Telluric) [Correct, ]
@@ -124,6 +128,41 @@ def PositionSort( center, radius, *files, **kwargs ):
         }
     """
 
+```
+#<a name=DataType></a>[DataType](AstroPython/DataType.py)
+
+Objects for representing astronomical data
+
+```Python
+def WaveVector( rpix, rval, delt, npix ):
+	"""
+	Construct numpy array of wavelength values based on:
+
+		`rpix` : reference pixel index
+		`rval` : wavelength at reference pixel
+		`delt` : resolutions (delta lambda)
+		`npix` : length of desired array
+	"""
+```
+```Python
+class Spectrum:
+	"""
+	Spectrum objects consist of a `data` vector, and optionally a  
+	`wavelength` vector (accessed with .data and .wave respectively).
+	"""
+	def __init__(self, argument, **kwargs ):
+		"""
+		Hold spectrum `data` from file name `argument`. Alternatively,
+		construct spectra with a one-dimensional numpy.ndarray as `argument`.
+		`wavecal` is assumed to be true for file input.
+
+		kwargs = {
+    		'wavecal': True     , # fit wavelength vector to data
+    		'crpix1' : 'crpix1' , # reference pixel header keyword
+    		'crval1' : 'crval1' , # value at reference pixel
+    		'cdelt1' : 'cdelt1' , # resolution (delta lambda)
+		}
+        """
 ```
 
 #<a name=Simbad></a>[Simbad](AstroPython/Simbad.py)
