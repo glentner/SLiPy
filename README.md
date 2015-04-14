@@ -211,6 +211,10 @@ def IDList(identifier, **kwargs):
 	With `parse` = True, return a list of alternate IDs for
 	the `identifier` provided.
 	"""
+
+    Example:
+
+    other_names = IDList('proxima centauri')
 ```
 
 ###[Correlate](AstroPython/Correlate.py)
