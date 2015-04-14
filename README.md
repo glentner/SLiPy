@@ -19,16 +19,17 @@ Python 3.x. See his README file.
 
 ## Modules
 
-* [Fits](#Fits)
+* [Fits](#Fits) [Find, RFind, GetData, ]
 
-    [Find](#Find), [RFind](#Rfind), [GetData](#GetData)
+* [Correlate](#Correlate) [XCorr, ]
 
-* [Simbad](#Simbad)
-* [Correlate](#Correlate)
-* [Telluric](#Telluric)
-* [Velocity](#Velocity)
+* [Telluric](#Telluric) [Correct, ]
+
+* [Velocity](#Velocity) [HelioCorrect, ]
+
 * [Montage](#Montage)
-* [Observatory](#Observatory)
+
+* [Observatory](#Observatory) [OHP, ]
 
 
 AstroPython is split into several components. The principle component is the
