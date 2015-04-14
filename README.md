@@ -30,9 +30,11 @@ name is unfortunate for me as it is a bit over done with the convention I was
 already using, but for consistency I will keep it as it was from the author.
 
 The following modules are elevated to the package level and are available
-to import whole:
+to import whole: [Fits](###Fits), [Simbad](###Simbad),
+[Correlate](###Correlate), [Telluric](###Telluric), [Velocity](###Velocity),
+[Montage](###Montage), [Observatory](###Observatory),
 
-- **Fits**
+###Fits
 
   Import data from, handle, and manipulate FITS format files.
 
@@ -40,14 +42,23 @@ to import whole:
 
     Find files below toplevel directory that fit a pattern.
 
-- Simbad
+
+###Simbad
 
 
-- Correlate
-- Telluric
-- Velocity
-- Montage
-- Observatory
+###Correlate
+
+
+###Telluric
+
+
+###Velocity
+
+
+###Montage
+
+
+###Observatory
 
 
 Documentation on the specific tools available here is forthcoming. In the
