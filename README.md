@@ -42,7 +42,12 @@ def Find(toplevel = './', pattern = '*.fits'):
 Search for file paths below `toplevel` fitting `pattern`.
 """
 ```
-
+```Python
+def RFind(toplevel = './', pattern = '*.fits'):
+"""
+Recursively search for paths below `toplevel` fitting `pattern`.
+"""
+```
 
 ###Simbad
 
