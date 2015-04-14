@@ -49,22 +49,22 @@ Recursively search for paths below `toplevel` fitting `pattern`.
 """
 ```
 
-###Simbad
+###[Simbad](AstroPython/Simbad.py)
 
 
-###Correlate
+###[Correlate](AstroPython/Correlate.py)
 
 
-###Telluric
+###[Telluric](AstroPython/Telluric.py)
 
 
-###Velocity
+###[Velocity](AstroPython/Velocity.py)
 
 
-###Montage
+###[Montage](AstroPython/Montage.py)
 
 
-###Observatory
+###[Observatory](AstroPython/Fits.py)
 
 
 Documentation on the specific tools available here is forthcoming. In the
