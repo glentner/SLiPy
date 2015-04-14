@@ -166,7 +166,7 @@ class Spectrum:
     		'crval1' : 'crval1' , # value at reference pixel
     		'cdelt1' : 'cdelt1' , # resolution (delta lambda)
 		}
-        """
+    """
 ```
 
 #<a name=Simbad></a>[Simbad](AstroPython/Simbad.py)
@@ -277,17 +277,31 @@ def Xcorr( spectrumA, spectrumB, **kwargs ):
 	"""
 ```
 
-###[Telluric](AstroPython/Telluric.py)
+#<a name=Telluric></a>[Telluric](AstroPython/Telluric.py)
 
+Removal of atmospheric adsorption lines in spectra.
 
-###[Velocity](AstroPython/Velocity.py)
+```Python
+def Correct(spectrum, *calibration, **kwargs):
+	"""
+	Perform a telluric correction on `spectrum` with one or more
+	`calibration` spectra. If more than one calibration spectrum is
+	provided, the one with the best fit after performing both a
+	horizontal cross correlation and a vertical amplitude fit is used.
+	The spectrum and all the calibration spectra must have the same
+	number of pixels (elements). If a horizontal shift in the calibration
+	spectra is appropriate, only the corresponding range of the spectrum
+	is divided out!
 
+	kwargs = {
+			lag  : 25            , # pixel shift limit for XCorr()
+			range:(0.5, 2.0, 151), # numpy.linspace for amplitude trials
+		}
+	"""
+```
 
-###[Montage](AstroPython/Montage.py)
+#<a name=Velocity></a>[Velocity](AstroPython/Velocity.py)
 
+#<a name=Observatory></a>[Observatory](AstroPython/Observatory.py)
 
-###[Observatory](AstroPython/Fits.py)
-
-
-Documentation on the specific tools available here is forthcoming. In the
-interim, most are self-documenting.
+#<a name=Montage></a>[Montage](AstroPython/Montage.py)
