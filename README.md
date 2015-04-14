@@ -9,15 +9,15 @@ may find it helpful.
 
 **Dependencies:** Python 3.x, astropy, matplotlib, numpy, scipy
 
+[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
+
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least).
 I found it useful for performing velocity corrections on my spectroscopic
 data. I've modified several modules such that it can be imported and used in
 Python 3.x. See his README file.
 
-[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
-
-## Modules:
+## Modules
 
 AstroPython is split into several components. The principle component is the
 subpackage **AstroPython** itself, which contains all the relavent
