@@ -21,6 +21,15 @@ Python 3.x. See his README file.
 
 * [Fits](#Fits)
 
+    Import data from, handle, and manipulate FITS format files.
+
+* [Correlate](#Correlate)
+* [Telluric](#Telluric)
+* [Velocity](#Velocity)
+* [Montage](#Montage)
+* [Observatory](#Observatory)
+
+
 AstroPython is split into several components. The principle component is the
 subpackage **AstroPython** itself, which contains all the relavent
 functionality. Further, **Data** is a package I'm working on that will provide
@@ -34,7 +43,7 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
-#<a name=Fits></a>Fits
+#<a name=Fits></a>[Fits](AstroPython/Fits.py)
 
 Import data from, handle, and manipulate FITS format files.
 
