@@ -20,9 +20,10 @@ Python 3.x. See his README file.
 ## Modules
 
 * [Fits](#Fits)
-
-    Import data from, handle, and manipulate FITS format files.
-
+    -Import data from, handle, and manipulate FITS format files.
+* [Simbad](#Simbad)
+    - Allows the user to query the SIMBAD astronomical database from
+    inside Python or shell commands/scripts.
 * [Correlate](#Correlate)
 * [Telluric](#Telluric)
 * [Velocity](#Velocity)
