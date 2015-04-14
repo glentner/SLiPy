@@ -19,6 +19,8 @@ Python 3.x. See his README file.
 
 ## Modules
 
+* [Fits](#Fits)
+
 AstroPython is split into several components. The principle component is the
 subpackage **AstroPython** itself, which contains all the relavent
 functionality. Further, **Data** is a package I'm working on that will provide
@@ -32,7 +34,7 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
-##[Fits](AstroPython/Fits.py)
+#<a name=Fits></a>Fits
 
 Import data from, handle, and manipulate FITS format files.
 
