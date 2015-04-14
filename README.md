@@ -151,7 +151,8 @@ class Spectrum:
 	`wavelength` vector (accessed with .data and .wave respectively).
     (+, -, *, /, +=, -=, *=, /=) are overloaded. The LHS spectrum is the
     reference and the RHS spectrum is resampled onto the wavelength space
-    of the LHS spectrum before applying operations pixel-wise.
+    of the LHS spectrum before applying operations pixel-wise. Scalar
+    operations applied to all pixels.
 	"""
 	def __init__(self, argument, **kwargs ):
 		"""
