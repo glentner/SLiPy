@@ -172,8 +172,47 @@ def Position( identifier, **kwargs ):
 
     ra, dec = Position('Sirius')
 	"""
-
 ```
+
+```Python
+def Distance( identifier, **kwargs ):
+	"""
+	Distance( identifier, **kwargs ):
+
+	Handle to the Query class with criteria='%PLX' Return the distance
+    in parsecs to `identifier`.
+
+    Example:
+
+    d = Distance('rigel kent')
+	"""
+```
+
+```Python
+def Sptype(identifier, **kwargs):
+	"""
+	Sptype( identifier, **kwargs ):
+
+	Handle to the Query class with criteria='%SP'. Return the
+    spectral type as resolved by SIMBAD.
+
+    Example:
+
+    sptype = Sptype('HD 87901') # returns 'B8IVn' (HD 87901 is Regulus)
+	"""
+```
+
+```Python
+def IDList(identifier, **kwargs):
+	"""
+	IDList(identifier, **kwargs):
+
+	Handle to the Query class with criteria='%IDLIST'.
+	With `parse` = True, return a list of alternate IDs for
+	the `identifier` provided.
+	"""
+```
+
 ###[Correlate](AstroPython/Correlate.py)
 
 

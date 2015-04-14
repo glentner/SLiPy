@@ -6,14 +6,17 @@ AstroPython
 ===========
 A Computational Astronomy Package for Python
 
-This Python package contains my code for performing computational work in 
+This Python package contains my code for performing computational work in
 astronomy research.
 """
 
 # exposed modules
 from .AstroPython import Fits, Simbad, Correlate, Telluric, Velocity, \
 		Observatory, Montage
-from .Data           import Elodie
-from .Astro.Plot     import SPlot, Iterate
-from .Astro.DataType import Spectrum
-from .Framework      import Display
+
+from .AstroPython.Plot     import SPlot, Iterate
+from .AstroPython.DataType import Spectrum
+
+from .Data import Elodie
+
+from .Framework import Display
