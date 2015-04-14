@@ -34,14 +34,14 @@ to import:
 
 ###[Fits](AstroPython/Fits.py)
 
-  Import data from, handle, and manipulate FITS format files.
+Import data from, handle, and manipulate FITS format files.
 
-    ```Python
-    Find(toplevel = './', pattern = '\*.fits'):
-    """
-    Search for file paths below `toplevel` fitting `pattern`.
-    """
-    ```
+```Python
+Find(toplevel = './', pattern = '\*.fits'):
+"""
+Search for file paths below `toplevel` fitting `pattern`.
+"""
+```
 
 
 ###Simbad
