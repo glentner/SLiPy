@@ -25,7 +25,7 @@ spectroscopy. Modules include **Fits**, **Simbad**, **Plot**,
 **DataType**, **Correlate**, **Telluric**, **Velocity**, **Observatory**.
 
 * [**Framework:**](##Framework/)
-A subpackage containing general framework code that I use in the packeage. 
+A subpackage containing general framework code that I use in the package. 
 Modules include **Arguments**, **Options**, **Command**, and **Display**.
 
 * [**astrolibpy:**](##astro/)
@@ -33,3 +33,6 @@ As stated previously, this package was not developed by me, only modified. I'm
 not going to document it's usage here. Its name is unfortunate for me as it
 is a bit over done with the convention I was already using, but for consistency
 I will keep it as it was from the author.
+
+Documentation on the specific tools available here is forthcoming. In the 
+interim, most are self-documenting.
