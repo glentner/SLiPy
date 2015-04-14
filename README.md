@@ -34,8 +34,6 @@ to import whole:
 
 * **Fits**
 ...Import data from, handle, and manipulate FITS format files.
-..* *Find*
-.. ...Find files
 
 - Simbad
 
