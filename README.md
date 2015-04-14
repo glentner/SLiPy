@@ -33,9 +33,11 @@ The following modules are elevated to the package level and are available
 to import whole:
 
 - **Fits**
+
   Import data from, handle, and manipulate FITS format files.
 
-  * *Find*
+  * Find( *toplevel*='./', *pattern*='\*.fits' )
+
     Find files below toplevel directory that fit a pattern.
 
 - Simbad
