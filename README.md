@@ -46,9 +46,7 @@ The following modules are elevated to the package level and are available
 to import:
 
 #<a name=Fits></a>[Fits](AstroPython/Fits.py)
-
 Import data from, handle, and manipulate FITS format files.
-
 #<a name=Find></a>
 ```Python
 def Find(toplevel = './', pattern = '*.fits'):
@@ -57,7 +55,6 @@ def Find(toplevel = './', pattern = '*.fits'):
     of string values.
     """
 ```
-
 #<a name=RFind></a>
 ```Python
 def RFind(toplevel = './', pattern = '*.fits'):
