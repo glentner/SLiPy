@@ -277,7 +277,7 @@ def Xcorr( spectrumA, spectrumB, **kwargs ):
 	"""
 ```
 
-#<a name=Telluric></a>[Telluric](AstroPython/Telluric.py)
+#<a name=Telluric></a>Telluric
 
 Removal of atmospheric adsorption lines in spectra.
 
