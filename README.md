@@ -36,7 +36,7 @@ to import:
 
   Import data from, handle, and manipulate FITS format files.
 
-  * Find( *toplevel* = './', *pattern* = '\*.fits' )
+  * Find( *toplevel* = "./", *pattern* = "\*.fits" )
 
     Find files below toplevel directory that fit a pattern.
 
