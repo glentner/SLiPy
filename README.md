@@ -97,8 +97,68 @@ def Search( *files, **kwargs ):
 	"""
 ```
 
-###[Simbad](AstroPython/Simbad.py)
+```Python
+def PositionSort( center, radius, *files, **kwargs ):
+    """
+    Return a list of files from `files` that lie in a `radius` (in degrees)
+    from `center`, based on the `ra` (right ascension) and `dec` (declination).
 
+    kwargs = {
+            'ra'       : 'pos1'  , # header element for right ascension
+            'dec'      : 'pos2'  , # header element for declination
+            'obj'      : 'object', # header element for object id
+            'raconvert': True    , # convert decimal hours to decimal degrees
+            'verbose'  : True    , # display messages, progress
+            'toplevel' : ''      , # `toplevel` directory to look for files in
+            'recursive': False   , # search `recursive`ly below `toplevel`
+            'pattern'  : '*.fits', # glob `pattern` for file search
+            'useSimbad': False     # use Simbad instead of header elements
+        }
+    """
+
+```
+
+##[Simbad](AstroPython/Simbad.py)
+
+This module allows the user to query the SIMBAD astronomical database from
+inside Python or shell commands/scripts.
+
+As a shell script:
+
+```
+usage: Simbad.py @Attribute <identifier> [**kwargs]
+
+The 'Attribute' points to a function within this module and indicates
+what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
+a specific function. Currently available attributes are: `Position`,
+`Distance`, `Sptype` and `IDList`.
+
+The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
+"alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
+sure to use quotation to enclose it.
+
+The **kwargs is the conventional reference to Python keyword arguments.
+These should be specific to the 'Attribute' being pointed to.
+```
+
+The following objects, functions are available:
+
+```Python
+class Query:
+	"""
+	Query( identifier, criteria, **kwargs ):
+
+	Class for querying the SIMBAD astronomical database for 'citeria'
+	of 'identifier'. This object is not intended to be used directly; it
+    is an abstraction and is used by the other functions which should be
+    called by the user.
+
+	kwargs = {
+		'parse' : True,  # extract relevant data from SIMBAD return file
+		'dtype' : float, # output datatype
+	}
+	"""
+```
 
 ###[Correlate](AstroPython/Correlate.py)
 
