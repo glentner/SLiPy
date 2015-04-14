@@ -126,7 +126,7 @@ def PositionSort( center, radius, *files, **kwargs ):
 
 ```
 
-#<a name=Simbad></a>[Fits](AstroPython/Simbad.py)
+#<a name=Simbad></a>[Simbad](AstroPython/Simbad.py)
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts.
@@ -149,7 +149,7 @@ The **kwargs is the conventional reference to Python keyword arguments.
 These should be specific to the 'Attribute' being pointed to.
 ```
 
-The following objects, functions are available:
+The following objects/functions are available:
 
 ```Python
 class Query:
@@ -167,7 +167,6 @@ class Query:
 	}
 	"""
 ```
-
 ```Python
 def Position( identifier, **kwargs ):
 	"""
@@ -181,7 +180,6 @@ def Position( identifier, **kwargs ):
     ra, dec = Position('Sirius')
 	"""
 ```
-
 ```Python
 def Distance( identifier, **kwargs ):
 	"""
@@ -195,7 +193,6 @@ def Distance( identifier, **kwargs ):
     d = Distance('rigel kent')
 	"""
 ```
-
 ```Python
 def Sptype(identifier, **kwargs):
 	"""
@@ -209,7 +206,6 @@ def Sptype(identifier, **kwargs):
     sptype = Sptype('HD 87901') # returns 'B8IVn' (HD 87901 is Regulus)
 	"""
 ```
-
 ```Python
 def IDList(identifier, **kwargs):
 	"""
@@ -225,8 +221,18 @@ def IDList(identifier, **kwargs):
     other_names = IDList('proxima centauri')
 ```
 
-###[Correlate](AstroPython/Correlate.py)
+#<a name=Correlate></a>[Correlate](AstroPython/Correlate.py)
 
+Module of correlation functions for astronomical data.
+
+```Python
+def Xcorr( spectrumA, spectrumB, **kwargs ):
+	"""
+	Cross correlate two spectra of equal pixel length. The function returns
+	an integer value representing the best shift within a `lag` based on
+	the computed RMS of each configuration.
+	"""
+```
 
 ###[Telluric](AstroPython/Telluric.py)
 
