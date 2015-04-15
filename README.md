@@ -368,3 +368,44 @@ class OHP(Observatory):
 		self.altitude  = 650        # meters
 ```
 #<a name=Montage></a>Montage
+
+Wrapper to the *montage* mosaic software. See
+[online](http://montage.ipac.caltech.edu/). The user should have Montage`s
+executables available on their path. This module automates the process of
+constructing large mosaics. It is largely modeled after the examples given on
+the website. More documentation will be provided in the future ...
+
+```Python
+def Mosaic(resolution, *folders, **kwargs):
+	"""
+	Mosaic(resolution, *folders, **kwargs):
+
+	Conduct standard build procedures for all `folders`. `resolution` is the
+	number of pixels per degree for the output image. Note: `folders` should
+	be absolute paths. See the M101 example online. All `folder`s should
+    have subfolders "projected", "corrected", "final", and "differences"
+    available as well as a "raw" directory containing the images to be
+    mosaic-ed.
+
+	kwargs = {
+			verbose : True, # display messages, progress
+			bkmodel : True  # model and correct for background effects
+		}
+	"""
+```
+```Python
+def SolveGrid( sides, grid ):
+	"""
+	SolveGrid( sides, grid ):
+
+	Helper function for the Field and SubField classes. Both `sides` and `grid`
+	need to be array-like and of length two. `sides` is the side length of the
+	field in decimal degrees in right ascension and declination respectively.
+	`grid` specifies the subdivision along these axis (e.g., (2,2) says 2x2).
+
+	The user should mindful of their choices. If the side lengths cannot be
+	subdivided into well-behaved (rational) segments, higher decimal places
+	will be lossed in the SubField.ArchiveList() task resulting in small
+	gaps in the mosaic.
+	"""
+```
