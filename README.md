@@ -31,9 +31,14 @@ Python 3.x. See his README file.
 
 * [**Velocity**](#Velocity) [HelioCorrect, ]
 
-* [**Montage**](#Montage)
-
 * [**Observatory**](#Observatory) [OHP, ]
+
+* [**Plot**](#Plot) [SPlot, Iterate, ]
+
+* [**Elodie**](#Elodie) [Archive, Download, ]
+
+* [**Montage**](#Montage) [Mosaic, SubField, Field, SolveGrid, ]
+
 
 
 AstroPython is split into several components. The principle component is the
