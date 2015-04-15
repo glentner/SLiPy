@@ -257,11 +257,11 @@ def IDList(identifier, **kwargs):
 	Handle to the Query class with criteria='%IDLIST'.
 	With `parse` = True, return a list of alternate IDs for
 	the `identifier` provided.
-	"""
 
     Example:
 
     other_names = IDList('proxima centauri')
+    """
 ```
 
 #<a name=Correlate></a>Correlate
