@@ -403,6 +403,41 @@ class SPlot:
 ```
 #<a name=Elodie></a>Elodie
 
+Methods for data retrieval from the Elodie Archive.
+
+```Python
+class Archive:
+    """
+    Import and parse ascii catalog of Elodie archive files. The complete
+    archive is stored in the member `data`. It's organized in a dictionary
+    by unique target names. The reduced archive of contains identified `HD`,
+    `BD`, `GC`, and `GJ` objects, choosing the file pertaining to the spectra
+    with the highest signal-to-noise ratio available.
+    """
+```
+```Python
+def Script(filename, pipeline=''):
+	"""
+	Construct url script for Elodie archive given `filename` and optionally
+	`pipeline` instructions (e.g., `&z=wrs|fca[1,nor]`).
+	"""
+```
+```Python
+def Download( *files, **kwargs ):
+    """
+    Download `files` from Elodie archive via url scripts. The spectra can be
+    further reduced via Elodie`s pipeline with the following options.
+
+    kwargs = {
+            'verbose'  : True           , # display messages, progress
+            'resample' : (min, max, res), # resample spectra (no default)
+            'normalize': True           , # continuum normalization
+            'outpath'  : './'           , # directory for downloaded files
+            'names'    : []               # alternative output names for `files`
+        }
+    """
+```
+
 #<a name=Montage></a>Montage
 
 Wrapper to the *montage* mosaic software. See
