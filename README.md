@@ -49,7 +49,7 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
-#<a name=Fits></a>[Fits](AstroPython/Fits.py)
+#<a name=Fits></a>Fits
 
 Import data from, handle, and manipulate FITS format files.
 
@@ -129,7 +129,7 @@ def PositionSort( center, radius, *files, **kwargs ):
     """
 
 ```
-#<a name=DataType></a>[DataType](AstroPython/DataType.py)
+#<a name=DataType></a>DataType
 
 Objects for representing astronomical data.
 
@@ -169,7 +169,7 @@ class Spectrum:
     """
 ```
 
-#<a name=Simbad></a>[Simbad](AstroPython/Simbad.py)
+#<a name=Simbad></a>Simbad
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts.
@@ -264,7 +264,7 @@ def IDList(identifier, **kwargs):
     other_names = IDList('proxima centauri')
 ```
 
-#<a name=Correlate></a>[Correlate](AstroPython/Correlate.py)
+#<a name=Correlate></a>Correlate
 
 Module of correlation functions for astronomical data.
 
@@ -306,8 +306,65 @@ def Correct(spectrum, *calibration, **kwargs):
 **Telluric.Correct()** algorithm to a spectrum. In this case, six spectra of
 *Regulus* from the Elodie archive were used as calibration spectra.
 
-#<a name=Velocity></a>[Velocity](AstroPython/Velocity.py)
+#<a name=Velocity></a>Velocity
 
-#<a name=Observatory></a>[Observatory](AstroPython/Observatory.py)
+Radial velocity corrections for 1D spectra.
 
-#<a name=Montage></a>[Montage](AstroPython/Montage.py)
+```Python
+def HelioCorrect( obs, *spectra, **kwargs ):
+	"""
+	Perform heliocentric velocity corrects on `spectra` based on
+	`obs`ervatory information (longitude, latitude, altitude) and the
+	member attributes, ra (right ascension), dec (declination), and jd
+	(julian date) from the `spectra`.
+
+    The `ra` and `dec` must be attached to each spectrum. `obs` should
+    be of type Observatory.
+	"""
+```
+```Python
+def IrafInput( *files, **kwargs):
+	"""
+	Build an input file for IRAF's rvcorrect task.
+
+	`files` should be a list of FITS file names to build the output table for.
+	The user can optionally specify a `toplevel` directory to search for files
+    under. If `outfile` is given, write results to the file.
+
+	kwargs = {
+		'toplevel' : ''      , # search `toplevel` directory for files
+		'pattern'  : '*.fits', # files under `toplevel` fitting `pattern`
+		'recursive': False   , # search recusively under `toplevel`
+		'outfile'  : ''        # write lines to file named `outfile`
+	}
+	"""
+```
+```Python
+def HeaderInfo( fpath ):
+	"""
+	Helper function of IrafInput().
+
+	Return a formatted string containing the year, month, and day of
+	observation from the FITS file with name `fpath`, as well as the
+	universal time of observation and the right ascension and declination
+	of the target.
+	"""
+```
+#<a name=Observatory></a>Observatory
+
+Define observatory parameter similar to the IRAF task. All observatories
+should follow the following pattern. The user can add as many as they like
+to this module. I welcome suggestions.
+
+```Python
+class OHP(Observatory):
+	"""
+	The Observatoire de Haute-Provence, France.
+	"""
+	def __init__(self):
+		self.name      = 'Observatoire de Haute-Provence'
+		self.latitude  = 43.9308334 # degrees N
+		self.longitude = 356.28667  # degrees W
+		self.altitude  = 650        # meters
+```
+#<a name=Montage></a>Montage
