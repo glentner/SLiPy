@@ -39,6 +39,8 @@ Python 3.x. See his README file.
 
 * [**Montage**](#Montage) [Mosaic, SubField, Field, SolveGrid, ]
 
+* [**Display**](#Display) [Monitor, ]
+
 
 
 AstroPython is split into several components. The principle component is the
@@ -372,6 +374,35 @@ class OHP(Observatory):
 		self.longitude = 356.28667  # degrees W
 		self.altitude  = 650        # meters
 ```
+
+#<a name=Plot></a>Plot
+
+Convenience tools for plotting spectra. **SPlot** takes a Spectrum object
+and remains like a handle to the plot for that object. All of the typical
+member commands to matplotlib.pyplot exist, but once called are *remembered*.
+Additionally, spectra can be `overlay`ed. **Iterate** is a function that takes
+any number of SPlot figures and iterates through them interactively and lets
+the user mark which ones to `keep`. The return is a list of either the names
+of the figures or the actually objects themselves.
+
+```Python
+class SPlot:
+	"""
+	Spectrum Plot - Plot the data in `spectrum`.
+	"""
+	def __init__(self, spectrum, **kwargs):
+		"""
+		Assign `options` in `kwargs` and initialize the plot.
+
+        kwargs = {
+			'marker': 'b-'          , # marker for plot
+			'label' : 'unspecified' , # label for data
+			'usetex': False           # pdflatex setting
+		}
+        """
+```
+#<a name=Elodie></a>Elodie
+
 #<a name=Montage></a>Montage
 
 Wrapper to the *montage* mosaic software. See
@@ -414,3 +445,5 @@ def SolveGrid( sides, grid ):
 	gaps in the mosaic.
 	"""
 ```
+
+#<a name=Display></a>Display
