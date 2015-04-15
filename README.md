@@ -401,6 +401,14 @@ class SPlot:
 		}
         """
 ```
+```Python
+def Iterate( *plots, **kwargs ):
+	"""
+	Iterate thru `plots` to inspect data, the user marks `plots` of
+	interest. The function returns a list of `names` marked.
+	"""
+```
+
 #<a name=Elodie></a>Elodie
 
 Methods for data retrieval from the Elodie Archive.
@@ -482,3 +490,22 @@ def SolveGrid( sides, grid ):
 ```
 
 #<a name=Display></a>Display
+
+
+```Python
+class Monitor:
+	"""
+	Class for displaying a progress bar during iterative tasks.
+	"""
+	def __init__(self, **kwargs ):
+        """
+        kwargs = {
+			'width'    : 45    , # number of characters wide
+			'numbers'  : True  , # display numberical percent
+			'template' : '[=>]', # template for progress bars
+			'freq'     : 0.25  , # refresh rate
+			'ETC'      : False , # display estimated time of completion
+			'inline'   : True    # vanish after completion
+		}
+        """
+```
