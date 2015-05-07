@@ -174,12 +174,9 @@ Objects for representing astronomical data. Currently, this includes the
 <a name=WaveVectorLoc></a>
 - **WaveVector** ( *rpix*, *rval*, *delt*, *npix* ):
 
-    Construct numpy array of wavelength values based on:
-
-    *rpix* : reference pixel index  
-    *rval* : wavelength at reference pixel  
-    *delt* : resolutions (delta lambda)  
-    *npix* : length of desired array  
+    Construct numpy array of wavelength values where *rpix* is the reference
+    pixel index, *rval* is the wavelength at reference pixel, *delt* is the
+    resolutions (delta lambda), and *npix* is length of desired array.
 
 ```Python
 class Spectrum:
