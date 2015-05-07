@@ -99,42 +99,43 @@ of the data such as distance, spectral type, etc.
 - **Search** ( \**files*, \*\**kwargs*):
 
     Extract object names from Fits *files* and use Simbad module
-    to resolve the `attribute` (a required keyword argument)
+    to resolve the *attribute* (a required keyword argument)
     from the SIMBAD astronomical database. Currently available attributes
     are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
     results (type depends on the values).
 
-    | Options   | Defaults  | Descriptions                         |
-    |-----------|-----------|--------------------------------------|
-    | verbose   | True      | display messages, progress           |
-    | toplevel  | None      | search under *toplevel* directory    |
-    | pattern   | '\*.fits' | for files under *toplevel*           |
-    | recursive | False     | search recusively under *toplevel*   |
-    | attribute | None      | attribute to search for (no default) |
+    | Options     | Defaults  | Descriptions                         |
+    |-------------|-----------|--------------------------------------|
+    | *verbose*   | True      | display messages, progress           |
+    | *toplevel*  | None      | search under *toplevel* directory    |
+    | *pattern*   | '\*.fits' | for files under *toplevel*           |
+    | *recursive* | False     | search recusively under *toplevel*   |
+    | *attribute* | None      | attribute to search for (no default) |
+
+    ---
+
+<a name=PositionSortLoc></a>
+- **PositionSort** ( *center*, *radius*, \**files*, \*\**kwargs* ):
+
+    Return a list of files from *files* that lie in a *radius* (in
+    decimal degrees) from *center*, based on the *ra* (right ascension) and
+    *dec* (declination).
+
+    | Options   | Defaults | Descriptions                             |
+    |-----------|----------|------------------------------------------|
+    *ra*        | 'pos1'   | header element for right ascension       |
+    *dec*       | 'pos2'   | header element for declination           |
+    *obj*       | 'object' | header element for object id             |
+    *raconvert* | True     | convert decimal hours to decimal degrees |
+    *verbose*   | True     | display messages, progress               |
+    *toplevel*  | None     | *toplevel* directory to look for files   |
+    *recursive* | False    | search *toplevel*ly below *toplevel*     |
+    *pattern*   |'\*.fits' | glob *pattern* for file search           |
+    *useSimbad* | False    | use *Simbad* instead of header elements  |
 
     ---
 
 
-```Python
-def PositionSort( center, radius, *files, **kwargs ):
-    """
-    Return a list of files from `files` that lie in a `radius` (in degrees)
-    from `center`, based on the `ra` (right ascension) and `dec` (declination).
-
-    kwargs = {
-            'ra'       : 'pos1'  , # header element for right ascension
-            'dec'      : 'pos2'  , # header element for declination
-            'obj'      : 'object', # header element for object id
-            'raconvert': True    , # convert decimal hours to decimal degrees
-            'verbose'  : True    , # display messages, progress
-            'toplevel' : ''      , # `toplevel` directory to look for files in
-            'recursive': False   , # search `recursive`ly below `toplevel`
-            'pattern'  : '*.fits', # glob `pattern` for file search
-            'useSimbad': False     # use Simbad instead of header elements
-        }
-    """
-
-```
 #<a name=DataTypeLoc></a>DataType
 
 Objects for representing astronomical data.
