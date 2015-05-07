@@ -185,8 +185,6 @@ of the data such as distance, spectral type, etc.</p>
 
 <p>Search for file paths below <em>toplevel</em> fitting <em>pattern</em>. Returns a list
 of string values.</p>
-
-<hr>
 </li>
 </ul>
 
@@ -198,8 +196,6 @@ of string values.</p>
 
 <p>Recursively search for file paths below <em>toplevel</em> fitting <em>pattern</em>.
 Returns a list of string values.</p>
-
-<hr>
 </li>
 </ul>
 
@@ -275,8 +271,6 @@ Returns a list of string values.</p>
 </tr>
 </tbody>
 </table>
-
-<hr>
 </li>
 </ul>
 
@@ -343,8 +337,6 @@ results (type depends on the values).</p>
 </tr>
 </tbody>
 </table>
-
-<hr>
 </li>
 </ul>
 
@@ -416,26 +408,28 @@ decimal degrees) from <em>center</em>, based on the <em>ra</em> (right ascension
 </tr>
 </tbody>
 </table>
-
-<hr>
 </li>
 </ul>
 
 <h1>
 <a id="datatype" class="anchor" href="#datatype" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="DataTypeLoc"></a>DataType</h1>
+<a name="DataTypeLoc"></a><a href="SLiPy/DataType.py">DataType</a>
+</h1>
 
-<p>Objects for representing astronomical data.</p>
+<p>Objects for representing astronomical data. Currently, this includes the
+<em>Spectrum</em> class and it's helper function <em>WaveVector</em></p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">WaveVector</span>( <span class="pl-smi">rpix</span>, <span class="pl-smi">rval</span>, <span class="pl-smi">delt</span>, <span class="pl-smi">npix</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Construct numpy array of wavelength values based on:</span>
-<span class="pl-s"></span>
-<span class="pl-s">        `rpix` : reference pixel index</span>
-<span class="pl-s">        `rval` : wavelength at reference pixel</span>
-<span class="pl-s">        `delt` : resolutions (delta lambda)</span>
-<span class="pl-s">        `npix` : length of desired array</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p><a name="WaveVectorLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>WaveVector</strong> ( <em>rpix</em>, <em>rval</em>, <em>delt</em>, <em>npix</em> ):</p>
+
+<p>Construct numpy array of wavelength values where <em>rpix</em> is the reference
+pixel index, <em>rval</em> is the wavelength at reference pixel, <em>delt</em> is the
+resolutions (delta lambda), and <em>npix</em> is the length of desired array.</p>
+</li>
+</ul>
 
 <div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Spectrum</span>:
     <span class="pl-s"><span class="pl-pds">"""</span></span>
