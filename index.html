@@ -1,45 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
     <title>Slipy by gLENTNER</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/gLENTNER/SLiPy">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
 
-    <div class="wrapper">
+    <header>
+      <div class="container">
+        <h1>Slipy</h1>
+        <h2>A Spectroscopy and astrophysical Library for Python 3</h2>
 
-      <section>
-        <div id="title">
-          <h1>Slipy</h1>
-          <p>A Spectroscopy and astrophysical Library for Python 3</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/gLENTNER">gLENTNER</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
+        <section id="downloads">
+          <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/gLENTNER/SLiPy" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
 
+    <div class="container">
+      <section id="main_content">
         <h1>
-<a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a>SLiPy</h1>
+<a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
+</h1>
 
 <h4>
 <a id="a-spectroscopy-and-astrophysical-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysical-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysical Library for Python 3</h4>
@@ -49,9 +40,15 @@ astronomy, particularly spectroscopy. It contains both a <em>Spectrum</em> class
 for handling spectra as objects (with +, -, *, /, etc... operations defined)
 and a growing suite of analysis tools.</p>
 
-<p><strong>Dependencies:</strong> Python 3.x, astropy, matplotlib, numpy, scipy</p>
+<p><strong>Dependencies:</strong>
+Python 3.x,
+<a href="http://www.astropy.org">astropy</a>,
+<a href="http://matplotlib.org">matplotlib</a>,
+<a href="http://www.numpy.org">numpy</a>,
+<a href="http://www.scipy.org">scipy</a></p>
 
-<p><a href="http://www.astropy.org/"><img src="http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat" alt="astropy"></a></p>
+<p><a href="http://www.astropy.org/"><img src="http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat" alt="astropy"></a>
+<a href="http://www.gnu.org/copyleft/gpl.html"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="GitHub license"></a></p>
 
 <p>Quick note: the subpackage <strong>astrolibpy</strong> was not developed
 by me. It was coded by Sergey Koposov (<a href="https://github.com/segasai" class="user-mention">@segasai</a>) at Cambridge (then at least).
@@ -135,6 +132,41 @@ to import:</p>
 </tr>
 </tbody>
 </table>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>To install SLiPy, there is no setup procedure. Simply download the package,
+either by clicking on the download link for a <em>tar</em> or <em>zip</em> archive or by
+cloning it (<code>git clone http://github.com/glentner/SLiPy</code>). Extract it's
+contents to wherever you like in a directory (ostensibly names <em>slipy</em>, but
+actually you can call this library whatever you want as well because all
+the imports are <em>relative</em>). Then add the parent directory to your <code>PYTHONPATH</code>
+if it isn't already. For example:</p>
+
+<div class="highlight highlight-sh"><pre><span class="pl-c1">cd</span>
+git clone http://github.com/glentner/SLiPy
+<span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>export PYTHONPATH=<span class="pl-smi">$PYTHONPATH</span>:/~<span class="pl-pds">"</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.bashrc</pre></div>
+
+<p>And your ready to go!</p>
+
+<h2>
+<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h2>
+
+<p>If you use SLiPy or have your own code related to spectroscopy or computing
+for astronomy and think it would be a useful addition (or you find a
+bug/mistake) I'm more than open to suggested contributions/additions.</p>
+
+<h2>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p>Geoffrey Lentner, B.S.<br>
+Graduate Research Assistant<br>
+Department of Physics &amp; Astronomy<br>
+University of Louisville</p>
+
+<p>W: <a href="http://glentner.github.io">glentner.github.io</a>
+E: <a href="mailto:grlent01@louisville.edu">grlent01@louisville.edu</a></p>
 
 <h1>
 <a id="fits" class="anchor" href="#fits" aria-hidden="true"><span class="octicon octicon-link"></span></a>
@@ -751,9 +783,8 @@ the website. More documentation will be provided in the future ...</p>
 <span class="pl-s">        }</span>
 <span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
       </section>
-
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
