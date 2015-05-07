@@ -48,8 +48,8 @@ to import:
 |[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), |
 |[**Observatory**](#ObservatoryLoc)|[OHP](#OHPLoc), |
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
-|[Montage](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
-|[Elodie](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
+|[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
+|[**Elodie**](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
 ##Installation
 
