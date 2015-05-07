@@ -22,6 +22,10 @@ Python 3.x. See his README file.
 The following modules are elevated to the package level and are available
 to import:
 
+    | Module | Functions/Objects |
+    |--------|-------------------|
+    |[**Fits**](#FitsLoc)|[Find](#FindLoc), RFind, GetData, Header, Search, PositionSort, |
+
 * [**Fits**](#FitsLoc) [Find, RFind, GetData, Header, Search, PositionSort, ]
 
 * [**DataType**](#DataTypeLoc) [WaveVector, Spectrum, ]
@@ -60,10 +64,13 @@ Manipulate FITS files. Import data into *Spectrum* objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
 of the data such as distance, spectral type, etc.
 
+<a name=FitsLoc></a>
 - **Find** (*toplevel* = './', *pattern* = '\*.fits'):
 
     Search for file paths below *toplevel* fitting *pattern*. Returns a list
     of string values.
+
+    ---
 
 - **RFind** (*toplevel* = './', *pattern* = '\*.fits'):
 
