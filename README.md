@@ -171,7 +171,7 @@ of the data such as distance, spectral type, etc.
 Objects for representing astronomical data. Currently, this includes the
 *Spectrum* class and it's helper function *WaveVector*
 
-#<a name=WaveVectorLoc></a>
+<a name=WaveVectorLoc></a>
 - **WaveVector** ( *rpix*, *rval*, *delt*, *npix* ):
 
     Construct numpy array of wavelength values based on:
