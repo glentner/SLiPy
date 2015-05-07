@@ -24,7 +24,7 @@ to import:
 
 | Module | Functions/Objects |
 |--------|-------------------|
-|[**Fits**](#FitsLoc)|[Find](#FindLoc), RFind, GetData, Header, Search, PositionSort, |
+|[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 
 * [**Fits**](#FitsLoc) [Find, RFind, GetData, Header, Search, PositionSort, ]
 
