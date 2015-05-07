@@ -60,21 +60,19 @@ Manipulate FITS files. Import data into *Spectrum* objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
 of the data such as distance, spectral type, etc.
 
----
-
 - **Find** (*toplevel* = './', *pattern* = '\*.fits'):
 
     Search for file paths below *toplevel* fitting *pattern*. Returns a list
     of string values.
 
----
+    ---
 
 - **RFind** (*toplevel* = './', *pattern* = '\*.fits'):
 
     Recursively search for file paths below *toplevel* fitting *pattern*.
     Returns a list of string values.
 
----
+    ---
 
 - **GetData** ( \**files*, \*\**kwargs*):
 
@@ -93,7 +91,7 @@ of the data such as distance, spectral type, etc.
     |*xunits*    | 'Angstrom'      | wavelength units (astropy.units)         |
     |*yunits*    | 'ergs cm-2 s-1' | units of the data                        |
 
----
+    ---
 
 ```Python
 def Header( filename, keyword, **kwargs ):
