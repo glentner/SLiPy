@@ -1,11 +1,11 @@
-# AstroPython
+# SLiPy
 
-#### A Computational Astronomy Package for Python 3
+#### A Spectroscopy and astrophysical Library for Python 3
 
-This is a Python package containing modules I've developed to speed
-up my work flow. It mostly just contains functions for doing spectroscopy.
-It will continue to be developed. I'm sharing it in the hope that others
-may find it helpful.
+This Python package is an expanding code base for doing computational
+astronomy, particularly spectroscopy. It contains both a *Spectrum* class
+for handling spectra as objects (with +, -, \*, /, etc... operations defined)
+and a growing suite of analysis tools.
 
 **Dependencies:** Python 3.x, astropy, matplotlib, numpy, scipy
 

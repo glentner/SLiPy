@@ -1,13 +1,14 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# AstroPython/Astro/DataType.py 
+# AstroPython/Astro/DataType.py
 """
 Class object representations for astronomical data.
 """
-import numpy as np 
+import numpy as np
 from scipy.interpolate import interp1d
 from copy import deepcopy
 from astropy.io import fits as pyfits
+from astropy import units as u
 from ..Framework.Options import Options, OptionsError
 
 class DataError(Exception):
@@ -25,7 +26,7 @@ def WaveVector( rpix, rval, delt, npix ):
 		`rpix` : reference pixel index
 		`rval` : wavelength at reference pixel
 		`delt` : resolutions (delta lambda)
-		`npix` : length of desired array 
+		`npix` : length of desired array
 	"""
 	if rpix < 0:
 		raise FitsError('`rpix` must be a positive integer '
@@ -47,10 +48,10 @@ def WaveVector( rpix, rval, delt, npix ):
 
 class Spectrum:
 	"""
-	Spectrum objects consist of a `data` vector, optionally match a  
+	Spectrum objects consist of a `data` vector, optionally match a
 	`wavelength` vector (accessed with .data and .wave respectively).
 	"""
-	def __init__(self, argument, **kwargs ):
+	def __init__(self, argument, wavelengths=None, **kwargs ):
 		"""
 		Hold spectrum `data` from file name `argument`. Alternatively,
 		construct spectra with a one-dimensional numpy.ndarray as `argument`.
@@ -60,16 +61,20 @@ class Spectrum:
 
 			self.options = Options( kwargs,
 				{
-					'wavecal': True     , # fit wavelength vector to data
-					'crpix1' : 'crpix1' , # reference pixel header keyword 
-					'crval1' : 'crval1' , # value at reference pixel 
-					'cdelt1' : 'cdelt1' , # resolution (delta lambda)
+					'wavecal': True       , # fit wavelength vector to data
+					'crpix1' : 'crpix1'   , # reference pixel header keyword
+					'crval1' : 'crval1'   , # value at reference pixel
+					'cdelt1' : 'cdelt1'   , # resolution (delta lambda)
+					'xunit'  : 'Angstrom' , # units of wavelength from header
+					'yunit'  : 'erg cm-2 s-1'  # units of data
 				})
 
 			self.wavecal = self.options('wavecal')
 			self.crpix1  = self.options('crpix1')
 			self.crval1  = self.options('crval1')
 			self.cdelt1  = self.options('cdelt1')
+			self.xunit   = self.options('xunit')
+			self.yunit   = self.options('yunit')
 
 			# observables (needed for corrections)
 			self.ra  = None # right ascension
@@ -91,20 +96,30 @@ class Spectrum:
 
 				else:
 					# wave vector will just be indices of self.data
-					self.wave = np.arange(len(self.data))
+					self.wave = np.arange(len(self.data)) * u.dimensionless_unscaled
 
-			elif ( type(argument) is np.ndarray and
-				len(np.shape(argument)) == 1 ):
+
+			elif (len(np.shape(argument)) == 1  and
+				len(np.shape(wavelengths)) == 1 and
+				len(argument) == len(wavelengths)):
 				# we are initializing from a numpy array
-				self.data = argument
+				self.data = argument.copy()
 				# wavecal ignored on numpy.array construction
-				self.wave = np.arange(len(argument))
-			
+				self.wave = wavelengths.copy()
+
 			else:
-				# we got the wrong argument type
-				raise DataError('Spectrum() object expected either a '
-				'1D numpy.ndarray or file name as a constructor argument.')
-	
+				# we got the wrong argument types
+				raise DataError('Spectrum() object expected either a set of '
+				'1D numpy.ndarray`s arrays of equal length or file name as a '
+				'constructor argument.')
+
+			# add units if necessary
+			if not hasattr(self.data, 'unit'):
+				self.data *= u.Unit(self.yunit)
+
+			if not hasattr(self.wave, 'unit'):
+				self.wave *= u.Unit(self.xunit)
+
 		except OptionsError as err:
 			print(' --> OptionsError:', err)
 			raise DataError('Failed to construct Spectrum() object.')
@@ -115,7 +130,7 @@ class Spectrum:
 
 	def resample(self, first, last, npix, **kwargs):
 		"""
-		Resample onto new wavelength pixel space. Built with numpy.linspace 
+		Resample onto new wavelength pixel space. Built with numpy.linspace
 		using `first`, `last`, and `npix` as arguments.
 
 		kwargs = {
@@ -126,7 +141,7 @@ class Spectrum:
 			# default function parameters
 			options = Options( kwargs,
 				{
-					'kind':'linear' # same argument from scipy.interpolate.interp1d
+					'kind':'linear' # from scipy.interpolate.interp1d
 				})
 			# assign function parameters
 			kind = options('kind')
@@ -142,9 +157,9 @@ class Spectrum:
 			# build interplant
 			f = interp1d(self.wave, self.data, kind=kind)
 			# build new wave vector
-			self.wave = np.linspace(first, last, npix)
-			# resample data 
-			self.data = f(self.wave)
+			self.wave = np.linspace(first, last, npix) * self.wave.unit
+			# resample data
+			self.data = f(self.wave) * self.data.unit
 
 		except OptionsError as err:
 			print(' --> OptionsError:', err)
@@ -163,7 +178,7 @@ class Spectrum:
 		"""
 		operand = other.copy()
 		operand.resample(self.wave[0], self.wave[-1], len(self.wave))
-		return self.copy(), operand 
+		return self.copy(), operand
 
 	def __add__(self, other):
 		"""
@@ -172,13 +187,13 @@ class Spectrum:
 		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			result.data += operand.data 
+			result.data += operand.data
 			return result
 
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
-		result.data += other 
-		return result 
+		result.data += other
+		return result
 
 	def __sub__(self, other):
 		"""
@@ -187,13 +202,13 @@ class Spectrum:
 		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			result.data -= operand.data 
+			result.data -= operand.data
 			return result
 
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
-		result.data -= other 
-		return result 
+		result.data -= other
+		return result
 
 	def __mul__(self, other):
 		"""
@@ -202,28 +217,28 @@ class Spectrum:
 		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			result.data *= operand.data 
+			result.data *= operand.data
 			return result
 
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
-		result.data *= other 
-		return result 
+		result.data *= other
+		return result
 
-	def __div__(self, other):
+	def __truediv__(self, other):
 		"""
 		Division
 		"""
 		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			result.data /= operand.data 
+			result.data /= operand.data
 			return result
 
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
-		result.data /= other 
-		return result 
+		result.data /= other
+		return result
 
 	def __iadd__(self, other):
 		"""
@@ -233,57 +248,57 @@ class Spectrum:
 			# resample operand before operation
 			operand = other.copy()
 			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
-			self.data += operand.data 
+			self.data += operand.data
 
 		# otherwise, assume we have a scalar (be careful)
-		else: self.data += other 
+		else: self.data += other
 
 	def __isub__(self, other):
 		"""
-		In-place subtraction 
+		In-place subtraction
 		"""
 		if type(other) is Spectrum:
 			# resample operand before operation
 			operand = other.copy()
 			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
-			self.data -= operand.data 
+			self.data -= operand.data
 
 		# otherwise, assume we have a scalar (be careful)
-		else: self.data -= other 
+		else: self.data -= other
 
 	def __imul__(self, other):
 		"""
-		In-place multiplication 
+		In-place multiplication
 		"""
 		if type(other) is Spectrum:
 			# resample operand before operation
 			operand = other.copy()
 			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
-			self.data *= operand.data 
+			self.data *= operand.data
 
 		# otherwise, assume we have a scalar (be careful)
-		else: self.data *= other 
+		else: self.data *= other
 
 	def __itruediv__(self, other):
 		"""
-		In-place division 
+		In-place division
 		"""
 		if type(other) is Spectrum:
 			# resample operand before operation
 			operand = other.copy()
 			operand.resample(self.wave[0], self.wave[-1], len(self.wave))
-			self.data /= operand.data 
+			self.data /= operand.data
 
 		# otherwise, assume we have a scalar (be careful)
-		else: self.data /= other 
+		else: self.data /= other
 
 	def __radd__(self, other):
 		"""
 		Right-hand Addition
 		"""
 		result = self.copy()
-		result.data += other 
-		return result 
+		result.data += other
+		return result
 
 	def __rsub__(self, other):
 		"""
@@ -291,8 +306,8 @@ class Spectrum:
 		"""
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
-		result.data = other - result.data 
-		return result 
+		result.data = other - result.data
+		return result
 
 	def __rmul__(self, other):
 		"""
@@ -300,8 +315,8 @@ class Spectrum:
 		"""
 		# otherwise, assume we have a scalar (be careful)
 		result = self.copy()
-		result.data *= other 
-		return result 
+		result.data *= other
+		return result
 
 	def __rdiv__(self, other):
 		"""
@@ -309,6 +324,4 @@ class Spectrum:
 		"""
 		result = self.copy()
 		result.data = other / result.data
-		return result 
-
-
+		return result
