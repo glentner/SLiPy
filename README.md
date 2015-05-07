@@ -206,7 +206,7 @@ Objects for representing astronomical data. Currently, this includes the
 
     Member functions:
 
-    *.resample* ( *first*, *last*, *npix*, *kind* = 'linear'):
+    - *.resample* ( *first*, *last*, *npix*, *kind* = 'linear'):
 
         Resample onto new wavelength pixel space. Built with numpy.linspace
         using *first*, *last*, and *npix* as arguments. Here, *kind* is
