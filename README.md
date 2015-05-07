@@ -22,7 +22,7 @@ Python 3.x. See his README file.
 The following modules are elevated to the package level and are available
 to import:
 
-* [**Fits**](#Fits) [Find, RFind, GetData, ]
+* [**Fits**](#Fits) [Find, RFind, GetData, Header, Search, PositionSort, ]
 
 * [**DataType**](#DataType) [WaveVector, Spectrum, ]
 
