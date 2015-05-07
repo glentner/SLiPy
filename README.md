@@ -70,7 +70,7 @@ of the data such as distance, spectral type, etc.
     Recursively search for file paths below *toplevel* fitting *pattern*.
     Returns a list of string values.
 
-- **GetData** ( \**files*, * \*\*kwargs*):
+- **GetData** ( \**files*, *\*\*kwargs*):
 ```Python
 def GetData( *files, **kwargs ):
 	"""
