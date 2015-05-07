@@ -47,7 +47,7 @@ to import:
 |[Montage](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
 |[Elodie](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
-#Installation
+##Installation
 
 To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a *tar* or *zip* archive or by
@@ -64,6 +64,22 @@ echo "export PYTHONPATH=$PYTHONPATH:/~" >> ~/.bashrc
 ```
 
 And your ready to go!
+
+##Contribute
+
+If you use SLiPy or have your own code related to spectroscopy or computing
+for astronomy and think it would be a useful addition (or you find a
+bug/mistake) I'm more than open to suggested contributions/additions.
+
+##Author
+
+Geoffrey Lentner, B.S.  
+Graduate Research Assistant  
+Department of Physics & Astronomy  
+University of Louisville
+
+W: [glentner.github.io](http://glentner.github.io)
+E: [grlent01@louisville.edu](mailto:grlent01@louisville.edu)
 
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
