@@ -85,6 +85,8 @@ University of Louisville
 W: [glentner.github.io](http://glentner.github.io)
 E: [grlent01@louisville.edu](mailto:grlent01@louisville.edu)
 
+---
+
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
 Manipulate FITS files. Import data into *Spectrum* objects. Filter results
@@ -126,8 +128,6 @@ of the data such as distance, spectral type, etc.
 
     Retrieve *keyword* from FITS header in file *filename*.
     Return type depends on what is returned.
-
-    ---
 
 <a name=SearchLoc></a>
 - **Search** ( \**files*, \*\**kwargs*):
