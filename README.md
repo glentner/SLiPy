@@ -24,25 +24,25 @@ to import:
 
 * [**Fits**](#FitsLoc) [Find, RFind, GetData, Header, Search, PositionSort, ]
 
-* [**DataType**](#DataType) [WaveVector, Spectrum, ]
+* [**DataType**](#DataTypeLoc) [WaveVector, Spectrum, ]
 
-* [**Simbad**](#Simbad) [Query, Position, Distance, Sptype, IDList, ]
+* [**Simbad**](#SimbadLoc) [Query, Position, Distance, Sptype, IDList, ]
 
-* [**Correlate**](#Correlate) [XCorr, ]
+* [**Correlate**](#CorrelateLoc) [XCorr, ]
 
-* [**Telluric**](#Telluric) [Correct, ]
+* [**Telluric**](#TelluricLoc) [Correct, ]
 
-* [**Velocity**](#Velocity) [HelioCorrect, ]
+* [**Velocity**](#VelocityLoc) [HelioCorrect, ]
 
-* [**Observatory**](#Observatory) [OHP, ]
+* [**Observatory**](#ObservatoryLoc) [OHP, ]
 
-* [**Plot**](#Plot) [SPlot, Iterate, ]
+* [**Plot**](#PlotLoc) [SPlot, Iterate, ]
 
-* [**Elodie**](#Elodie) [Archive, Download, ]
+* [**Elodie**](#ElodieLoc) [Archive, Download, ]
 
-* [**Montage**](#Montage) [Mosaic, SubField, Field, SolveGrid, ]
+* [**Montage**](#MontageLoc) [Mosaic, SubField, Field, SolveGrid, ]
 
-* [**Display**](#Display) [Monitor, ]
+* [**Display**](#DisplayLoc) [Monitor, ]
 
 SLiPy is split into several components. The principle component is the
 subpackage **SLiPy** itself, which contains all the relevant
@@ -76,16 +76,16 @@ of the data such as distance, spectral type, etc.
 
     Options (with defaults - i.e., kwargs):
 
-    *verbose*   : True      ,     # display messages, progress  
-    *toplevel*  : ''        ,     # request import from directory *toplevel*  
-    *pattern*   : '\*.fits' ,     # pattern matching with *toplevel*  
-    *recursive* : False     ,     # search recursively below *toplevel*  
-    *wavecal*   : True      ,     # fit wavelength vector to data  
-    *crpix1*    : 'crpix1'  ,     # reference pixel header keyword  
-    *crval1*    : 'crval1'  ,     # value at reference pixel  
-    *cdelt1*    : 'cdelt1'  ,     # resolution (delta lambda)  
-    *xunits*    : 'Angstrom',     # wavelength units (astropy.units)  
-    *yunits*    : 'ergs cm-2 s-1' # units of the data
+    *verbose*   | True      ,     | display messages, progress  
+    *toplevel*  | ''        ,     | request import from directory *toplevel*  
+    *pattern*   | '\*.fits' ,     | pattern matching with *toplevel*  
+    *recursive* | False     ,     | search recursively below *toplevel*  
+    *wavecal*   | True      ,     | fit wavelength vector to data  
+    *crpix1*    | 'crpix1'  ,     | reference pixel header keyword  
+    *crval1*    | 'crval1'  ,     | value at reference pixel  
+    *cdelt1*    | 'cdelt1'  ,     | resolution (delta lambda)  
+    *xunits*    | 'Angstrom',     | wavelength units (astropy.units)  
+    *yunits*    | 'ergs cm-2 s-1' | units of the data
 
 ```Python
 def Header( filename, keyword, **kwargs ):
@@ -132,7 +132,7 @@ def PositionSort( center, radius, *files, **kwargs ):
     """
 
 ```
-#<a name=DataType></a>DataType
+#<a name=DataTypeLoc></a>DataType
 
 Objects for representing astronomical data.
 
@@ -172,7 +172,7 @@ class Spectrum:
     """
 ```
 
-#<a name=Simbad></a>Simbad
+#<a name=SimbadLoc></a>Simbad
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts.
@@ -267,7 +267,7 @@ def IDList(identifier, **kwargs):
     """
 ```
 
-#<a name=Correlate></a>Correlate
+#<a name=CorrelateLoc></a>Correlate
 
 Module of correlation functions for astronomical data.
 
@@ -280,7 +280,7 @@ def Xcorr( spectrumA, spectrumB, **kwargs ):
 	"""
 ```
 
-#<a name=Telluric></a>Telluric
+#<a name=TelluricLoc></a>Telluric
 
 Removal of atmospheric adsorption lines in spectra.
 
@@ -309,7 +309,7 @@ def Correct(spectrum, *calibration, **kwargs):
 **Telluric.Correct()** algorithm to a spectrum. In this case, six spectra of
 *Regulus* from the Elodie archive were used as calibration spectra.
 
-#<a name=Velocity></a>Velocity
+#<a name=VelocityLoc></a>Velocity
 
 Radial velocity corrections for 1D spectra.
 
@@ -353,7 +353,7 @@ def HeaderInfo( fpath ):
 	of the target.
 	"""
 ```
-#<a name=Observatory></a>Observatory
+#<a name=ObservatoryLoc></a>Observatory
 
 Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
@@ -371,7 +371,7 @@ class OHP(Observatory):
 		self.altitude  = 650        # meters
 ```
 
-#<a name=Plot></a>Plot
+#<a name=PlotLoc></a>Plot
 
 Convenience tools for plotting spectra. **SPlot** takes a Spectrum object
 and remains like a handle to the plot for that object. All of the typical
@@ -405,7 +405,7 @@ def Iterate( *plots, **kwargs ):
 	"""
 ```
 
-#<a name=Elodie></a>Elodie
+#<a name=ElodieLoc></a>Elodie
 
 Methods for data retrieval from the Elodie Archive.
 
@@ -442,7 +442,7 @@ def Download( *files, **kwargs ):
     """
 ```
 
-#<a name=Montage></a>Montage
+#<a name=MontageLoc></a>Montage
 
 Wrapper to the *montage* mosaic software. See
 [online](http://montage.ipac.caltech.edu/). The user should have Montage`s
@@ -485,7 +485,7 @@ def SolveGrid( sides, grid ):
 	"""
 ```
 
-#<a name=Display></a>Display
+#<a name=DisplayLoc></a>Display
 
 
 ```Python
