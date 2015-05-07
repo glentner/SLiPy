@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/Framework/Options.py
+# slipy/Framework/Options.py
 """
 Class object for handling kwargs in classes and functions.
 """
@@ -24,7 +24,7 @@ class Options:
 		try:
 			# initial assignment
 			self.options = {
-					name : Arg(value, name) 
+					name : Arg(value, name)
 					for name, value in options.items()
 				}
 			# attempted reassignment

@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2).
-# Python/Framework/Interface.py 
+# slipy/Framework/Interface.py 
 """
 Interface.py
 
@@ -22,7 +22,7 @@ def Parse( clargs, **kwargs ):
 	if type(clargs) is not list:
 		raise CommandError('Parse function expects a list for `clargs`.')
 	try:
-		options = Options( kwargs, 
+		options = Options( kwargs,
 			{
 				'exe' : True # search first argument for '@func' pattern
 			})
@@ -34,21 +34,21 @@ def Parse( clargs, **kwargs ):
 			function = function[1]
 			del(clargs[0])
 
-		# args should not have an assignment 
+		# args should not have an assignment
 		args = [ x for x in clargs if '=' not in x ]
 
-		# remaining clargs should be kwargs 
+		# remaining clargs should be kwargs
 		kwargs = {
 				key : value for key, value in [
 					arg.split('=') for arg in set(clargs) - set(args)
 					]
 			}
-	
+
 		if options('exe'):
-			return function, args, kwargs 
+			return function, args, kwargs
 
 		else:
-			return args, kwargs 
+			return args, kwargs
 
 	except OptionsError as err:
 		print('\n --> OptionsError:', err)
@@ -56,4 +56,3 @@ def Parse( clargs, **kwargs ):
 
 	except ValueError as key:
 		raise CommandError('Incorrect formatting of keyword arguments.')
-

@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# AstroPython/Astro/DataType.py
+# SLiPy/SLiPy/DataType.py
 """
 Class object representations for astronomical data.
 """

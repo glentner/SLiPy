@@ -1,15 +1,15 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# AstroPython/Astro/Velocity.Py 
+# slipy/SLiPy/Velocity.Py 
 """
 Radial velocity corrections for 1D spectra.
 """
 
 from astropy.io import fits as pyfits
 from astropy.constants import c
-from ..astrolibpy.astrolib.helcorr import helcorr  
+from ..astrolibpy.astrolib.helcorr import helcorr
 from .Fits import Find, RFind
-from .Observatory import Observatory 
+from .Observatory import Observatory
 from .DataType import Spectrum
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
@@ -26,8 +26,8 @@ def HeaderInfo( fpath ):
 
 	Helper function of IrafInput.
 
-	Return a formatted string containing the year, month, and day of 
-	observation from the FITS file with name 'fpath', as well as the 
+	Return a formatted string containing the year, month, and day of
+	observation from the FITS file with name 'fpath', as well as the
 	univeral time of observation and the right ascension and declination
 	of the target.
 	"""
@@ -39,12 +39,12 @@ def HeaderInfo( fpath ):
 			date, UT = date_obs.split('T')
 			year, month, day = [ x.lstrip('0') for x in date.split('-') ]
 
-			info = '{:>5} {:>2} {:>2} {:>8} {:>11} {:>12}\n'.format( 
+			info = '{:>5} {:>2} {:>2} {:>8} {:>11} {:>12}\n'.format(
 				year, month, day, UT, ra, dec )
-		
-	except IOError as error: 
+
+	except IOError as error:
 		raise VelocityError('Failure in `{}` from HeaderInfo()'.format(fpath))
-	
+
 	return info
 
 def IrafInput( *files, **kwargs):
@@ -54,12 +54,12 @@ def IrafInput( *files, **kwargs):
 	Build an input file for IRAF's rvcorrect task.
 
 	`files` should be a list of FITS file names to build the output table for.
-	The user can optionally specify a 'toplevel' directory to search 
+	The user can optionally specify a 'toplevel' directory to search
 	(recursively!) under fitting the 'pattern' (default=*.fits). This results
 	of this pattern search will be added to the list of file names in 'args'
-	(if any given). 
+	(if any given).
 
-	kwargs = { 
+	kwargs = {
 		'toplevel' : ''      , # search `toplevel` directory for files
 		'pattern'  : '*.fits', # files under `toplevel` fitting `pattern`
 		'recursive': False   , # search recusively under `toplevel`
@@ -86,9 +86,9 @@ def IrafInput( *files, **kwargs):
 
 		if toplevel:
 			# search for files matching `pattern`
-			find   = RFind if recursive else Find 
+			find   = RFind if recursive else Find
 			files += find( toplevel, pattern )
-	
+
 		# get info from files
 		info = [ HeaderInfo(fpath) for fpath in files ]
 
@@ -96,7 +96,7 @@ def IrafInput( *files, **kwargs):
 			with open( outfile, 'w' ) as fp:
 				fp.writelines( info )
 
-		return info 
+		return info
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
@@ -105,8 +105,8 @@ def IrafInput( *files, **kwargs):
 
 def HelioCorrect( obs, *spectra, **kwargs ):
 	"""
-	Perform heliocentric velocity corrects on `spectra` based on 
-	`obs`ervatory information (longitude, latitude, altitude) and the 
+	Perform heliocentric velocity corrects on `spectra` based on
+	`obs`ervatory information (longitude, latitude, altitude) and the
 	member attributes, ra (right ascension), dec (declination), and jd
 	(julian date) from the `spectra`.
 	"""
@@ -121,7 +121,7 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 		# assign parameters
 		verbose = options('verbose')
 
-		# check `obs` type 
+		# check `obs` type
 		if not issubclass( type(obs), Observatory):
 			raise VelocityError('HelioCorrect() expects its first argument to '
 			'be derived from the Observatory class.')

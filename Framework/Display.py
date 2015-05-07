@@ -1,8 +1,8 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/Framework/Display.py
+# slipy/Framework/Display.py
 """
-Display - Python module for displaying content to the screen.
+Display - Python module for displaying content to the terminal.
 """
 
 import os, sys, math
@@ -23,7 +23,7 @@ class Monitor:
 	"""
 	def __init__(self, **kwargs ):
 		try:
-			# available keyword options 
+			# available keyword options
 			self.options = Options( kwargs,
 				{
 					'width'    : 45    , # number of characters wide
@@ -62,8 +62,8 @@ class Monitor:
 		if self.percent > 0:
 			elapsed   = time() - self.start
 			remaining = elapsed * (1 / self.percent - 1)
-			etc = datetime.today() + timedelta(seconds=remaining) 
-			return etc.strftime(' ETC: %Y-%m-%d @ %H:%M ') 
+			etc = datetime.today() + timedelta(seconds=remaining)
+			return etc.strftime(' ETC: %Y-%m-%d @ %H:%M ')
 
 	def __build(self):
 		"""
@@ -71,14 +71,14 @@ class Monitor:
 		"""
 		bars   = self.char * math.floor( self.percent * self.width )
 		empty  = ' ' * (self.width - len(bars) - 1)
-		display = self.left + bars + self.tip + empty + self.right 
+		display = self.left + bars + self.tip + empty + self.right
 
 		if self.numbers:
 			display += '{:>8.2f} % '.format( self.percent * 100 )
 
 		if self.ETC:
 			display += self.__EstimatedCompletionTime()
-		
+
 		sys.stdout.write('\r \033[K \r {}'.format(display))
 		sys.stdout.flush()
 
@@ -90,7 +90,7 @@ class Monitor:
 			# refresh rate surpasses,
 			# update time of last call and percent complete
 			self.last    = time()
-			self.percent = float(i) / float(imax) 
+			self.percent = float(i) / float(imax)
 			# display progress bar
 			self.__build()
 
@@ -114,7 +114,7 @@ class Monitor:
 		"""
 		Display total time elapsed since instantiation.
 		"""
-		total  = time() - self.start 
+		total  = time() - self.start
 		abrv  = [ 'd',        'h',      'm',    's']
 		unit  = { 'd': 86400, 'h':3600, 'm':60 }
 		count = { 'd':0,      'h':0,    'm':0,  's':0 }
@@ -126,9 +126,9 @@ class Monitor:
 					count[item] += 1
 			else: count[item] = math.floor(total)
 
-		total = [	
+		total = [
 				'{} {}'.format( v, u )
-				for u, v in zip( abrv, [ count[v] for v in abrv ] ) 
+				for u, v in zip( abrv, [ count[v] for v in abrv ] )
 				if count[u]
 			]
 		total = ' Time Elapsed: ' + ' '.join(total)

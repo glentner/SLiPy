@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# AstroPython/Astro/Observatory.py 
+# slipy/SLiPy/Observatory.py 
 """
 Classes for defining observatory parameters (similar to the IRAF task).
 """

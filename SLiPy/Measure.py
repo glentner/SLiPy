@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# AstroPython/AstroPython/Measure.py
+# slipy/SLiPy/Measure.py
 
 '''
 Measure - Collection of measurement/calculation tools for spectra, etc.

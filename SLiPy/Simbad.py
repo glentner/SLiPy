@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# AstroPython/Astro/Simbad.py
+# slipy/SLiPy/Simbad.py
 """
 usage: Simbad.py @Attribute <identifier> [**kwargs]
 
-This module allows the user to query the SIMBAD astronomical database from 
+This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts.
 
 The 'Attribute' points to a function within this module and indicates
 what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
-a specific function. Currently available attributes are: `Position`, 
+a specific function. Currently available attributes are: `Position`,
 `Distance`, and `Sptype`.
 
-The identifier names can be anything recognized by SIMBAD (e.g., Regulus, 
+The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
 "alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
 sure to use quotation to enclose it.
 
-The **kwargs is the conventional reference to Python keyword arguments. 
+The **kwargs is the conventional reference to Python keyword arguments.
 These should be specific to the 'Attribute' being pointed to.
 """
 from sys import version_info, argv, exit
@@ -52,14 +52,14 @@ def PercentEncoded( string ):
 	}
 
 	return ''.join([
-		encoded[character] if character in encoded else character 
+		encoded[character] if character in encoded else character
 		for character in list( string ) ])
 
 def Script( identifier, criteria ):
 	"""
 	Script( criteria ):
 
-	URL script for the SIMBAD astronomical database with added 
+	URL script for the SIMBAD astronomical database with added
 	PercentEncoded(criteria).
 	"""
 	script = [
@@ -69,7 +69,7 @@ def Script( identifier, criteria ):
 		]
 
 	return ''.join(script)
-	
+
 class Query:
 	"""
 	Query( identifier, criteria, **kwargs ):
@@ -92,16 +92,16 @@ class Query:
 			'types for arguments.')
 
 		try:
-			# keyword argument options for Query 
+			# keyword argument options for Query
 			self.options = Options( kwargs,
 				{
-					'parse'  : True    , # parse SIMBAD return file 
+					'parse'  : True    , # parse SIMBAD return file
 					'full'   : False   , # return full line of info
-					'dtype'  : default , # convert return data 
+					'dtype'  : default , # convert return data
 					'is_main': False     # called from Main()
 				})
 
-			# assignments 
+			# assignments
 			self.parse   = self.options('parse')
 			self.full    = self.options('full')
 			self.dtype   = self.options('dtype')
@@ -123,16 +123,16 @@ class Query:
 		if 'not found' in self.data or 'error' in self.data:
 			raise SimbadError('`{}` could not be resolved by SIMBAD.'
 				.format(identifier))
-		
+
 		if self.parse:
 			# pre-parse operation common to all criteria
 			self.data = self.data.split('data')[-1]
 
 	def __call__(self):
 		"""
-		Retrieve data from Query 
+		Retrieve data from Query
 		"""
-		return self.data 
+		return self.data
 
 def Position( identifier, **kwargs ):
 	"""
@@ -146,7 +146,7 @@ def Position( identifier, **kwargs ):
 		query.data = query.data.split('\n')[-1]
 
 	elif query.parse:
-		# extract relavent data 
+		# extract relavent data
 		query.data = query.data.split()[-1].split('+')
 		if len( query.data ) == 1:
 			# dec had '-' not '+'
@@ -160,8 +160,8 @@ def Position( identifier, **kwargs ):
 			print( query() )
 		else:
 			print('{0:.2f} {1:.2f}'.format(*query()))
-	
-	else: return query() 
+
+	else: return query()
 
 def Distance( identifier, **kwargs ):
 	"""
@@ -175,7 +175,7 @@ def Distance( identifier, **kwargs ):
 		query.data = query.data.split('\n')[-1]
 
 	elif query.parse:
-		# extract relavent data 
+		# extract relavent data
 		query.data = query.data.split()[1]
 		if query.data == '~':
 			# nothing found!
@@ -191,7 +191,7 @@ def Distance( identifier, **kwargs ):
 			print( query() )
 		else:
 			print( '{0:.2f}'.format( query() ) )
-	
+
 	else: return query()
 
 def Sptype(identifier, **kwargs):
@@ -207,7 +207,7 @@ def Sptype(identifier, **kwargs):
 		query.data = query.data.split('\n')[-1]
 
 	elif query.parse:
-		# extract relavent data 
+		# extract relavent data
 		query.data = query.data.split()[1]
 
 	if query.is_main:
@@ -220,13 +220,13 @@ def IDList(identifier, **kwargs):
 	IDList(identifier, **kwargs):
 
 	Handle to the Query class with criteria='%IDLIST'.
-	With `parse` = True, return a list of alternate IDs for 
+	With `parse` = True, return a list of alternate IDs for
 	the `identifier` provided.
 	"""
 	query = Query(identifier, '%IDLIST', **kwargs)
 
 	if query.parse:
-		# extract relavent data 
+		# extract relavent data
 		query.data = query.data.split(':')[-1].strip().split('\n')
 
 	if query.is_main:
@@ -239,12 +239,12 @@ def Main( clargs ):
 	"""
 	Main function. See __doc__ for details.
 	"""
-	
+
 	if len(clargs) < 2:
-		# show usage 
+		# show usage
 		print( __doc__ )
 		return 0
-	
+
 	# Available functions for execution
 	executable = {
 			'Distance' : Distance, # search for parsecs
@@ -256,18 +256,18 @@ def Main( clargs ):
 
 	try:
 
-		# Parse command line arguments 
+		# Parse command line arguments
 		function, args, kwargs = Parse( clargs[1:] )
-	
+
 		if not args and not kwargs or args[0] == 'help':
 			# show function usage
 			print( executable[function].__doc__ )
 			return 0
 
-		# run execution 
+		# run execution
 		for identifier in args:
 			executable[function]( identifier, is_main=True, **kwargs )
-		
+
 		return 0
 
 	except CommandError as err:

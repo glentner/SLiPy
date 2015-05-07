@@ -1,5 +1,7 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
+# slipy/SLiPy/Profile.py 
+
 """
 Profile fitting tasks for spectra.
 """
@@ -29,8 +31,8 @@ def Fit(spectrum, xmin, xmax, **kwargs):
 	"""
 	Fit(spectrum, xmin, xmax, **kwargs):
 
-	Given a `spectrum` of type Spectrum, and the `xmin`, `xmax` range specifying 
-	the domain of the spectrum pertaining to the profile in question, fit a 
+	Given a `spectrum` of type Spectrum, and the `xmin`, `xmax` range specifying
+	the domain of the spectrum pertaining to the profile in question, fit a
 	Gaussian curve to the profile and return a result as type Spectrum.
 	"""
 	try:
@@ -41,31 +43,31 @@ def Fit(spectrum, xmin, xmax, **kwargs):
 				'pad': 0 # expantion of domain for evaluation of the profile function.
 			})
 
-		# function parameter assignments 
+		# function parameter assignments
 		pad = options('pad')
 
-		# check input arguments 
+		# check input arguments
 		if type(spectrum) is not Spectrum:
 			raise ProfileError('Fit expects type Spectrum.')
 		if xmin < spectrum.wave[0] or xmax > spectrum.wave[-1]:
 			raise ProfileError('Out of domain for `spectrum`.')
 
-		# make local copy of spectrum 
+		# make local copy of spectrum
 		local = spectrum.copy()
 
-		# extract relavent data from spectrum 
-		wave, data = local.wave, local.data 
+		# extract relavent data from spectrum
+		wave, data = local.wave, local.data
 		data = data[ wave[ wave < xmax ] > xmin ]
 		wave = wave[ wave[ wave < xmax ] > xmin ]
 
-		# initial guess of parameters 
+		# initial guess of parameters
 		p0 = [ 1 - data.min(), wave[ data.argmin() ], data.std() ]
 
-		# fit curve 
+		# fit curve
 		coeff, var_matrix = curve_fit(igauss, wave, data, p0=p0)
 
-		# create Spectrum of profile 
-		x = local.wave 
+		# create Spectrum of profile
+		x = local.wave
 		x = x[ x[ x < xmax + pad ] < xmin - pad ]
 		profile_fit = Spectrum( igauss(x, *coeff) )
 		profile_fit.wave = x
