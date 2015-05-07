@@ -176,7 +176,7 @@ Objects for representing astronomical data. Currently, this includes the
 
     Construct numpy array of wavelength values where *rpix* is the reference
     pixel index, *rval* is the wavelength at reference pixel, *delt* is the
-    resolutions (delta lambda), and *npix* is length of desired array.
+    resolutions (delta lambda), and *npix* is the length of desired array.
 
 ```Python
 class Spectrum:
