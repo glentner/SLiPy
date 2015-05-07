@@ -9,9 +9,15 @@ astronomy, particularly spectroscopy. It contains both a *Spectrum* class
 for handling spectra as objects (with +, -, \*, /, etc... operations defined)
 and a growing suite of analysis tools.
 
-**Dependencies:** Python 3.x, astropy, matplotlib, numpy, scipy
+**Dependencies:**
+Python 3.x,
+[astropy](http://www.astropy.org),
+[matplotlib](http://matplotlib.org),
+[numpy](http://www.numpy.org),
+[scipy](http://www.scipy.org)
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](GPLv3)
 
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least).
