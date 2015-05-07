@@ -336,6 +336,8 @@ def Correct(spectrum, *calibration, **kwargs):
 
 ![example](Figures/HD192640.png "Results of Telluric.Correct()")
 
+<img src="Figures/HD192640.png" alt="Results of Telluric.Correct()">
+
 **Figure 1:** The above figure is an example of applying the
 **Telluric.Correct()** algorithm to a spectrum. In this case, six spectra of
 *Regulus* from the Elodie archive were used as calibration spectra.
