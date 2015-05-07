@@ -334,7 +334,7 @@ def Correct(spectrum, *calibration, **kwargs):
 	"""
 ```
 
-<img src="http://github/glentner/SLiPy/Figures/HD192640.png" alt="Results of Telluric.Correct()">
+<img url="http://github.com/glentner/SLiPy/Figures/HD192640.png" alt="Results of Telluric.Correct()">
 
 **Figure 1:** The above figure is an example of applying the
 **Telluric.Correct()** algorithm to a spectrum. In this case, six spectra of
