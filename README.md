@@ -1,8 +1,6 @@
-# SLiPy
+# [SLiPy](http://glentner.github.io/SLiPy)
 
 #### A Spectroscopy and astrophysical Library for Python 3
-
-[View at **SLiPy**s website instead](http://glentner.github.io/SLiPy)
 
 This Python package is an expanding code base for doing computational
 astronomy, particularly spectroscopy. It contains both a *Spectrum* class
@@ -17,7 +15,7 @@ Python 3.x,
 [scipy](http://www.scipy.org)
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
-[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](GPLv3)
+[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](http://www.gnu.org/copyleft/gpl.html)
 
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least).
