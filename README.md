@@ -54,7 +54,7 @@ developed by me, only modified. I'm not going to document it's usage here. Its
 name is unfortunate for me as it is a bit over done with the convention I was
 already using, but for consistency I will keep it as it was from the author.
 
-#<a name=Fits></a>Fits
+#<a name=Fits></a>[Fits](SLiPy/Fits.py)
 
 Manipulate FITS files. Import data into *Spectrum* objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
