@@ -17,7 +17,17 @@ I found it useful for performing velocity corrections on my spectroscopic
 data. I've modified several modules such that it can be imported and used in
 Python 3.x. See his README file.
 
-## Modules
+## Contents
+
+SLiPy is split into several components. The principle component is the
+subpackage **SLiPy** itself, which contains all the relevant
+functionality. Further, **Data** is a package I'm working on that will provide
+an API for searching astronomical data archives in a simple way. The other two
+subpackages **Framework** and **astrolibpy** are of utility to the project but
+not necessarily intended for export. As stated previously, astrolibpy was not
+developed by me, only modified. I'm not going to document it's usage here. Its
+name is unfortunate for me as it is a bit over done with the convention I was
+already using, but for consistency I will keep it as it was from the author.
 
 The following modules are elevated to the package level and are available
 to import:
@@ -25,6 +35,7 @@ to import:
 | Module | Functions/Objects |
 |--------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
+|[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
 
 * [**Fits**](#FitsLoc) [Find, RFind, GetData, Header, Search, PositionSort, ]
 
@@ -47,16 +58,6 @@ to import:
 * [**Montage**](#MontageLoc) [Mosaic, SubField, Field, SolveGrid, ]
 
 * [**Display**](#DisplayLoc) [Monitor, ]
-
-SLiPy is split into several components. The principle component is the
-subpackage **SLiPy** itself, which contains all the relevant
-functionality. Further, **Data** is a package I'm working on that will provide
-an API for searching astronomical data archives in a simple way. The other two
-subpackages **Framework** and **astrolibpy** are of utility to the project but
-not necessarily intended for export. As stated previously, astrolibpy was not
-developed by me, only modified. I'm not going to document it's usage here. Its
-name is unfortunate for me as it is a bit over done with the convention I was
-already using, but for consistency I will keep it as it was from the author.
 
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
