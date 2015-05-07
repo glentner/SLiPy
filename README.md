@@ -56,7 +56,9 @@ already using, but for consistency I will keep it as it was from the author.
 
 #<a name=Fits></a>Fits
 
-Import data from, handle, and manipulate FITS format files.
+Manipulate FITS files. Import data into *Spectrum* objects. Filter results
+by right ascension and declination. Grab header elements. Search for attributes
+of the data such as distance, spectral type, etc.
 
 - **Find** (*toplevel* = './', *pattern* = '\*.fits'):
 
@@ -68,6 +70,7 @@ Import data from, handle, and manipulate FITS format files.
     Recursively search for file paths below *toplevel* fitting *pattern*.
     Returns a list of string values.
 
+- **GetData** ( \**files*, * \*\*kwargs*):
 ```Python
 def GetData( *files, **kwargs ):
 	"""
