@@ -22,9 +22,9 @@ Python 3.x. See his README file.
 The following modules are elevated to the package level and are available
 to import:
 
-    | Module | Functions/Objects |
-    |--------|-------------------|
-    |[**Fits**](#FitsLoc)|[Find](#FindLoc), RFind, GetData, Header, Search, PositionSort, |
+| Module | Functions/Objects |
+|--------|-------------------|
+|[**Fits**](#FitsLoc)|[Find](#FindLoc), RFind, GetData, Header, Search, PositionSort, |
 
 * [**Fits**](#FitsLoc) [Find, RFind, GetData, Header, Search, PositionSort, ]
 
