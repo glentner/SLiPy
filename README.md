@@ -32,27 +32,18 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
-| Module | Functions/Objects |
+| Module | Functions/Classes |
 |--------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
 |[**Simbad**](#SimbadLoc)|[Query](#QueryLoc), [Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
 |[**Correlate**](#CorrelateLoc)|[XCorr](#XCorrLoc), |
 |[**Telluric**](#TelluricLoc)|[Correct](#CorrectLoc), |
-
-* [**Telluric**](#TelluricLoc) [Correct, ]
-
-* [**Velocity**](#VelocityLoc) [HelioCorrect, ]
-
-* [**Observatory**](#ObservatoryLoc) [OHP, ]
-
-* [**Plot**](#PlotLoc) [SPlot, Iterate, ]
-
-* [**Elodie**](#ElodieLoc) [Archive, Download, ]
-
-* [**Montage**](#MontageLoc) [Mosaic, SubField, Field, SolveGrid, ]
-
-* [**Display**](#DisplayLoc) [Monitor, ]
+|[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), |
+|[**Observatory**]()|[#ObservatoryLoc](), |
+|[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
+|[Montage](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
+|[Elodie](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
