@@ -36,12 +36,7 @@ to import:
 |--------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
-
-* [**Fits**](#FitsLoc) [Find, RFind, GetData, Header, Search, PositionSort, ]
-
-* [**DataType**](#DataTypeLoc) [WaveVector, Spectrum, ]
-
-* [**Simbad**](#SimbadLoc) [Query, Position, Distance, Sptype, IDList, ]
+|[**Simbad**](#SimbadLoc)|[Query](#QueryLoc), [Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
 
 * [**Correlate**](#CorrelateLoc) [XCorr, ]
 
@@ -112,7 +107,7 @@ of the data such as distance, spectral type, etc.
 <a name=SearchLoc></a>
 - **Search** ( \**files*, \*\**kwargs*):
 
-    Extract object names from Fits `files` and use Simbad module
+    Extract object names from Fits *files* and use Simbad module
     to resolve the `attribute` (a required keyword argument)
     from the SIMBAD astronomical database. Currently available attributes
     are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
