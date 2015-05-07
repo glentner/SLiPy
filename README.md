@@ -76,15 +76,15 @@ of the data such as distance, spectral type, etc.
 
     Options (with defaults - i.e., kwargs):
 
-    *verbose*   : True      ,     # display messages, progress
-    *toplevel*  : ''        ,     # request import from directory *toplevel*
-    *pattern*   : '\*.fits' ,     # pattern matching with *toplevel*
-    *recursive* : False     ,     # search recursively below *toplevel*
-    *wavecal*   : True      ,     # fit wavelength vector to data
-    *crpix1*    : 'crpix1'  ,     # reference pixel header keyword
-    *crval1*    : 'crval1'  ,     # value at reference pixel
-    *cdelt1*    : 'cdelt1'  ,     # resolution (delta lambda)
-    *xunits*    : 'Angstrom',     # wavelength units (astropy.units)
+    *verbose*   : True      ,     # display messages, progress  
+    *toplevel*  : ''        ,     # request import from directory *toplevel*  
+    *pattern*   : '\*.fits' ,     # pattern matching with *toplevel*  
+    *recursive* : False     ,     # search recursively below *toplevel*  
+    *wavecal*   : True      ,     # fit wavelength vector to data  
+    *crpix1*    : 'crpix1'  ,     # reference pixel header keyword  
+    *crval1*    : 'crval1'  ,     # value at reference pixel  
+    *cdelt1*    : 'cdelt1'  ,     # resolution (delta lambda)  
+    *xunits*    : 'Angstrom',     # wavelength units (astropy.units)  
     *yunits*    : 'ergs cm-2 s-1' # units of the data
 
 ```Python
