@@ -73,6 +73,7 @@ of the data such as distance, spectral type, etc.
 
     ---
 
+<a name=RFindLoc></a>
 - **RFind** (*toplevel* = './', *pattern* = '\*.fits'):
 
     Recursively search for file paths below *toplevel* fitting *pattern*.
@@ -80,6 +81,7 @@ of the data such as distance, spectral type, etc.
 
     ---
 
+<a name=GetDataLoc></a>
 - **GetData** ( \**files*, \*\**kwargs*):
 
 	Import data from FITS `files`. Returns a list of *Spectrum* objects.
@@ -99,31 +101,34 @@ of the data such as distance, spectral type, etc.
 
     ---
 
-```Python
-def Header( filename, keyword, **kwargs ):
-	"""
-	Retrieve `keyword` from FITS header in `filename`. Return type depends on
-    the value.
-	"""
-```
-```Python
-def Search( *files, **kwargs ):
-	"""
-	Extract object names from Fits `files` and use Simbad module
-	to resolve the `attribute` (a required keyword argument)
-	from the SIMBAD astronomical database. Currently available attributes
+<a name=HeaderLoc></a>
+- **Header** ( *filename*, *keyword*, \*\**kwargs*):
+
+    Retrieve *keyword* from FITS header in file *filename*.
+    Return type depends on what is returned.
+
+    ---
+
+<a name=SearchLoc></a>
+- **Search** ( \**files*, \*\**kwargs*):
+
+    Extract object names from Fits `files` and use Simbad module
+    to resolve the `attribute` (a required keyword argument)
+    from the SIMBAD astronomical database. Currently available attributes
     are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
     results (type depends on the values).
 
-	kwargs = {
-			verbose   : True    , # display messages, progress
-			toplevel  : ''      , # search under `toplevel` directory
-			pattern   : '*.fits', # for files under `toplevel`
-			recursive : False   , # search recusively under `toplevel`
-			attribute : ''      , # attribute to search for (no default)
-		}
-	"""
-```
+    | Options   | Defaults  | Descriptions                         |
+    |-----------|-----------|--------------------------------------|
+    | verbose   | True      | display messages, progress           |
+    | toplevel  | None      | search under *toplevel* directory    |
+    | pattern   | '\*.fits' | for files under *toplevel*           |
+    | recursive | False     | search recusively under *toplevel*   |
+    | attribute | None      | attribute to search for (no default) |
+
+    ---
+
+
 ```Python
 def PositionSort( center, radius, *files, **kwargs ):
     """
