@@ -17,7 +17,7 @@ Python 3.x,
 [scipy](http://www.scipy.org)
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
-[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](GPLv3)
+[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](GPLv3)
 
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least).
