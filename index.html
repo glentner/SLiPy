@@ -79,7 +79,7 @@ to import:</p>
 <thead>
 <tr>
 <th>Module</th>
-<th>Functions/Objects</th>
+<th>Functions/Classes</th>
 </tr>
 </thead>
 <tbody>
@@ -108,18 +108,33 @@ to import:</p>
 <td>
 <a href="#CorrectLoc">Correct</a>,</td>
 </tr>
+<tr>
+<td><a href="#VelocityLoc"><strong>Velocity</strong></a></td>
+<td>
+<a href="#HelioCorrectLoc">HelioCorrect</a>,</td>
+</tr>
+<tr>
+<td><a href="#ObservatoryLoc"><strong>Observatory</strong></a></td>
+<td>
+<a href="#OHPLoc">OHP</a>,</td>
+</tr>
+<tr>
+<td><a href="#PlotLoc"><strong>Plot</strong></a></td>
+<td>
+<a href="#SPlotLoc">SPlot</a>, <a href="#IterateLoc">Iterate</a>,</td>
+</tr>
+<tr>
+<td><a href="#MontageLoc">Montage</a></td>
+<td>
+<a href="#MosaicLoc">Mosaic</a>, <a href="#SubFieldLoc">SubField</a>, <a href="#FieldLoc">Field</a>,</td>
+</tr>
+<tr>
+<td><a href="#ElodieLoc">Elodie</a></td>
+<td>
+<a href="#ArchiveLoc">Archive</a>, <a href="#ScriptLoc">Script</a>, <a href="#DownloadLoc">Download</a>,</td>
+</tr>
 </tbody>
 </table>
-
-<ul>
-<li><p><a href="#TelluricLoc"><strong>Telluric</strong></a> [Correct, ]</p></li>
-<li><p><a href="#VelocityLoc"><strong>Velocity</strong></a> [HelioCorrect, ]</p></li>
-<li><p><a href="#ObservatoryLoc"><strong>Observatory</strong></a> [OHP, ]</p></li>
-<li><p><a href="#PlotLoc"><strong>Plot</strong></a> [SPlot, Iterate, ]</p></li>
-<li><p><a href="#ElodieLoc"><strong>Elodie</strong></a> [Archive, Download, ]</p></li>
-<li><p><a href="#MontageLoc"><strong>Montage</strong></a> [Mosaic, SubField, Field, SolveGrid, ]</p></li>
-<li><p><a href="#DisplayLoc"><strong>Display</strong></a> [Monitor, ]</p></li>
-</ul>
 
 <h1>
 <a id="fits" class="anchor" href="#fits" aria-hidden="true"><span class="octicon octicon-link"></span></a>
@@ -253,7 +268,7 @@ Return type depends on what is returned.</p>
 <p><strong>Search</strong> ( *<em>files</em>, **<em>kwargs</em>):</p>
 
 <p>Extract object names from Fits <em>files</em> and use Simbad module
-to resolve the <code>attribute</code> (a required keyword argument)
+to resolve the <em>attribute</em> (a required keyword argument)
 from the SIMBAD astronomical database. Currently available attributes
 are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
 results (type depends on the values).</p>
@@ -268,29 +283,29 @@ results (type depends on the values).</p>
 </thead>
 <tbody>
 <tr>
-<td>verbose</td>
+<td><em>verbose</em></td>
 <td>True</td>
 <td>display messages, progress</td>
 </tr>
 <tr>
-<td>toplevel</td>
+<td><em>toplevel</em></td>
 <td>None</td>
 <td>search under <em>toplevel</em> directory</td>
 </tr>
 <tr>
-<td>pattern</td>
+<td><em>pattern</em></td>
 <td>'*.fits'</td>
 <td>for files under <em>toplevel</em>
 </td>
 </tr>
 <tr>
-<td>recursive</td>
+<td><em>recursive</em></td>
 <td>False</td>
 <td>search recusively under <em>toplevel</em>
 </td>
 </tr>
 <tr>
-<td>attribute</td>
+<td><em>attribute</em></td>
 <td>None</td>
 <td>attribute to search for (no default)</td>
 </tr>
@@ -301,24 +316,78 @@ results (type depends on the values).</p>
 </li>
 </ul>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">PositionSort</span>( <span class="pl-smi">center</span>, <span class="pl-smi">radius</span>, *<span class="pl-smi">files</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Return a list of files from `files` that lie in a `radius` (in degrees)</span>
-<span class="pl-s">    from `center`, based on the `ra` (right ascension) and `dec` (declination).</span>
-<span class="pl-s"></span>
-<span class="pl-s">    kwargs = {</span>
-<span class="pl-s">            'ra'       : 'pos1'  , # header element for right ascension</span>
-<span class="pl-s">            'dec'      : 'pos2'  , # header element for declination</span>
-<span class="pl-s">            'obj'      : 'object', # header element for object id</span>
-<span class="pl-s">            'raconvert': True    , # convert decimal hours to decimal degrees</span>
-<span class="pl-s">            'verbose'  : True    , # display messages, progress</span>
-<span class="pl-s">            'toplevel' : ''      , # `toplevel` directory to look for files in</span>
-<span class="pl-s">            'recursive': False   , # search `recursive`ly below `toplevel`</span>
-<span class="pl-s">            'pattern'  : '*.fits', # glob `pattern` for file search</span>
-<span class="pl-s">            'useSimbad': False     # use Simbad instead of header elements</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span>
-</pre></div>
+<p><a name="PositionSortLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>PositionSort</strong> ( <em>center</em>, <em>radius</em>, *<em>files</em>, **<em>kwargs</em> ):</p>
+
+<p>Return a list of files from <em>files</em> that lie in a <em>radius</em> (in
+decimal degrees) from <em>center</em>, based on the <em>ra</em> (right ascension) and
+<em>dec</em> (declination).</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>ra</em></td>
+<td>'pos1'</td>
+<td>header element for right ascension</td>
+</tr>
+<tr>
+<td><em>dec</em></td>
+<td>'pos2'</td>
+<td>header element for declination</td>
+</tr>
+<tr>
+<td><em>obj</em></td>
+<td>'object'</td>
+<td>header element for object id</td>
+</tr>
+<tr>
+<td><em>raconvert</em></td>
+<td>True</td>
+<td>convert decimal hours to decimal degrees</td>
+</tr>
+<tr>
+<td><em>verbose</em></td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td><em>toplevel</em></td>
+<td>None</td>
+<td>
+<em>toplevel</em> directory to look for files</td>
+</tr>
+<tr>
+<td><em>recursive</em></td>
+<td>False</td>
+<td>search <em>toplevel</em>ly below <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td><em>pattern</em></td>
+<td>'*.fits'</td>
+<td>glob <em>pattern</em> for file search</td>
+</tr>
+<tr>
+<td><em>useSimbad</em></td>
+<td>False</td>
+<td>use <em>Simbad</em> instead of header elements</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+</li>
+</ul>
 
 <h1>
 <a id="datatype" class="anchor" href="#datatype" aria-hidden="true"><span class="octicon octicon-link"></span></a>
