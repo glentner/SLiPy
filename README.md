@@ -194,15 +194,21 @@ Objects for representing astronomical data. Currently, this includes the
     a scalar, the operation is performed pixel-wise on the *data* array. If
     the other operand is also a *Spectrum* object, the RHS operand is
     *resampled* onto the same pixel space as the LHS. The domain of the RHS
-    *wave* array must be entirely contained by or equivilent to the LHS
+    *wave* array must be entirely contained by or equivalent to the LHS
     *wave* domain.
 
-    | Options   | Defaults | Descriptions                   |
-    |-----------|----------|--------------------------------|
-    | *wavecal* | True     | fit wavelength vector to data  |
-    | *crpix1*  | 'crpix1' | reference pixel header keyword |
-    | *crval1*  | 'crval1' | value at reference pixel       |
-    | *cdelt1*  | 'cdelt1' | resolution (delta lambda)      |
+    The *wave* and *data* arrays are given units 'a la *astropy.units*;
+    if the spectrum is initialized via numpy arrays, the units are only
+    applied if there are none currently.
+
+    | Options   | Defaults       | Descriptions                    |
+    |-----------|----------------|---------------------------------|
+    | *wavecal* | True           | fit wavelength vector to data   |
+    | *crpix1*  | 'crpix1'       | reference pixel header keyword  |
+    | *crval1*  | 'crval1'       | value at reference pixel        |
+    | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)       |
+    | *xunit*   | 'Angstrom'     | units of wavelength from header |
+    | *yunit*   | 'erg cm-2 s-1' | units of data                   |
 
     Member functions:
 
