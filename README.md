@@ -37,8 +37,8 @@ to import:
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
 |[**Simbad**](#SimbadLoc)|[Query](#QueryLoc), [Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
-
-* [**Correlate**](#CorrelateLoc) [XCorr, ]
+|[**Correlate**](#CorrelateLoc)|[XCorr](#XCorrLoc), |
+|[**Telluric**](#TelluricLoc)|[Correct](#CorrectLoc), |
 
 * [**Telluric**](#TelluricLoc) [Correct, ]
 
