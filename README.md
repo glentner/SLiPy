@@ -45,6 +45,24 @@ to import:
 |[Montage](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
 |[Elodie](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
+#Installation
+
+To install SLiPy, there is no setup procedure. Simply download the package,
+either by clicking on the download link for a *tar* or *zip* archive or by
+cloning it (`git clone http://github.com/glentner/SLiPy`). Extract it's
+contents to wherever you like in a directory (ostensibly names *slipy*, but
+actually you can call this library whatever you want as well because all
+the imports are *relative*). Then add the parent directory to your `PYTHONPATH`
+if it isn't already. For example:
+
+```sh
+cd
+git clone http://github.com/glentner/SLiPy
+echo "export PYTHONPATH=$PYTHONPATH:/~" >> ~/.bashrc
+```
+
+And your ready to go!
+
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
 Manipulate FITS files. Import data into *Spectrum* objects. Filter results
