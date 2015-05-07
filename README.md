@@ -61,7 +61,7 @@ actually you can call this library whatever you want as well because all
 the imports are *relative*). Then add the parent directory to your `PYTHONPATH`
 if it isn't already. For example:
 
-```sh
+```
 cd
 git clone http://github.com/glentner/SLiPy
 echo "export PYTHONPATH=$PYTHONPATH:/~" >> ~/.bashrc
