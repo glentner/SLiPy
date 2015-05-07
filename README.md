@@ -76,8 +76,7 @@ of the data such as distance, spectral type, etc.
 
 	Import data from FITS `files`. Returns a list of *Spectrum* objects.
 
-    |Options     | Defaults        | Descriptions
-    |------------|-----------------|------------------------------------------|
+    Options -  
     |*verbose*   | True            | display messages, progress               |
     |*toplevel*  | ''              | request import from directory *toplevel* |  
     |*pattern*   | '\*.fits'       | pattern matching with *toplevel*         |
