@@ -64,7 +64,7 @@ Manipulate FITS files. Import data into *Spectrum* objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
 of the data such as distance, spectral type, etc.
 
-<a name=FitsLoc></a>
+<a name=FindLoc></a>
 - **Find** (*toplevel* = './', *pattern* = '\*.fits'):
 
     Search for file paths below *toplevel* fitting *pattern*. Returns a list
