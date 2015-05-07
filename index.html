@@ -121,12 +121,12 @@ to import:</p>
 <a href="#SPlotLoc">SPlot</a>, <a href="#IterateLoc">Iterate</a>,</td>
 </tr>
 <tr>
-<td><a href="#MontageLoc">Montage</a></td>
+<td><a href="#MontageLoc"><strong>Montage</strong></a></td>
 <td>
 <a href="#MosaicLoc">Mosaic</a>, <a href="#SubFieldLoc">SubField</a>, <a href="#FieldLoc">Field</a>,</td>
 </tr>
 <tr>
-<td><a href="#ElodieLoc">Elodie</a></td>
+<td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
 <a href="#ArchiveLoc">Archive</a>, <a href="#ScriptLoc">Script</a>, <a href="#DownloadLoc">Download</a>,</td>
 </tr>
@@ -144,9 +144,10 @@ actually you can call this library whatever you want as well because all
 the imports are <em>relative</em>). Then add the parent directory to your <code>PYTHONPATH</code>
 if it isn't already. For example:</p>
 
-<div class="highlight highlight-sh"><pre><span class="pl-c1">cd</span>
+<pre><code>cd
 git clone http://github.com/glentner/SLiPy
-<span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>export PYTHONPATH=<span class="pl-smi">$PYTHONPATH</span>:/~<span class="pl-pds">"</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.bashrc</pre></div>
+echo "export PYTHONPATH=$PYTHONPATH:/~" &gt;&gt; ~/.bashrc
+</code></pre>
 
 <p>And your ready to go!</p>
 
@@ -417,7 +418,7 @@ decimal degrees) from <em>center</em>, based on the <em>ra</em> (right ascension
 </h1>
 
 <p>Objects for representing astronomical data. Currently, this includes the
-<em>Spectrum</em> class and it's helper function <em>WaveVector</em></p>
+<em>Spectrum</em> class and it's helper function <em>WaveVector</em>.</p>
 
 <p><a name="WaveVectorLoc"></a></p>
 
@@ -431,28 +432,87 @@ resolutions (delta lambda), and <em>npix</em> is the length of desired array.</p
 </li>
 </ul>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Spectrum</span>:
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Spectrum objects consist of a `data` vector, and optionally a  </span>
-<span class="pl-s">    `wavelength` vector (accessed with .data and .wave respectively).</span>
-<span class="pl-s">    (+, -, *, /, +=, -=, *=, /=) are overloaded. The LHS spectrum is the</span>
-<span class="pl-s">    reference and the RHS spectrum is resampled onto the wavelength space</span>
-<span class="pl-s">    of the LHS spectrum before applying operations pixel-wise. Scalar</span>
-<span class="pl-s">    operations applied to all pixels.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span>
-    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, <span class="pl-smi">argument</span>, **<span class="pl-smi">kwargs</span> ):
-        <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">        Hold spectrum `data` from file name `argument`. Alternatively,</span>
-<span class="pl-s">        construct spectra with a one-dimensional numpy.ndarray as `argument`.</span>
-<span class="pl-s">        `wavecal` is assumed to be true for file input.</span>
-<span class="pl-s"></span>
-<span class="pl-s">        kwargs = {</span>
-<span class="pl-s">            'wavecal': True     , # fit wavelength vector to data</span>
-<span class="pl-s">            'crpix1' : 'crpix1' , # reference pixel header keyword</span>
-<span class="pl-s">            'crval1' : 'crval1' , # value at reference pixel</span>
-<span class="pl-s">            'cdelt1' : 'cdelt1' , # resolution (delta lambda)</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p><a name="SpectrumLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>Spectrum</strong> ( <em>filename</em>, <em>wavelengths</em> = None, **<em>kwargs</em> ):</p>
+
+<p>The <em>Spectrum</em> class is a container for a <em>data</em> array and it's
+corresponding wavelength calibration, <em>wave</em>. These are accessed with
+.data and .wave, respectively. The data is read in from the file,
+<em>filename</em>. Alternatively, it can be initialized by a set of numpy
+arrays. To do this, <em>filename</em> can actually be the <em>data</em> array and
+if this is the case, <em>wavelengths</em> must be assigned an array of equal
+length containing the corresponding wavelength values.</p>
+
+<p>The following operations are defined:
++, -, *, /, +=, -=, *=, /=. For each of these, if the second operand is
+a scalar, the operation is performed pixel-wise on the <em>data</em> array. If
+the other operand is also a <em>Spectrum</em> object, the RHS operand is
+<em>resampled</em> onto the same pixel space as the LHS. The domain of the RHS
+<em>wave</em> array must be entirely contained by or equivalent to the LHS
+<em>wave</em> domain.</p>
+
+<p>The <em>wave</em> and <em>data</em> arrays are given units 'a la <em>astropy.units</em>;
+if the spectrum is initialized via numpy arrays, the units are only
+applied if there are none currently.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>wavecal</em></td>
+<td>True</td>
+<td>fit wavelength vector to data</td>
+</tr>
+<tr>
+<td><em>crpix1</em></td>
+<td>'crpix1'</td>
+<td>reference pixel header keyword</td>
+</tr>
+<tr>
+<td><em>crval1</em></td>
+<td>'crval1'</td>
+<td>value at reference pixel</td>
+</tr>
+<tr>
+<td><em>cdelt1</em></td>
+<td>'cdelt1'</td>
+<td>resolution (delta lambda)</td>
+</tr>
+<tr>
+<td><em>xunit</em></td>
+<td>'Angstrom'</td>
+<td>units of wavelength from header</td>
+</tr>
+<tr>
+<td><em>yunit</em></td>
+<td>'erg cm-2 s-1'</td>
+<td>units of data</td>
+</tr>
+</tbody>
+</table>
+
+<p>Member functions:</p>
+
+<ul>
+<li>
+<p><em>.resample</em> ( <em>first</em>, <em>last</em>, <em>npix</em>, <em>kind</em> = 'linear'):</p>
+
+<p>Resample onto new wavelength pixel space. Built with numpy.linspace
+using <em>first</em>, <em>last</em>, and <em>npix</em> as arguments. Here, <em>kind</em> is
+passed on to <em>scipy.interpolate.interp1d</em>.</p>
+</li>
+</ul>
+</li>
+</ul>
 
 <h1>
 <a id="simbad" class="anchor" href="#simbad" aria-hidden="true"><span class="octicon octicon-link"></span></a>
@@ -580,7 +640,7 @@ These should be specific to the 'Attribute' being pointed to.
 <span class="pl-s">        }</span>
 <span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
 
-<p><img src="Figures/HD192640.png" alt="Results of Telluric.Correct()"></p>
+<p><img src="Figures/HD192640.png" alt="example"></p>
 
 <p><strong>Figure 1:</strong> The above figure is an example of applying the
 <strong>Telluric.Correct()</strong> algorithm to a spectrum. In this case, six spectra of
