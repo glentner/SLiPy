@@ -71,23 +71,22 @@ of the data such as distance, spectral type, etc.
     Returns a list of string values.
 
 - **GetData** ( \**files*, \*\**kwargs*):
-```Python
-def GetData( *files, **kwargs ):
-	"""
-	Import data from FITS `files`. Returns a list of Spectrum objects.
 
-	kwargs = {
-			verbose   : True    , # display messages, progress
-			toplevel  : ''      , # request import from directory `toplevel`
-			pattern   : '*.fits', # pattern matching with `toplevel`
-			recursive : False   , # search recursively below `toplevel`
-			wavecal   : True    , # fit wavelength vector to data
-			crpix1    : 'crpix1', # reference pixel header keyword
-			crval1    : 'crval1', # value at reference pixel
-			cdelt1    : 'cdelt1', # resolution (delta lambda)
-		}
-	"""
-```
+	Import data from FITS `files`. Returns a list of *Spectrum* objects.
+
+    Options (with defaults - i.e., kwargs):
+    --------------------------------------
+    *verbose*   : True      ,     # display messages, progress
+    *toplevel*  : ''        ,     # request import from directory *toplevel*
+    *pattern*   : '\*.fits' ,     # pattern matching with *toplevel*
+    *recursive* : False     ,     # search recursively below *toplevel*
+    *wavecal*   : True      ,     # fit wavelength vector to data
+    *crpix1*    : 'crpix1'  ,     # reference pixel header keyword
+    *crval1*    : 'crval1'  ,     # value at reference pixel
+    *cdelt1*    : 'cdelt1'  ,     # resolution (delta lambda)
+    *xunits*    : 'Angstrom',     # wavelength units (astropy.units)
+    *yunits*    : 'ergs cm-2 s-1' # units of the data
+
 ```Python
 def Header( filename, keyword, **kwargs ):
 	"""
