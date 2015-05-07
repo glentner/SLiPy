@@ -97,15 +97,11 @@ of the data such as distance, spectral type, etc.
     Search for file paths below *toplevel* fitting *pattern*. Returns a list
     of string values.
 
-    ---
-
 <a name=RFindLoc></a>
 - **RFind** (*toplevel* = './', *pattern* = '\*.fits'):
 
     Recursively search for file paths below *toplevel* fitting *pattern*.
     Returns a list of string values.
-
-    ---
 
 <a name=GetDataLoc></a>
 - **GetData** ( \**files*, \*\**kwargs*):
@@ -124,8 +120,6 @@ of the data such as distance, spectral type, etc.
     |*cdelt1*    | 'cdelt1'        | resolution (delta lambda)                |
     |*xunits*    | 'Angstrom'      | wavelength units (astropy.units)         |
     |*yunits*    | 'ergs cm-2 s-1' | units of the data                        |
-
-    ---
 
 <a name=HeaderLoc></a>
 - **Header** ( *filename*, *keyword*, \*\**kwargs*):
@@ -152,8 +146,6 @@ of the data such as distance, spectral type, etc.
     | *recursive* | False     | search recusively under *toplevel*   |
     | *attribute* | None      | attribute to search for (no default) |
 
-    ---
-
 <a name=PositionSortLoc></a>
 - **PositionSort** ( *center*, *radius*, \**files*, \*\**kwargs* ):
 
@@ -173,24 +165,22 @@ of the data such as distance, spectral type, etc.
     *pattern*   |'\*.fits' | glob *pattern* for file search           |
     *useSimbad* | False    | use *Simbad* instead of header elements  |
 
-    ---
 
+#<a name=DataTypeLoc></a>[DataType](SLiPy/DataType.py)
 
-#<a name=DataTypeLoc></a>DataType
+Objects for representing astronomical data. Currently, this includes the
+*Spectrum* class and it's helper function *WaveVector*
 
-Objects for representing astronomical data.
+#<a name=WaveVectorLoc></a>
+- **WaveVector** ( *rpix*, *rval*, *delt*, *npix* ):
 
-```Python
-def WaveVector( rpix, rval, delt, npix ):
-	"""
-	Construct numpy array of wavelength values based on:
+    Construct numpy array of wavelength values based on:
 
-		`rpix` : reference pixel index
-		`rval` : wavelength at reference pixel
-		`delt` : resolutions (delta lambda)
-		`npix` : length of desired array
-	"""
-```
+    *rpix* : reference pixel index  
+    *rval* : wavelength at reference pixel  
+    *delt* : resolutions (delta lambda)  
+    *npix* : length of desired array  
+
 ```Python
 class Spectrum:
 	"""
