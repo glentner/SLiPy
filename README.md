@@ -169,7 +169,7 @@ of the data such as distance, spectral type, etc.
 #<a name=DataTypeLoc></a>[DataType](SLiPy/DataType.py)
 
 Objects for representing astronomical data. Currently, this includes the
-*Spectrum* class and it's helper function *WaveVector*
+*Spectrum* class and it's helper function *WaveVector*.
 
 <a name=WaveVectorLoc></a>
 - **WaveVector** ( *rpix*, *rval*, *delt*, *npix* ):
@@ -178,30 +178,39 @@ Objects for representing astronomical data. Currently, this includes the
     pixel index, *rval* is the wavelength at reference pixel, *delt* is the
     resolutions (delta lambda), and *npix* is the length of desired array.
 
-```Python
-class Spectrum:
-	"""
-	Spectrum objects consist of a `data` vector, and optionally a  
-	`wavelength` vector (accessed with .data and .wave respectively).
-    (+, -, *, /, +=, -=, *=, /=) are overloaded. The LHS spectrum is the
-    reference and the RHS spectrum is resampled onto the wavelength space
-    of the LHS spectrum before applying operations pixel-wise. Scalar
-    operations applied to all pixels.
-	"""
-	def __init__(self, argument, **kwargs ):
-		"""
-		Hold spectrum `data` from file name `argument`. Alternatively,
-		construct spectra with a one-dimensional numpy.ndarray as `argument`.
-		`wavecal` is assumed to be true for file input.
+<a name=SpectrumLoc></a>
+- class **Spectrum** ( *filename*, *wavelengths* = None, \*\**kwargs* ):
 
-		kwargs = {
-    		'wavecal': True     , # fit wavelength vector to data
-    		'crpix1' : 'crpix1' , # reference pixel header keyword
-    		'crval1' : 'crval1' , # value at reference pixel
-    		'cdelt1' : 'cdelt1' , # resolution (delta lambda)
-		}
-    """
-```
+    The *Spectrum* class is a container for a *data* array and it's
+    corresponding wavelength calibration, *wave*. These are accessed with
+    .data and .wave, respectively. The data is read in from the file,
+    *filename*. Alternatively, it can be initialized by a set of numpy
+    arrays. To do this, *filename* can actually be the *data* array and
+    if this is the case, *wavelengths* must be assigned an array of equal
+    length containing the corresponding wavelength values.
+
+    The following operations are defined:
+    +, -, \*, /, +=, -=, \*=, /=. For each of these, if the second operand is
+    a scalar, the operation is performed pixel-wise on the *data* array. If
+    the other operand is also a *Spectrum* object, the RHS operand is
+    *resampled* onto the same pixel space as the LHS. The domain of the RHS
+    *wave* array must be entirely contained by or equivilent to the LHS
+    *wave* domain.
+
+    | Options   | Defaults | Descriptions                   |
+    |-----------|----------|--------------------------------|
+    | *wavecal* | True     | fit wavelength vector to data  |
+    | *crpix1*  | 'crpix1' | reference pixel header keyword |
+    | *crval1*  | 'crval1' | value at reference pixel       |
+    | *cdelt1*  | 'cdelt1' | resolution (delta lambda)      |
+
+    Member functions:
+
+    *.resample* ( *first*, *last*, *npix*, *kind* = 'linear'):
+
+        Resample onto new wavelength pixel space. Built with numpy.linspace
+        using *first*, *last*, and *npix* as arguments. Here, *kind* is
+        passed on to *scipy.interpolate.interp1d*.
 
 #<a name=SimbadLoc></a>Simbad
 

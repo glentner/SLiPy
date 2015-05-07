@@ -128,7 +128,7 @@ class Spectrum:
 			print(' --> IOError:', err)
 			raise DataError('Failed to construct Spectrum() object.')
 
-	def resample(self, first, last, npix, **kwargs):
+	def resample(self, first, last, npix, kind='linear'):
 		"""
 		Resample onto new wavelength pixel space. Built with numpy.linspace
 		using `first`, `last`, and `npix` as arguments.
@@ -137,34 +137,21 @@ class Spectrum:
 				kind : 'linear' # same argument from scipy.interpolate.interp1d
 			}
 		"""
-		try:
-			# default function parameters
-			options = Options( kwargs,
-				{
-					'kind':'linear' # from scipy.interpolate.interp1d
-				})
-			# assign function parameters
-			kind = options('kind')
 
-			# check function arguments
-			if first < self.wave[0] or last > self.wave[-1]:
-				raise DataError('Spectrum.resample() cannot interplate outside '
-				'the original domain of the flux data.')
-			if npix < 1:
-				raise DataError('Spectrum.resample() expects a positive '
-				'integer for `npix` argument.')
+		# check function arguments
+		if first < self.wave[0] or last > self.wave[-1]:
+			raise DataError('Spectrum.resample() cannot interplate outside '
+			'the original domain of the flux data.')
+		if npix < 1:
+			raise DataError('Spectrum.resample() expects a positive '
+			'integer for `npix` argument.')
 
-			# build interplant
-			f = interp1d(self.wave, self.data, kind=kind)
-			# build new wave vector
-			self.wave = np.linspace(first, last, npix) * self.wave.unit
-			# resample data
-			self.data = f(self.wave) * self.data.unit
-
-		except OptionsError as err:
-			print(' --> OptionsError:', err)
-			raise DataError('Failed keyword assignment from '
-			'Spectrum.resample().')
+		# build interplant
+		f = interp1d(self.wave, self.data, kind=kind)
+		# build new wave vector
+		self.wave = np.linspace(first, last, npix) * self.wave.unit
+		# resample data
+		self.data = f(self.wave) * self.data.unit
 
 	def copy(self):
 		"""
