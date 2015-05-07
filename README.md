@@ -58,6 +58,10 @@ already using, but for consistency I will keep it as it was from the author.
 
 Import data from, handle, and manipulate FITS format files.
 
+- **Find** (*toplevel* = './', *pattern* = '\*.fits')
+    Search for file paths below `toplevel` fitting `pattern`. Returns a list
+    of string values.
+    
 ```Python
 def Find(toplevel = './', pattern = '*.fits'):
     """
