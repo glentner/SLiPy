@@ -1,0 +1,689 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Slipy by gLENTNER</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/gLENTNER/SLiPy">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Slipy</h1>
+          <p>A Spectroscopy and astrophysical Library for Python 3</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/gLENTNER">gLENTNER</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a>SLiPy</h1>
+
+<h4>
+<a id="a-spectroscopy-and-astrophysical-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysical-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysical Library for Python 3</h4>
+
+<p>This Python package is an expanding code base for doing computational
+astronomy, particularly spectroscopy. It contains both a <em>Spectrum</em> class
+for handling spectra as objects (with +, -, *, /, etc... operations defined)
+and a growing suite of analysis tools.</p>
+
+<p><strong>Dependencies:</strong> Python 3.x, astropy, matplotlib, numpy, scipy</p>
+
+<p><a href="http://www.astropy.org/"><img src="http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat" alt="astropy"></a></p>
+
+<p>Quick note: the subpackage <strong>astrolibpy</strong> was not developed
+by me. It was coded by Sergey Koposov (<a href="https://github.com/segasai" class="user-mention">@segasai</a>) at Cambridge (then at least).
+I found it useful for performing velocity corrections on my spectroscopic
+data. I've modified several modules such that it can be imported and used in
+Python 3.x. See his README file.</p>
+
+<h2>
+<a id="contents" class="anchor" href="#contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contents</h2>
+
+<p>SLiPy is split into several components. The principle component is the
+subpackage <strong>SLiPy</strong> itself, which contains all the relevant
+functionality. Further, <strong>Data</strong> is a package I'm working on that will provide
+an API for searching astronomical data archives in a simple way. The other two
+subpackages <strong>Framework</strong> and <strong>astrolibpy</strong> are of utility to the project but
+not necessarily intended for export. As stated previously, astrolibpy was not
+developed by me, only modified. I'm not going to document it's usage here. Its
+name is unfortunate for me as it is a bit over done with the convention I was
+already using, but for consistency I will keep it as it was from the author.</p>
+
+<p>The following modules are elevated to the package level and are available
+to import:</p>
+
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Functions/Objects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#FitsLoc"><strong>Fits</strong></a></td>
+<td>
+<a href="#FindLoc">Find</a>, <a href="#RFindLoc">RFind</a>, <a href="#GetDataLoc">GetData</a>, <a href="#HeaderLoc">Header</a>, <a href="#SearchLoc">Search</a>, <a href="#PositionSortLoc">PositionSort</a>,</td>
+</tr>
+<tr>
+<td><a href="#DataTypeLoc"><strong>DataType</strong></a></td>
+<td>
+<a href="#WaveVectorLoc">WaveVector</a>, <a href="#SpectrumLoc">Spectrum</a>,</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li><p><a href="#FitsLoc"><strong>Fits</strong></a> [Find, RFind, GetData, Header, Search, PositionSort, ]</p></li>
+<li><p><a href="#DataTypeLoc"><strong>DataType</strong></a> [WaveVector, Spectrum, ]</p></li>
+<li><p><a href="#SimbadLoc"><strong>Simbad</strong></a> [Query, Position, Distance, Sptype, IDList, ]</p></li>
+<li><p><a href="#CorrelateLoc"><strong>Correlate</strong></a> [XCorr, ]</p></li>
+<li><p><a href="#TelluricLoc"><strong>Telluric</strong></a> [Correct, ]</p></li>
+<li><p><a href="#VelocityLoc"><strong>Velocity</strong></a> [HelioCorrect, ]</p></li>
+<li><p><a href="#ObservatoryLoc"><strong>Observatory</strong></a> [OHP, ]</p></li>
+<li><p><a href="#PlotLoc"><strong>Plot</strong></a> [SPlot, Iterate, ]</p></li>
+<li><p><a href="#ElodieLoc"><strong>Elodie</strong></a> [Archive, Download, ]</p></li>
+<li><p><a href="#MontageLoc"><strong>Montage</strong></a> [Mosaic, SubField, Field, SolveGrid, ]</p></li>
+<li><p><a href="#DisplayLoc"><strong>Display</strong></a> [Monitor, ]</p></li>
+</ul>
+
+<h1>
+<a id="fits" class="anchor" href="#fits" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="FitsLoc"></a><a href="SLiPy/Fits.py">Fits</a>
+</h1>
+
+<p>Manipulate FITS files. Import data into <em>Spectrum</em> objects. Filter results
+by right ascension and declination. Grab header elements. Search for attributes
+of the data such as distance, spectral type, etc.</p>
+
+<p><a name="FindLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Find</strong> (<em>toplevel</em> = './', <em>pattern</em> = '*.fits'):</p>
+
+<p>Search for file paths below <em>toplevel</em> fitting <em>pattern</em>. Returns a list
+of string values.</p>
+
+<hr>
+</li>
+</ul>
+
+<p><a name="RFindLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>RFind</strong> (<em>toplevel</em> = './', <em>pattern</em> = '*.fits'):</p>
+
+<p>Recursively search for file paths below <em>toplevel</em> fitting <em>pattern</em>.
+Returns a list of string values.</p>
+
+<hr>
+</li>
+</ul>
+
+<p><a name="GetDataLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>GetData</strong> ( *<em>files</em>, **<em>kwargs</em>):</p>
+
+<p>Import data from FITS <code>files</code>. Returns a list of <em>Spectrum</em> objects.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td><em>toplevel</em></td>
+<td>''</td>
+<td>request import from directory <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td><em>pattern</em></td>
+<td>'*.fits'</td>
+<td>pattern matching with <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td><em>recursive</em></td>
+<td>False</td>
+<td>search recursively below <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td><em>wavecal</em></td>
+<td>True</td>
+<td>fit wavelength vector to data</td>
+</tr>
+<tr>
+<td><em>crpix1</em></td>
+<td>'crpix1'</td>
+<td>reference pixel header keyword</td>
+</tr>
+<tr>
+<td><em>crval1</em></td>
+<td>'crval1'</td>
+<td>value at reference pixel</td>
+</tr>
+<tr>
+<td><em>cdelt1</em></td>
+<td>'cdelt1'</td>
+<td>resolution (delta lambda)</td>
+</tr>
+<tr>
+<td><em>xunits</em></td>
+<td>'Angstrom'</td>
+<td>wavelength units (astropy.units)</td>
+</tr>
+<tr>
+<td><em>yunits</em></td>
+<td>'ergs cm-2 s-1'</td>
+<td>units of the data</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+</li>
+</ul>
+
+<p><a name="HeaderLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Header</strong> ( <em>filename</em>, <em>keyword</em>, **<em>kwargs</em>):</p>
+
+<p>Retrieve <em>keyword</em> from FITS header in file <em>filename</em>.
+Return type depends on what is returned.</p>
+
+<hr>
+</li>
+</ul>
+
+<p><a name="SearchLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Search</strong> ( *<em>files</em>, **<em>kwargs</em>):</p>
+
+<p>Extract object names from Fits <code>files</code> and use Simbad module
+to resolve the <code>attribute</code> (a required keyword argument)
+from the SIMBAD astronomical database. Currently available attributes
+are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
+results (type depends on the values).</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>verbose</td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td>toplevel</td>
+<td>None</td>
+<td>search under <em>toplevel</em> directory</td>
+</tr>
+<tr>
+<td>pattern</td>
+<td>'*.fits'</td>
+<td>for files under <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td>recursive</td>
+<td>False</td>
+<td>search recusively under <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td>None</td>
+<td>attribute to search for (no default)</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+</li>
+</ul>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">PositionSort</span>( <span class="pl-smi">center</span>, <span class="pl-smi">radius</span>, *<span class="pl-smi">files</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Return a list of files from `files` that lie in a `radius` (in degrees)</span>
+<span class="pl-s">    from `center`, based on the `ra` (right ascension) and `dec` (declination).</span>
+<span class="pl-s"></span>
+<span class="pl-s">    kwargs = {</span>
+<span class="pl-s">            'ra'       : 'pos1'  , # header element for right ascension</span>
+<span class="pl-s">            'dec'      : 'pos2'  , # header element for declination</span>
+<span class="pl-s">            'obj'      : 'object', # header element for object id</span>
+<span class="pl-s">            'raconvert': True    , # convert decimal hours to decimal degrees</span>
+<span class="pl-s">            'verbose'  : True    , # display messages, progress</span>
+<span class="pl-s">            'toplevel' : ''      , # `toplevel` directory to look for files in</span>
+<span class="pl-s">            'recursive': False   , # search `recursive`ly below `toplevel`</span>
+<span class="pl-s">            'pattern'  : '*.fits', # glob `pattern` for file search</span>
+<span class="pl-s">            'useSimbad': False     # use Simbad instead of header elements</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span>
+</pre></div>
+
+<h1>
+<a id="datatype" class="anchor" href="#datatype" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="DataTypeLoc"></a>DataType</h1>
+
+<p>Objects for representing astronomical data.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">WaveVector</span>( <span class="pl-smi">rpix</span>, <span class="pl-smi">rval</span>, <span class="pl-smi">delt</span>, <span class="pl-smi">npix</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Construct numpy array of wavelength values based on:</span>
+<span class="pl-s"></span>
+<span class="pl-s">        `rpix` : reference pixel index</span>
+<span class="pl-s">        `rval` : wavelength at reference pixel</span>
+<span class="pl-s">        `delt` : resolutions (delta lambda)</span>
+<span class="pl-s">        `npix` : length of desired array</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Spectrum</span>:
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Spectrum objects consist of a `data` vector, and optionally a  </span>
+<span class="pl-s">    `wavelength` vector (accessed with .data and .wave respectively).</span>
+<span class="pl-s">    (+, -, *, /, +=, -=, *=, /=) are overloaded. The LHS spectrum is the</span>
+<span class="pl-s">    reference and the RHS spectrum is resampled onto the wavelength space</span>
+<span class="pl-s">    of the LHS spectrum before applying operations pixel-wise. Scalar</span>
+<span class="pl-s">    operations applied to all pixels.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span>
+    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, <span class="pl-smi">argument</span>, **<span class="pl-smi">kwargs</span> ):
+        <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">        Hold spectrum `data` from file name `argument`. Alternatively,</span>
+<span class="pl-s">        construct spectra with a one-dimensional numpy.ndarray as `argument`.</span>
+<span class="pl-s">        `wavecal` is assumed to be true for file input.</span>
+<span class="pl-s"></span>
+<span class="pl-s">        kwargs = {</span>
+<span class="pl-s">            'wavecal': True     , # fit wavelength vector to data</span>
+<span class="pl-s">            'crpix1' : 'crpix1' , # reference pixel header keyword</span>
+<span class="pl-s">            'crval1' : 'crval1' , # value at reference pixel</span>
+<span class="pl-s">            'cdelt1' : 'cdelt1' , # resolution (delta lambda)</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="simbad" class="anchor" href="#simbad" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="SimbadLoc"></a>Simbad</h1>
+
+<p>This module allows the user to query the SIMBAD astronomical database from
+inside Python or shell commands/scripts.</p>
+
+<p>As a shell script:</p>
+
+<pre><code>usage: Simbad.py @Attribute &lt;identifier&gt; [**kwargs]
+
+The 'Attribute' points to a function within this module and indicates
+what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
+a specific function. Currently available attributes are: `Position`,
+`Distance`, `Sptype` and `IDList`.
+
+The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
+"alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
+sure to use quotation to enclose it.
+
+The **kwargs is the conventional reference to Python keyword arguments.
+These should be specific to the 'Attribute' being pointed to.
+</code></pre>
+
+<p>The following objects/functions are available:</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Query</span>:
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Query( identifier, criteria, **kwargs ):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Class for querying the SIMBAD astronomical database for 'citeria'</span>
+<span class="pl-s">    of 'identifier'. This object is not intended to be used directly; it</span>
+<span class="pl-s">    is an abstraction and is used by the other functions which should be</span>
+<span class="pl-s">    called by the user.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    kwargs = {</span>
+<span class="pl-s">        'parse' : True,  # extract relevant data from SIMBAD return file</span>
+<span class="pl-s">        'dtype' : float, # output datatype</span>
+<span class="pl-s">    }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Position</span>( <span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Position( identifier, **kwargs ):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%C</span>00(d;C)'. Return right</span>
+<span class="pl-s">    ascension and declination in decimal degrees of `identifier`.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Example:</span>
+<span class="pl-s"></span>
+<span class="pl-s">    ra, dec = Position('Sirius')</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Distance</span>( <span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Distance( identifier, **kwargs ):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%P</span>LX' Return the distance</span>
+<span class="pl-s">    in parsecs to `identifier`.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Example:</span>
+<span class="pl-s"></span>
+<span class="pl-s">    d = Distance('rigel kent')</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Sptype</span>(<span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Sptype( identifier, **kwargs ):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%S</span>P'. Return the</span>
+<span class="pl-s">    spectral type as resolved by SIMBAD.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Example:</span>
+<span class="pl-s"></span>
+<span class="pl-s">    sptype = Sptype('HD 87901') # returns 'B8IVn' (HD 87901 is Regulus)</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">IDList</span>(<span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    IDList(identifier, **kwargs):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%I</span>DLIST'.</span>
+<span class="pl-s">    With `parse` = True, return a list of alternate IDs for</span>
+<span class="pl-s">    the `identifier` provided.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Example:</span>
+<span class="pl-s"></span>
+<span class="pl-s">    other_names = IDList('proxima centauri')</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="correlate" class="anchor" href="#correlate" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="CorrelateLoc"></a>Correlate</h1>
+
+<p>Module of correlation functions for astronomical data.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Xcorr</span>( <span class="pl-smi">spectrumA</span>, <span class="pl-smi">spectrumB</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Cross correlate two spectra of equal pixel length. The function returns</span>
+<span class="pl-s">    an integer value representing the best shift within a `lag` based on</span>
+<span class="pl-s">    the computed RMS of each configuration.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="telluric" class="anchor" href="#telluric" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="TelluricLoc"></a>Telluric</h1>
+
+<p>Removal of atmospheric adsorption lines in spectra.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Correct</span>(<span class="pl-smi">spectrum</span>, *<span class="pl-smi">calibration</span>, **<span class="pl-smi">kwargs</span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Perform a telluric correction on `spectrum` with one or more</span>
+<span class="pl-s">    `calibration` spectra. If more than one calibration spectrum is</span>
+<span class="pl-s">    provided, the one with the best fit after performing both a</span>
+<span class="pl-s">    horizontal cross correlation and a vertical amplitude fit is used.</span>
+<span class="pl-s">    The spectrum and all the calibration spectra must have the same</span>
+<span class="pl-s">    number of pixels (elements). If a horizontal shift in the calibration</span>
+<span class="pl-s">    spectra is appropriate, only the corresponding range of the spectrum</span>
+<span class="pl-s">    is divided out!</span>
+<span class="pl-s"></span>
+<span class="pl-s">    kwargs = {</span>
+<span class="pl-s">            lag  : 25            , # pixel shift limit for XCorr()</span>
+<span class="pl-s">            range:(0.5, 2.0, 151), # numpy.linspace for amplitude trials</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<p><img src="Figures/HD192640.png" alt="example" title="Results of Telluric.Correct()"></p>
+
+<p><strong>Figure 1:</strong> The above figure is an example of applying the
+<strong>Telluric.Correct()</strong> algorithm to a spectrum. In this case, six spectra of
+<em>Regulus</em> from the Elodie archive were used as calibration spectra.</p>
+
+<h1>
+<a id="velocity" class="anchor" href="#velocity" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="VelocityLoc"></a>Velocity</h1>
+
+<p>Radial velocity corrections for 1D spectra.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">HelioCorrect</span>( <span class="pl-smi">obs</span>, *<span class="pl-smi">spectra</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Perform heliocentric velocity corrects on `spectra` based on</span>
+<span class="pl-s">    `obs`ervatory information (longitude, latitude, altitude) and the</span>
+<span class="pl-s">    member attributes, ra (right ascension), dec (declination), and jd</span>
+<span class="pl-s">    (julian date) from the `spectra`.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    The `ra` and `dec` must be attached to each spectrum. `obs` should</span>
+<span class="pl-s">    be of type Observatory.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">IrafInput</span>( *<span class="pl-smi">files</span>, **<span class="pl-smi">kwargs</span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Build an input file for IRAF's rvcorrect task.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    `files` should be a list of FITS file names to build the output table for.</span>
+<span class="pl-s">    The user can optionally specify a `toplevel` directory to search for files</span>
+<span class="pl-s">    under. If `outfile` is given, write results to the file.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    kwargs = {</span>
+<span class="pl-s">        'toplevel' : ''      , # search `toplevel` directory for files</span>
+<span class="pl-s">        'pattern'  : '*.fits', # files under `toplevel` fitting `pattern`</span>
+<span class="pl-s">        'recursive': False   , # search recusively under `toplevel`</span>
+<span class="pl-s">        'outfile'  : ''        # write lines to file named `outfile`</span>
+<span class="pl-s">    }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">HeaderInfo</span>( <span class="pl-smi">fpath</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Helper function of IrafInput().</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Return a formatted string containing the year, month, and day of</span>
+<span class="pl-s">    observation from the FITS file with name `fpath`, as well as the</span>
+<span class="pl-s">    universal time of observation and the right ascension and declination</span>
+<span class="pl-s">    of the target.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="observatory" class="anchor" href="#observatory" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="ObservatoryLoc"></a>Observatory</h1>
+
+<p>Define observatory parameter similar to the IRAF task. All observatories
+should follow the following pattern. The user can add as many as they like
+to this module. I welcome suggestions.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">OHP</span>(<span class="pl-e">Observatory</span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    The Observatoire de Haute-Provence, France.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span>
+    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>):
+        <span class="pl-v">self</span>.name      <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Observatoire de Haute-Provence<span class="pl-pds">'</span></span>
+        <span class="pl-v">self</span>.latitude  <span class="pl-k">=</span> <span class="pl-c1">43.9308334</span> <span class="pl-c"># degrees N</span>
+        <span class="pl-v">self</span>.longitude <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-c"># degrees W</span>
+        <span class="pl-v">self</span>.altitude  <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-c"># meters</span></pre></div>
+
+<h1>
+<a id="plot" class="anchor" href="#plot" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="PlotLoc"></a>Plot</h1>
+
+<p>Convenience tools for plotting spectra. <strong>SPlot</strong> takes a Spectrum object
+and remains like a handle to the plot for that object. All of the typical
+member commands to matplotlib.pyplot exist, but once called are <em>remembered</em>.
+Additionally, spectra can be <code>overlay</code>ed. <strong>Iterate</strong> is a function that takes
+any number of SPlot figures and iterates through them interactively and lets
+the user mark which ones to <code>keep</code>. The return is a list of either the names
+of the figures or the actually objects themselves.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">SPlot</span>:
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Spectrum Plot - Plot the data in `spectrum`.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span>
+    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, <span class="pl-smi">spectrum</span>, **<span class="pl-smi">kwargs</span>):
+        <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">        Assign `options` in `kwargs` and initialize the plot.</span>
+<span class="pl-s"></span>
+<span class="pl-s">        kwargs = {</span>
+<span class="pl-s">            'marker': 'b-'          , # marker for plot</span>
+<span class="pl-s">            'label' : 'unspecified' , # label for data</span>
+<span class="pl-s">            'usetex': False           # pdflatex setting</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Iterate</span>( *<span class="pl-smi">plots</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Iterate thru `plots` to inspect data, the user marks `plots` of</span>
+<span class="pl-s">    interest. The function returns a list of `names` marked.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="elodie" class="anchor" href="#elodie" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="ElodieLoc"></a>Elodie</h1>
+
+<p>Methods for data retrieval from the Elodie Archive.</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Archive</span>:
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Import and parse ascii catalog of Elodie archive files. The complete</span>
+<span class="pl-s">    archive is stored in the member `data`. It's organized in a dictionary</span>
+<span class="pl-s">    by unique target names. The reduced archive of contains identified `HD`,</span>
+<span class="pl-s">    `BD`, `GC`, and `GJ` objects, choosing the file pertaining to the spectra</span>
+<span class="pl-s">    with the highest signal-to-noise ratio available.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Script</span>(<span class="pl-smi">filename</span>, <span class="pl-smi">pipeline</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Construct url script for Elodie archive given `filename` and optionally</span>
+<span class="pl-s">    `pipeline` instructions (e.g., `&amp;z=wrs|fca[1,nor]`).</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Download</span>( *<span class="pl-smi">files</span>, **<span class="pl-smi">kwargs</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Download `files` from Elodie archive via url scripts. The spectra can be</span>
+<span class="pl-s">    further reduced via Elodie`s pipeline with the following options.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    kwargs = {</span>
+<span class="pl-s">            'verbose'  : True           , # display messages, progress</span>
+<span class="pl-s">            'resample' : (min, max, res), # resample spectra (no default)</span>
+<span class="pl-s">            'normalize': True           , # continuum normalization</span>
+<span class="pl-s">            'outpath'  : './'           , # directory for downloaded files</span>
+<span class="pl-s">            'names'    : []               # alternative output names for `files`</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="montage" class="anchor" href="#montage" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="MontageLoc"></a>Montage</h1>
+
+<p>Wrapper to the <em>montage</em> mosaic software. See
+<a href="http://montage.ipac.caltech.edu/">online</a>. The user should have Montage`s
+executables available on their path. This module automates the process of
+constructing large mosaics. It is largely modeled after the examples given on
+the website. More documentation will be provided in the future ...</p>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Mosaic</span>(<span class="pl-smi">resolution</span>, *<span class="pl-smi">folders</span>, **<span class="pl-smi">kwargs</span>):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Mosaic(resolution, *folders, **kwargs):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Conduct standard build procedures for all `folders`. `resolution` is the</span>
+<span class="pl-s">    number of pixels per degree for the output image. Note: `folders` should</span>
+<span class="pl-s">    be absolute paths. See the M101 example online. All `folder`s should</span>
+<span class="pl-s">    have subfolders "projected", "corrected", "final", and "differences"</span>
+<span class="pl-s">    available as well as a "raw" directory containing the images to be</span>
+<span class="pl-s">    mosaic-ed.</span>
+<span class="pl-s"></span>
+<span class="pl-s">    kwargs = {</span>
+<span class="pl-s">            verbose : True, # display messages, progress</span>
+<span class="pl-s">            bkmodel : True  # model and correct for background effects</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">SolveGrid</span>( <span class="pl-smi">sides</span>, <span class="pl-smi">grid</span> ):
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    SolveGrid( sides, grid ):</span>
+<span class="pl-s"></span>
+<span class="pl-s">    Helper function for the Field and SubField classes. Both `sides` and `grid`</span>
+<span class="pl-s">    need to be array-like and of length two. `sides` is the side length of the</span>
+<span class="pl-s">    field in decimal degrees in right ascension and declination respectively.</span>
+<span class="pl-s">    `grid` specifies the subdivision along these axis (e.g., (2,2) says 2x2).</span>
+<span class="pl-s"></span>
+<span class="pl-s">    The user should mindful of their choices. If the side lengths cannot be</span>
+<span class="pl-s">    subdivided into well-behaved (rational) segments, higher decimal places</span>
+<span class="pl-s">    will be lossed in the SubField.ArchiveList() task resulting in small</span>
+<span class="pl-s">    gaps in the mosaic.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+
+<h1>
+<a id="display" class="anchor" href="#display" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="DisplayLoc"></a>Display</h1>
+
+<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Monitor</span>:
+    <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">    Class for displaying a progress bar during iterative tasks.</span>
+<span class="pl-s">    <span class="pl-pds">"""</span></span>
+    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, **<span class="pl-smi">kwargs</span> ):
+        <span class="pl-s"><span class="pl-pds">"""</span></span>
+<span class="pl-s">        kwargs = {</span>
+<span class="pl-s">            'width'    : 45    , # number of characters wide</span>
+<span class="pl-s">            'numbers'  : True  , # display numberical percent</span>
+<span class="pl-s">            'template' : '[=&gt;]', # template for progress bars</span>
+<span class="pl-s">            'freq'     : 0.25  , # refresh rate</span>
+<span class="pl-s">            'ETC'      : False , # display estimated time of completion</span>
+<span class="pl-s">            'inline'   : True    # vanish after completion</span>
+<span class="pl-s">        }</span>
+<span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-000000-01");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
