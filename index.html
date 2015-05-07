@@ -93,14 +93,25 @@ to import:</p>
 <td>
 <a href="#WaveVectorLoc">WaveVector</a>, <a href="#SpectrumLoc">Spectrum</a>,</td>
 </tr>
+<tr>
+<td><a href="#SimbadLoc"><strong>Simbad</strong></a></td>
+<td>
+<a href="#QueryLoc">Query</a>, <a href="#PositionLoc">Position</a>, <a href="#DistanceLoc">Distance</a>, <a href="#SptypeLoc">Sptype</a>, <a href="#IDListLoc">IDList</a>,</td>
+</tr>
+<tr>
+<td><a href="#CorrelateLoc"><strong>Correlate</strong></a></td>
+<td>
+<a href="#XCorrLoc">XCorr</a>,</td>
+</tr>
+<tr>
+<td><a href="#TelluricLoc"><strong>Telluric</strong></a></td>
+<td>
+<a href="#CorrectLoc">Correct</a>,</td>
+</tr>
 </tbody>
 </table>
 
 <ul>
-<li><p><a href="#FitsLoc"><strong>Fits</strong></a> [Find, RFind, GetData, Header, Search, PositionSort, ]</p></li>
-<li><p><a href="#DataTypeLoc"><strong>DataType</strong></a> [WaveVector, Spectrum, ]</p></li>
-<li><p><a href="#SimbadLoc"><strong>Simbad</strong></a> [Query, Position, Distance, Sptype, IDList, ]</p></li>
-<li><p><a href="#CorrelateLoc"><strong>Correlate</strong></a> [XCorr, ]</p></li>
 <li><p><a href="#TelluricLoc"><strong>Telluric</strong></a> [Correct, ]</p></li>
 <li><p><a href="#VelocityLoc"><strong>Velocity</strong></a> [HelioCorrect, ]</p></li>
 <li><p><a href="#ObservatoryLoc"><strong>Observatory</strong></a> [OHP, ]</p></li>
@@ -241,7 +252,7 @@ Return type depends on what is returned.</p>
 <li>
 <p><strong>Search</strong> ( *<em>files</em>, **<em>kwargs</em>):</p>
 
-<p>Extract object names from Fits <code>files</code> and use Simbad module
+<p>Extract object names from Fits <em>files</em> and use Simbad module
 to resolve the <code>attribute</code> (a required keyword argument)
 from the SIMBAD astronomical database. Currently available attributes
 are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
