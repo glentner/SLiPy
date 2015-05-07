@@ -62,6 +62,8 @@ of the data such as distance, spectral type, etc.
 
 - **Find** (*toplevel* = './', *pattern* = '\*.fits'):
 
+    ---
+
     Search for file paths below *toplevel* fitting *pattern*. Returns a list
     of string values.
 
