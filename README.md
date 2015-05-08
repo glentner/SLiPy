@@ -334,15 +334,15 @@ Correlation functions for astronomical data.
     |-----------|-------------|----------------------------------|
     | *lag*     | 25          | pixel range to shift over        |
 
-#<a name=TelluricLoc></a>Telluric
+#<a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
 
-Removal of atmospheric adsorption lines in spectra.
+Removal of atmospheric absorption lines in spectra.
 
-```Python
-def Correct(spectrum, *calibration, **kwargs):
-	"""
-	Perform a telluric correction on `spectrum` with one or more
-	`calibration` spectra. If more than one calibration spectrum is
+<a name=CorrectLoc></a>
+- **Correct** ( *spectrum*, \**calibration*, \*\**kwargs* ):
+
+	Perform a telluric correction on *spectrum* with one or more
+	*calibration* spectra. If more than one calibration spectrum is
 	provided, the one with the best fit after performing both a
 	horizontal cross correlation and a vertical amplitude fit is used.
 	The spectrum and all the calibration spectra must have the same
@@ -350,18 +350,17 @@ def Correct(spectrum, *calibration, **kwargs):
 	spectra is appropriate, only the corresponding range of the spectrum
 	is divided out!
 
-	kwargs = {
-			lag  : 25            , # pixel shift limit for XCorr()
-			range:(0.5, 2.0, 151), # numpy.linspace for amplitude trials
-		}
-	"""
-```
+    | Options   | Defaults        | Descriptions                         |
+    |-----------|-----------------|--------------------------------------|
+    | *lag*     | 25              | pixel range to shift over            |
+    | *range*   | (0.5, 2.0, 151) | numpy.linspace for amplitude fitting |
 
-![example](Figures/HD192640.png)
+    ![example](Figures/HD192640.png)
 
-**Figure 1:** The above figure is an example of applying the
-**Telluric.Correct()** algorithm to a spectrum. In this case, six spectra of
-*Regulus* from the Elodie archive were used as calibration spectra.
+    **Figure 1:** The above figure is an example of applying the
+    **Telluric.Correct()** algorithm to a spectrum. In this case, six spectra of
+    *Regulus* from the Elodie archive were used as calibration spectra.
+
 
 #<a name=VelocityLoc></a>Velocity
 
