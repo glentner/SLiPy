@@ -38,6 +38,7 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
+## from slipy import
 | Modules | Functions/Classes |
 |---------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
@@ -50,9 +51,9 @@ to import:
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
 |[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
 
-
+## from slipy.data import
 | Archives | Functions/Classes |
-|----------|-------------------|
+|---------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
 ##Installation
