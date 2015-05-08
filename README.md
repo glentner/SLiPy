@@ -75,7 +75,7 @@ SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
 for every module derived from `Exception`. The naming convention is for a
 module's exception to be named after the module with the addition of the word
-``Error''. So the *Fits* module will throw *FitsError*s.
+''Error''. So the *Fits* module will throw a *FitsError*.
 
 ##Contribute
 
@@ -92,7 +92,7 @@ University of Louisville
 
 Website: [glentner.github.io](http://glentner.github.io)
 
----
+# Documentation
 
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
