@@ -197,7 +197,7 @@ of the data such as distance, spectral type, etc.
     *useSimbad* | False    | use *Simbad* instead of header elements  |
 
 
-#<a name=DataTypeLoc></a>[DataType](SLiPy/DataType.py)
+##<a name=DataTypeLoc></a>[DataType](SLiPy/DataType.py)
 
 Objects for representing astronomical data. Currently, this includes the
 *Spectrum* class and it's helper function *WaveVector*.
@@ -241,6 +241,7 @@ Objects for representing astronomical data. Currently, this includes the
     | *xunits*  | 'Angstrom'     | units for wavelength array     |
     | *yunits*  | 'erg cm-2 s-1' | units for data array           |
 
+    <br>
     Member functions:
 
     - *resample* ( \**args*, \*\**kwargs* ):
@@ -263,7 +264,7 @@ Objects for representing astronomical data. Currently, this includes the
         spectrum *equal* to another, say SpectrumA = SpectrumB.copy()
 
 
-#<a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
+##<a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts. It's four current major functions
@@ -352,7 +353,7 @@ $ Simbad.py
     other_names = Simbad.IDList('proxima centauri')
     ```
 
-#<a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
+##<a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
 
 Correlation functions for astronomical data.
 
@@ -366,7 +367,7 @@ Correlation functions for astronomical data.
     |-----------|-------------|----------------------------------|
     | *lag*     | 25          | pixel range to shift over        |
 
-#<a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
+##<a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
 
 Removal of atmospheric absorption lines in spectra.
 
@@ -396,7 +397,7 @@ Removal of atmospheric absorption lines in spectra.
     *Regulus* from the Elodie archive were used as calibration spectra.
 
 
-#<a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
+##<a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
 
 Radial velocity corrections for 1D spectra.
 
@@ -441,7 +442,7 @@ Radial velocity corrections for 1D spectra.
     | *outfile*   | None      | write lines to file named *outfile*   |
 
 
-#<a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
+##<a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
 
 Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
@@ -460,7 +461,7 @@ class OHP(Observatory):
 		self.altitude  = 650        # meters
 ```
 
-#<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
+##<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
 
 Convenient wrappers to matplotlib for plotting spectra. A *SPlot* simply
 creates a handle to remember figure attributes, to quickly go from looking
@@ -529,7 +530,7 @@ at one spectra to another. One can also *overlay* spectra.
     | *keep*  | 'name'    | alternative is 'plot' |
 
 
-#<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
+##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
 
 [Montage](http://montage.ipac.caltech.edu/) is a very powerful suite of C code
 for creating image mosaics. This module is a wrapper to automate not only the
@@ -694,7 +695,8 @@ mosaic each *site* before combining them into a *master* mosaic.
         Collect all SubField/master mosaics into a single folder and
         run Mosaic() on them for a single final image.
 
-#<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
+
+##<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
 Methods for data retrieval from the Elodie Archive.
 
