@@ -538,8 +538,8 @@ mosaic each *site* before combining them into a *master* mosaic.
     directories, there should already exist the standard folder structure
     ```
     folder/
-      |--raw/
-      |    |-- <location of FITS images>
+      |--images/
+      |    |-- <location of raw FITS images>
       |
       |--projected/
       |--differences/
@@ -547,6 +547,8 @@ mosaic each *site* before combining them into a *master* mosaic.
       |--final/
     ```
 
+    The mosaic will be deposited at *final/mosaic.fits*.
+    
     | Options    | Defaults | Descriptions                             |
     |------------|----------|------------------------------------------|
     | *verbose*  | True     | display messages, progress               |
@@ -563,6 +565,10 @@ mosaic each *site* before combining them into a *master* mosaic.
     respectively. *sides* needs to give the side lengths of the desired
     mosaic in decimal degrees (width-RA, height-DEC). *grid* should be the
     grid division for the field (e.g., (2, 2) means 2x2 grid).
+
+    There will be a directory created for each *site* and also another *master*
+    directory. The final resulting mosaic will be deposited at
+    *final/mosaic.fits* here.
 
     | Options   | Defaults | Descriptions                             |
     |-----------|----------|------------------------------------------|
@@ -581,9 +587,66 @@ mosaic each *site* before combining them into a *master* mosaic.
 
     The user should execute the following available methods in this order:
 
-    - *ArchiveList* ( *verbose* = True ):
+    - *ArchiveList* ( \*\**kwargs* ):
 
-        Run the `mArchiveList` command on the *site* grid.
+        Run the `mArchiveList` command on the *site* grid. The only keyword
+        argument is *verbose* which defaults to True.
+
+    - *ArchiveExec* ( \*\**kwargs* ):
+
+        Run `mArchiveExec` on each *site* in the SubField. The only keyword
+        argument is *verbose* which defaults to True.
+
+    - *Build* ( *resolution*, \*\**kwargs*):
+
+        Run the build process for the *sites* in this SubField. See the
+        Montage.Mosaic() function documentation.
+
+    - *Collect* ( \*\**kwargs* ):
+
+        Collect the mosaics from all *site* locations into a master *images*
+        folder. The only keyword argument is *verbose* which defaults to True.
+
+    - *Merge* ( *resolution*, \*\**kwargs* ):
+
+        Merge all *site* mosaics into a single master SubField mosaic. We are
+        now calling Montage.Mosaic() on each *site*.
+
+<a name=MFieldLoc></a>
+- class **Field** (*center*, *sides*, *grid*, *subgrid*, \*\**kwargs* ):
+
+    Large image mosaic manager for Montage. This class (in terms of its
+    usage) is the same as the *SubField* class, except that here we are all
+    the subfields. So all the member functions are the same name and purpose,
+    but instead act to call that same function on each subfield. Here, all
+    the constructor arguments are as before, with the additions of *subgrid*
+    which is also to be array-like of length two. *grid* will be the first
+    level division to find the centers and side lengths of all the subfields
+    and *subgrid* will be the further sub-division passed down to the daughter
+    subfields.
+
+    | Options   | Defaults | Descriptions                             |
+    |-----------|----------|------------------------------------------|
+    | *verbose* | True     | display messages, progress               |
+    | *survey*  | 'DSS'    | DSS, SDSS, 2MASS                         |
+    | *band*    | 'DSS2B'  | filter for *survey*, see *bands* dict    |
+    | *pad*     | 0.0      | amount to add (degrees) around *sites*   |
+
+    The available filter band for each survey are as follows
+
+    | Survey  | Bands                                                   |
+    |---------|---------------------------------------------------------|
+    | 'DSS'   | 'J', 'H', 'K'                                           |
+    | 'SDSS'  | 'U', 'G', 'R', 'I', 'Z'                                 |
+    | '2MASS' | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
+
+    All the member functions are the same name as in *SubField*, but now with
+    the addition of a final step:
+
+    - *Finalize* ( *resolution*, \*\**kwargs* ):
+
+        Collect all SubField/master mosaics into a single folder and
+        run Mosaic() on them for a single final image.
 
 #<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
