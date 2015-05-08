@@ -460,7 +460,7 @@ at one spectra to another. One can also *overlay* spectra.
     matplotlib; however, these calls are remembered. So when you go to *draw*
     the figure again, you are back where you left off.
 
-    - **.** *draw* ():
+    - **.** *draw*( ):
 
         Rebuild and render the figure.
 
