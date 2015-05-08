@@ -481,111 +481,25 @@ at one spectra to another. One can also *overlay* spectra.
 
         Switch either on or off (*value* = True | False) the vertical offset.
 
-```Python
-def Iterate( *plots, **kwargs ):
-	"""
-	Iterate thru `plots` to inspect data, the user marks `plots` of
-	interest. The function returns a list of `names` marked.
-	"""
-```
+    - *overlay*( \**splots* ):
 
-#<a name=ElodieLoc></a>Elodie
+        Given one or more *splots*, *overlay* the figures.
 
-Methods for data retrieval from the Elodie Archive.
+    - *restore*( ):
 
-```Python
-class Archive:
-    """
-    Import and parse ascii catalog of Elodie archive files. The complete
-    archive is stored in the member `data`. It's organized in a dictionary
-    by unique target names. The reduced archive of contains identified `HD`,
-    `BD`, `GC`, and `GJ` objects, choosing the file pertaining to the spectra
-    with the highest signal-to-noise ratio available.
-    """
-```
-```Python
-def Script(filename, pipeline=''):
-	"""
-	Construct url script for Elodie archive given `filename` and optionally
-	`pipeline` instructions (e.g., `&z=wrs|fca[1,nor]`).
-	"""
-```
-```Python
-def Download( *files, **kwargs ):
-    """
-    Download `files` from Elodie archive via url scripts. The spectra can be
-    further reduced via Elodie`s pipeline with the following options.
+        Restore the figure to only the original spectrum.
 
-    kwargs = {
-            'verbose'  : True           , # display messages, progress
-            'resample' : (min, max, res), # resample spectra (no default)
-            'normalize': True           , # continuum normalization
-            'outpath'  : './'           , # directory for downloaded files
-            'names'    : []               # alternative output names for `files`
-        }
-    """
-```
+    - *save*( *filename* ):
 
-#<a name=MontageLoc></a>Montage
+        Save the figure to a file called *filename*. The file format is derived
+        from the extention of *filename*.
 
-Wrapper to the *montage* mosaic software. See
-[online](http://montage.ipac.caltech.edu/). The user should have Montage`s
-executables available on their path. This module automates the process of
-constructing large mosaics. It is largely modeled after the examples given on
-the website. More documentation will be provided in the future ...
+<a name=IterateLoc></a>
+- **Iterate**( \**splots*, \*\**kwargs* ):
 
-```Python
-def Mosaic(resolution, *folders, **kwargs):
-	"""
-	Mosaic(resolution, *folders, **kwargs):
+	Iterate thru *splots* to inspect data, the user marks spectra of
+	interest. The function returns a list of *keepers*.
 
-	Conduct standard build procedures for all `folders`. `resolution` is the
-	number of pixels per degree for the output image. Note: `folders` should
-	be absolute paths. See the M101 example online. All `folder`s should
-    have subfolders "projected", "corrected", "final", and "differences"
-    available as well as a "raw" directory containing the images to be
-    mosaic-ed.
-
-	kwargs = {
-			verbose : True, # display messages, progress
-			bkmodel : True  # model and correct for background effects
-		}
-	"""
-```
-```Python
-def SolveGrid( sides, grid ):
-	"""
-	SolveGrid( sides, grid ):
-
-	Helper function for the Field and SubField classes. Both `sides` and `grid`
-	need to be array-like and of length two. `sides` is the side length of the
-	field in decimal degrees in right ascension and declination respectively.
-	`grid` specifies the subdivision along these axis (e.g., (2,2) says 2x2).
-
-	The user should mindful of their choices. If the side lengths cannot be
-	subdivided into well-behaved (rational) segments, higher decimal places
-	will be lossed in the SubField.ArchiveList() task resulting in small
-	gaps in the mosaic.
-	"""
-```
-
-#<a name=DisplayLoc></a>Display
-
-
-```Python
-class Monitor:
-	"""
-	Class for displaying a progress bar during iterative tasks.
-	"""
-	def __init__(self, **kwargs ):
-        """
-        kwargs = {
-			'width'    : 45    , # number of characters wide
-			'numbers'  : True  , # display numberical percent
-			'template' : '[=>]', # template for progress bars
-			'freq'     : 0.25  , # refresh rate
-			'ETC'      : False , # display estimated time of completion
-			'inline'   : True    # vanish after completion
-		}
-        """
-```
+    | Options | Defaults  | Descriptions          |
+    |---------|-----------|-----------------------|
+    | *keep*  | 'name'    | alternative is 'plot' |
