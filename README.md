@@ -42,10 +42,10 @@ to import:
 |--------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
-|[**Simbad**](#SimbadLoc)|[Query](#QueryLoc), [Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
+|[**Simbad**](#SimbadLoc)|[Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
 |[**Correlate**](#CorrelateLoc)|[XCorr](#XCorrLoc), |
 |[**Telluric**](#TelluricLoc)|[Correct](#CorrectLoc), |
-|[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), |
+|[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), [IrafInput](#IrafInputLoc),  |
 |[**Observatory**](#ObservatoryLoc)|[OHP](#OHPLoc), |
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
 |[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
@@ -364,50 +364,40 @@ Removal of atmospheric absorption lines in spectra.
     *Regulus* from the Elodie archive were used as calibration spectra.
 
 
-#<a name=VelocityLoc></a>Velocity
+#<a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
 
 Radial velocity corrections for 1D spectra.
 
-```Python
-def HelioCorrect( obs, *spectra, **kwargs ):
-	"""
-	Perform heliocentric velocity corrects on `spectra` based on
-	`obs`ervatory information (longitude, latitude, altitude) and the
-	member attributes, ra (right ascension), dec (declination), and jd
-	(julian date) from the `spectra`.
+<a name=HelioCorrectLoc></a>
+- **HelioCorrect** ( *observatory*, \**spectra*, \*\**kwargs* ):
 
-    The `ra` and `dec` must be attached to each spectrum. `obs` should
-    be of type Observatory.
-	"""
-```
-```Python
-def IrafInput( *files, **kwargs):
-	"""
+    Perform heliocentric velocity corrects on *spectra* based on
+    *observatory* parameters (*longitude*, *latitude*, *altitude*) and the
+    member attributes, *ra* (right ascension), *dec* (declination), and *jd*
+    (julian date) from the *spectra*.
+
+    | Options    | Defaults        | Descriptions               |
+    |------------|-----------------|----------------------------|
+    | *verbose*  | False           | display messages, progress |
+
+
+<a name=IrafInputLoc></a>
+- **IrafInput** ( \**files*, \*\**kwargs* ):
+
 	Build an input file for IRAF's rvcorrect task.
 
-	`files` should be a list of FITS file names to build the output table for.
-	The user can optionally specify a `toplevel` directory to search for files
-    under. If `outfile` is given, write results to the file.
+	*files* should be a list of FITS file names to build the output table for.
+	The user can optionally specify a *toplevel* directory to search for files
+    under. If *outfile* is given, write results to the file.
 
-	kwargs = {
-		'toplevel' : ''      , # search `toplevel` directory for files
-		'pattern'  : '*.fits', # files under `toplevel` fitting `pattern`
-		'recursive': False   , # search recusively under `toplevel`
-		'outfile'  : ''        # write lines to file named `outfile`
-	}
-	"""
-```
-```Python
-def HeaderInfo( fpath ):
-	"""
-	Helper function of IrafInput().
+    | Options     | Defaults  | Descriptions                          |
+    |-------------|-----------|---------------------------------------|
+    | *toplevel*  | None      | search *toplevel* directory for files |
+    | *pattern*   | '\*.fits' | pattern matching under *toplevel*     |
+    | *recursive* | False     | search recusively under *toplevel*    |
+    | *outfile*   | None      | write lines to file named *outfile*   |
 
-	Return a formatted string containing the year, month, and day of
-	observation from the FITS file with name `fpath`, as well as the
-	universal time of observation and the right ascension and declination
-	of the target.
-	"""
-```
+
 #<a name=ObservatoryLoc></a>Observatory
 
 Define observatory parameter similar to the IRAF task. All observatories
