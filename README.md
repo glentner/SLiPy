@@ -409,23 +409,22 @@ Radial velocity corrections for 1D spectra.
     | *outfile*   | None      | write lines to file named *outfile*   |
 
 
-#<a name=ObservatoryLoc></a>Observatory
+#<a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
 
 Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
 to this module. I welcome suggestions.
 
-```Python
-class OHP(Observatory):
-	"""
+<a name=OHPLoc></a>
+- class **OHP** (Observatory):
+
 	The Observatoire de Haute-Provence, France.
-	"""
-	def __init__(self):
-		self.name      = 'Observatoire de Haute-Provence'
-		self.latitude  = 43.9308334 # degrees N
-		self.longitude = 356.28667  # degrees W
-		self.altitude  = 650        # meters
-```
+
+    - *.name*      = 'Observatoire de Haute-Provence'
+	- *.latitude*  = 43.9308334 # degrees N
+	- *.longitude* = 356.28667  # degrees W
+	- *.altitude*  = 650        # meters
+
 
 #<a name=PlotLoc></a>Plot
 
