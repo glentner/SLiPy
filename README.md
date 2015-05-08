@@ -548,7 +548,7 @@ mosaic each *site* before combining them into a *master* mosaic.
     ```
 
     The mosaic will be deposited at *final/mosaic.fits*.
-    
+
     | Options    | Defaults | Descriptions                             |
     |------------|----------|------------------------------------------|
     | *verbose*  | True     | display messages, progress               |
@@ -612,11 +612,36 @@ mosaic each *site* before combining them into a *master* mosaic.
         Merge all *site* mosaics into a single master SubField mosaic. We are
         now calling Montage.Mosaic() on each *site*.
 
+    **Example:**
+    ```python
+    from slipy import Montage, Simbad
+
+    mosaic = Montage.SubField(
+
+        Simbad.Position('Pleiades'), # center of the Pleiades
+        (4, 4),                      # side lengths of mosaic
+        (2, 2)                       # grid pattern creates 2x2 degree `sites`
+    )
+
+    mosaic.ArchiveList()
+    mosaic.ArchiveExec()
+    mosaic.Build()
+    mosaic.Collect()
+    mosaic.Merge()
+
+    # If you have APLpy
+    import aplpy
+
+    fig = aplpy.FITSFigure('master/final/mosaic.fits')
+    fig.show_grayscale()
+
+    ```
+
 <a name=MFieldLoc></a>
 - class **Field** (*center*, *sides*, *grid*, *subgrid*, \*\**kwargs* ):
 
     Large image mosaic manager for Montage. This class (in terms of its
-    usage) is the same as the *SubField* class, except that here we are all
+    usage) is the same as the *SubField* class, except that here we managing
     the subfields. So all the member functions are the same name and purpose,
     but instead act to call that same function on each subfield. Here, all
     the constructor arguments are as before, with the additions of *subgrid*
