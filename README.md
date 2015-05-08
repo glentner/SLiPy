@@ -317,21 +317,22 @@ $ Simbad.py
 
     Example:
     ```python
-    other_names = IDList('proxima centauri')
+    other_names = Simbad.IDList('proxima centauri')
     ```
 
-#<a name=CorrelateLoc></a>Correlate
+#<a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
 
-Module of correlation functions for astronomical data.
+Correlation functions for astronomical data.
 
-```Python
-def Xcorr( spectrumA, spectrumB, **kwargs ):
-	"""
-	Cross correlate two spectra of equal pixel length. The function returns
-	an integer value representing the best shift within a `lag` based on
-	the computed RMS of each configuration.
-	"""
-```
+<a name=XCorrLoc></a>
+- **XCorr** ( *spectrumA*, *spectrumB*, \*\**kwargs* ):
+
+    The function returns an integer value representing the best shift within
+    a *lag* based on the computed RMS of each configuration.
+
+    | Options   | Defaults    | Descriptions                     |
+    |-----------|-------------|----------------------------------|
+    | *lag*     | 25          | pixel range to shift over        |
 
 #<a name=TelluricLoc></a>Telluric
 
