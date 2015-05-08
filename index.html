@@ -1,44 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Slipy by gLENTNER</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <title>Slipy by gLENTNER</title>
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/gLENTNER/SLiPy">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+    <header>
+      <div class="inner">
+        <h1>Slipy</h1>
+        <h2>A Spectroscopy and astrophysical Library for Python 3</h2>
+        <a href="https://github.com/gLENTNER/SLiPy" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
 
-    <div class="wrapper">
-
-      <section>
-        <div id="title">
-          <h1>Slipy</h1>
-          <p>A Spectroscopy and astrophysical Library for Python 3</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/gLENTNER">gLENTNER</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
-
-        <h1>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
 <a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
 </h1>
 
@@ -148,8 +138,8 @@ to import:</p>
 
 <p>To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a <em>tar</em> or <em>zip</em> archive or by
-cloning it (<code>git clone http://github.com/glentner/SLiPy</code>). Extract it's
-contents to wherever you like in a directory (ostensibly names <em>slipy</em>, but
+cloning it - <code>git clone http://github.com/glentner/SLiPy</code>. Extract it's
+contents to wherever you like in a directory (ostensibly named <em>slipy</em>, but
 actually you can call this library whatever you want as well because all
 the imports are <em>relative</em>). Then add the parent directory to your <code>PYTHONPATH</code>
 if it isn't already. For example:</p>
@@ -160,6 +150,15 @@ $ echo "export PYTHONPATH=$PYTHONPATH:~" &gt;&gt; ~/.bashrc
 </code></pre>
 
 <p>And your ready to go!</p>
+
+<h2>
+<a id="exceptions" class="anchor" href="#exceptions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exceptions</h2>
+
+<p>SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
+common handle with a human readable message. There is a unique exception class
+for every module derived from <code>Exception</code>. The naming convention is for a
+module's exception to be named after the module with the addition of the word
+''Error''. So the <em>Fits</em> module will throw a <em>FitsError</em>.</p>
 
 <h2>
 <a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h2>
@@ -178,7 +177,8 @@ University of Louisville</p>
 
 <p>Website: <a href="http://glentner.github.io">glentner.github.io</a></p>
 
-<hr>
+<h1>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h1>
 
 <h1>
 <a id="fits" class="anchor" href="#fits" aria-hidden="true"><span class="octicon octicon-link"></span></a>
@@ -515,8 +515,8 @@ applied if there are none currently.</p>
 <li>
 <p><em>.resample</em> ( *<em>args</em>, **<em>kwargs</em> ):</p>
 
-<p>If given a single argument, it is taken to be a <code>Spectrum</code> object,
-and <code>self</code> is resampled onto the pixel space of the other spectrum.
+<p>If given a single argument, it is taken to be a <em>Spectrum</em> object,
+and <em>self</em> is resampled onto the pixel space of the other spectrum.
 Otherwise, three arguments are expected. The first and second argument
 should define the lower and upper wavelength value of a domain,
 respectively. The third argument should be the number of elements
@@ -806,7 +806,7 @@ is divided out!</p>
 </tbody>
 </table>
 
-<p><img src="Figures/HD192640.png" alt="example" title="Results of Telluric.Correct()"></p>
+<p><img src="Figures/HD192640.png" alt="example"></p>
 
 <p><strong>Figure 1:</strong> The above figure is an example of applying the
 <strong>Telluric.Correct()</strong> algorithm to a spectrum. In this case, six spectra of
@@ -1080,11 +1080,26 @@ the website. More documentation will be provided in the future ...</p>
 <span class="pl-s">            'inline'   : True    # vanish after completion</span>
 <span class="pl-s">        }</span>
 <span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
-      </section>
+        </section>
 
+        <aside id="sidebar">
+          <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/gLENTNER/SLiPy"></a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-              <script type="text/javascript">
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
