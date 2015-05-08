@@ -147,6 +147,7 @@ def Download( *files, **kwargs ):
         pipeline += '|fca[1,nor]'
 
     if resample:
+		resample = [ str(x) for x in resample ]
         pipeline += '|wrs[1,' + ','.join(resample) + ']'
 
     if verbose:

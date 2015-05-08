@@ -557,3 +557,13 @@ Methods for data retrieval from the Elodie Archive.
     | *normalize* | True            | continuum normalization              |
     | *outpath*   | './'            | directory for downloaded *files*     |
     | *names*     | []              | alternative output names for *files* |
+
+    **Example:**
+    ```python
+    # all files in the archive for Altair (file name is first element in pair)
+    files = [ x[0] for x in archive.data['HD187642'] ]
+
+    # download files to current directory, resample spectrum to wavelengths
+    # between 5850 and 5950 with a resolution of 0.01 Angstroms per pixel
+    Elodie.Download( *files, resample=(5850, 5950, 0.01) )
+    ```
