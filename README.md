@@ -15,7 +15,7 @@ Python 3.x,
 [scipy](http://www.scipy.org)
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
-[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](http://www.gnu.org/copyleft/gpl.html)
+[![GitHub license](http://img.shields.io/badge/license-GPLv3-blue.svg?style=flat)](http://www.gnu.org/copyleft/gpl.html)
 
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least).
@@ -76,9 +76,9 @@ And your ready to go!
 
 SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
-for every module derived from `Exception`. The naming convention is for a
+for every module derived from *Exception*. The naming convention is for a
 module's exception to be named after the module with the addition of the word
-''Error''. So the *Fits* module will throw a *FitsError*.
+*Error*. So the *Fits* module will throw a *FitsError*.
 
 ##Contribute
 
@@ -95,6 +95,25 @@ University of Louisville
 
 Website: [glentner.github.io](http://glentner.github.io)
 
+##Acknowledge SLiPy
+
+If you have made use of SLiPy in your project/research, you can acknowledge
+your use in the following ways:
+
+**In Publications**  
+This research has made use of SLiPy, a spectroscopy and astrophysics library
+for Python - glentner.github.io/slipy (G. Lentner, 2015).
+
+**In Projects**  
+If your code either makes use of, borrows from SLiPy, a good way to reference
+this is with a badge in your README file.
+
+[![SLiPy](http://img.shields.io/badge/powered%20by-SLiPy-blue.svg?style=flat)](http://glentner.github.io/slipy)
+
+The above badge is generated using the following snippet
+```
+[![SLiPy](http://img.shields.io/badge/powered%20by-SLiPy-blue.svg?style=flat)](http://glentner.github.io/slipy)
+```
 # Documentation
 
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
@@ -222,7 +241,7 @@ Objects for representing astronomical data. Currently, this includes the
 
     Member functions:
 
-    - *.resample* ( \**args*, \*\**kwargs* ):
+    - *resample* ( \**args*, \*\**kwargs* ):
 
         If given a single argument, it is taken to be a *Spectrum* object,
         and *self* is resampled onto the pixel space of the other spectrum.
@@ -235,7 +254,7 @@ Objects for representing astronomical data. Currently, this includes the
         |---------|----------|--------------------------------------|
         | *kind*  | 'linear' | passed to scipy.interpolate.interp1d |
 
-    - *.copy* ():
+    - *copy* ():
 
         Essentially a wrapper to *deepcopy()*. To say SpectrumA = SpectrumB
         implies that SpectrumA *is* SpectrumB. If you want to create a new
