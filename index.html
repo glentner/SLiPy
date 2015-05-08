@@ -1,25 +1,44 @@
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Slipy by gLENTNER</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
   <body>
-    <section class="page-header">
-      <h1 class="project-name">Slipy</h1>
-      <h2 class="project-tagline">A Spectroscopy and astrophysical Library for Python 3</h2>
-      <a href="https://github.com/gLENTNER/SLiPy" class="btn">View on GitHub</a>
-      <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/gLENTNER/SLiPy">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/gLENTNER/SLiPy/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <section class="main-content">
-      <h1>
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Slipy</h1>
+          <p>A Spectroscopy and astrophysical Library for Python 3</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/gLENTNER">gLENTNER</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
 <a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
 </h1>
 
@@ -84,7 +103,7 @@ to import:</p>
 <tr>
 <td><a href="#SimbadLoc"><strong>Simbad</strong></a></td>
 <td>
-<a href="#QueryLoc">Query</a>, <a href="#PositionLoc">Position</a>, <a href="#DistanceLoc">Distance</a>, <a href="#SptypeLoc">Sptype</a>, <a href="#IDListLoc">IDList</a>,</td>
+<a href="#PositionLoc">Position</a>, <a href="#DistanceLoc">Distance</a>, <a href="#SptypeLoc">Sptype</a>, <a href="#IDListLoc">IDList</a>,</td>
 </tr>
 <tr>
 <td><a href="#CorrelateLoc"><strong>Correlate</strong></a></td>
@@ -99,7 +118,7 @@ to import:</p>
 <tr>
 <td><a href="#VelocityLoc"><strong>Velocity</strong></a></td>
 <td>
-<a href="#HelioCorrectLoc">HelioCorrect</a>,</td>
+<a href="#HelioCorrectLoc">HelioCorrect</a>, <a href="#BaryCorrectLoc">BaryCorrect</a>, <a href="#IrafInputLoc">IrafInput</a>,</td>
 </tr>
 <tr>
 <td><a href="#ObservatoryLoc"><strong>Observatory</strong></a></td>
@@ -135,9 +154,9 @@ actually you can call this library whatever you want as well because all
 the imports are <em>relative</em>). Then add the parent directory to your <code>PYTHONPATH</code>
 if it isn't already. For example:</p>
 
-<pre><code>cd
-git clone http://github.com/glentner/SLiPy
-echo "export PYTHONPATH=$PYTHONPATH:/~" &gt;&gt; ~/.bashrc
+<pre><code>$ cd
+$ git clone http://github.com/glentner/SLiPy
+$ echo "export PYTHONPATH=$PYTHONPATH:~" &gt;&gt; ~/.bashrc
 </code></pre>
 
 <p>And your ready to go!</p>
@@ -157,8 +176,7 @@ Graduate Research Assistant<br>
 Department of Physics &amp; Astronomy<br>
 University of Louisville</p>
 
-<p>W: <a href="http://glentner.github.io">glentner.github.io</a>
-E: <a href="mailto:grlent01@louisville.edu">grlent01@louisville.edu</a></p>
+<p>Website: <a href="http://glentner.github.io">glentner.github.io</a></p>
 
 <hr>
 
@@ -495,11 +513,38 @@ applied if there are none currently.</p>
 
 <ul>
 <li>
-<p><em>.resample</em> ( <em>first</em>, <em>last</em>, <em>npix</em>, <em>kind</em> = 'linear'):</p>
+<p><em>.resample</em> ( *<em>args</em>, **<em>kwargs</em> ):</p>
 
-<p>Resample onto new wavelength pixel space. Built with numpy.linspace
-using <em>first</em>, <em>last</em>, and <em>npix</em> as arguments. Here, <em>kind</em> is
-passed on to <em>scipy.interpolate.interp1d</em>.</p>
+<p>If given a single argument, it is taken to be a <code>Spectrum</code> object,
+and <code>self</code> is resampled onto the pixel space of the other spectrum.
+Otherwise, three arguments are expected. The first and second argument
+should define the lower and upper wavelength value of a domain,
+respectively. The third argument should be the number of elements
+(pixels) for the new domain. Think numpy.linspace().</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>kind</em></td>
+<td>'linear'</td>
+<td>passed to scipy.interpolate.interp1d</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><em>.copy</em> ():</p>
+
+<p>Essentially a wrapper to <em>deepcopy()</em>. To say SpectrumA = SpectrumB
+implies that SpectrumA <em>is</em> SpectrumB. If you want to create a new
+spectrum <em>equal</em> to another, say SpectrumA = SpectrumB.copy()</p>
 </li>
 </ul>
 </li>
@@ -507,186 +552,394 @@ passed on to <em>scipy.interpolate.interp1d</em>.</p>
 
 <h1>
 <a id="simbad" class="anchor" href="#simbad" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="SimbadLoc"></a>Simbad</h1>
+<a name="SimbadLoc"></a><a href="SLiPy/Simbad.py">Simbad</a>
+</h1>
 
 <p>This module allows the user to query the SIMBAD astronomical database from
-inside Python or shell commands/scripts.</p>
+inside Python or shell commands/scripts. It's four current major functions
+<em>Position</em>, <em>Distance</em>, <em>Sptype</em>, and <em>IDList</em> return real variables with
+appropriate types ready for use.</p>
 
 <p>As a shell script:</p>
 
-<pre><code>usage: Simbad.py @Attribute &lt;identifier&gt; [**kwargs]
+<pre><code>$ Simbad.py
 
-The 'Attribute' points to a function within this module and indicates
-what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
-a specific function. Currently available attributes are: `Position`,
-`Distance`, `Sptype` and `IDList`.
+ usage: Simbad.py @Attribute &lt;identifier&gt; [**kwargs]
 
-The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
-"alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
-sure to use quotation to enclose it.
+ The 'Attribute' points to a function within this module and indicates
+ what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
+ a specific function. Currently available attributes are: `Position`,
+ `Distance`, `Sptype` and `IDList`.
 
-The **kwargs is the conventional reference to Python keyword arguments.
-These should be specific to the 'Attribute' being pointed to.
+ The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
+ "alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
+ sure to use quotation to enclose it.
+
+ The **kwargs is the conventional reference to Python keyword arguments.
+ These should be specific to the 'Attribute' being pointed to.
 </code></pre>
 
-<p>The following objects/functions are available:</p>
+<p><a name="PositionLoc"></a></p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Query</span>:
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Query( identifier, criteria, **kwargs ):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Class for querying the SIMBAD astronomical database for 'citeria'</span>
-<span class="pl-s">    of 'identifier'. This object is not intended to be used directly; it</span>
-<span class="pl-s">    is an abstraction and is used by the other functions which should be</span>
-<span class="pl-s">    called by the user.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    kwargs = {</span>
-<span class="pl-s">        'parse' : True,  # extract relevant data from SIMBAD return file</span>
-<span class="pl-s">        'dtype' : float, # output datatype</span>
-<span class="pl-s">    }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<ul>
+<li>
+<p><strong>Position</strong> ( <em>identifier</em>, **<em>kwargs</em> ):</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Position</span>( <span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Position( identifier, **kwargs ):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%C</span>00(d;C)'. Return right</span>
-<span class="pl-s">    ascension and declination in decimal degrees of `identifier`.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Example:</span>
-<span class="pl-s"></span>
-<span class="pl-s">    ra, dec = Position('Sirius')</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>Return the right ascension and declination in decimal degrees of
+<em>identifier</em> as a pair.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Distance</span>( <span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Distance( identifier, **kwargs ):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%P</span>LX' Return the distance</span>
-<span class="pl-s">    in parsecs to `identifier`.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Example:</span>
-<span class="pl-s"></span>
-<span class="pl-s">    d = Distance('rigel kent')</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>parse</em></td>
+<td>True</td>
+<td>parse return file from SIMBAD</td>
+</tr>
+<tr>
+<td><em>full</em></td>
+<td>False</td>
+<td>return more detailed information</td>
+</tr>
+</tbody>
+</table>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Sptype</span>(<span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span>):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Sptype( identifier, **kwargs ):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%S</span>P'. Return the</span>
-<span class="pl-s">    spectral type as resolved by SIMBAD.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Example:</span>
-<span class="pl-s"></span>
-<span class="pl-s">    sptype = Sptype('HD 87901') # returns 'B8IVn' (HD 87901 is Regulus)</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>Example:</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">IDList</span>(<span class="pl-smi">identifier</span>, **<span class="pl-smi">kwargs</span>):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    IDList(identifier, **kwargs):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Handle to the Query class with criteria='<span class="pl-c1">%I</span>DLIST'.</span>
-<span class="pl-s">    With `parse` = True, return a list of alternate IDs for</span>
-<span class="pl-s">    the `identifier` provided.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Example:</span>
-<span class="pl-s"></span>
-<span class="pl-s">    other_names = IDList('proxima centauri')</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<div class="highlight highlight-python"><pre>ra, dec <span class="pl-k">=</span> Simbad.Position(<span class="pl-s"><span class="pl-pds">'</span>Sirius<span class="pl-pds">'</span></span>)</pre></div>
+</li>
+</ul>
+
+<p><a name="DistanceLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Distance</strong> ( <em>identifier</em>, **<em>kwargs</em> ):</p>
+
+<p>Return the distance in parsecs to <em>identifier</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>parse</em></td>
+<td>True</td>
+<td>parse return file from SIMBAD</td>
+</tr>
+<tr>
+<td><em>full</em></td>
+<td>False</td>
+<td>return more detailed information</td>
+</tr>
+</tbody>
+</table>
+
+<p>Example:</p>
+
+<div class="highlight highlight-python"><pre>distance <span class="pl-k">=</span> Simbad.Distance(<span class="pl-s"><span class="pl-pds">'</span>rigel kent<span class="pl-pds">'</span></span>)</pre></div>
+</li>
+</ul>
+
+<p><a name="SptypeLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Sptype</strong> ( <em>identifier</em>, **<em>kwargs</em> ):</p>
+
+<p>Return the spectral type of <em>identifier</em> as resolved by SIMBAD.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>parse</em></td>
+<td>True</td>
+<td>parse return file from SIMBAD</td>
+</tr>
+<tr>
+<td><em>full</em></td>
+<td>False</td>
+<td>return more detailed information</td>
+</tr>
+</tbody>
+</table>
+
+<p>Example:</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># returns 'B8IVn' (HD 87901 is Regulus)</span>
+sptype <span class="pl-k">=</span> Simbad.Sptype(<span class="pl-s"><span class="pl-pds">'</span>HD 87901<span class="pl-pds">'</span></span>)</pre></div>
+</li>
+</ul>
+
+<p><a name="IDListLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>IDList</strong> ( <em>identifier</em>, **<em>kwargs</em> ):</p>
+
+<p>Return a list of alternate IDs for <em>identifier</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>parse</em></td>
+<td>True</td>
+<td>parse return file from SIMBAD</td>
+</tr>
+<tr>
+<td><em>full</em></td>
+<td>False</td>
+<td>return more detailed information</td>
+</tr>
+</tbody>
+</table>
+
+<p>Example:</p>
+
+<div class="highlight highlight-python"><pre>other_names <span class="pl-k">=</span> Simbad.IDList(<span class="pl-s"><span class="pl-pds">'</span>proxima centauri<span class="pl-pds">'</span></span>)</pre></div>
+</li>
+</ul>
 
 <h1>
 <a id="correlate" class="anchor" href="#correlate" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="CorrelateLoc"></a>Correlate</h1>
+<a name="CorrelateLoc"></a><a href="SLiPy/Correlate.py">Correlate</a>
+</h1>
 
-<p>Module of correlation functions for astronomical data.</p>
+<p>Correlation functions for astronomical data.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Xcorr</span>( <span class="pl-smi">spectrumA</span>, <span class="pl-smi">spectrumB</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Cross correlate two spectra of equal pixel length. The function returns</span>
-<span class="pl-s">    an integer value representing the best shift within a `lag` based on</span>
-<span class="pl-s">    the computed RMS of each configuration.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p><a name="XCorrLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>XCorr</strong> ( <em>spectrumA</em>, <em>spectrumB</em>, **<em>kwargs</em> ):</p>
+
+<p>The function returns an integer value representing the best shift within
+a <em>lag</em> based on the computed RMS of each configuration.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>lag</em></td>
+<td>25</td>
+<td>pixel range to shift over</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
 
 <h1>
 <a id="telluric" class="anchor" href="#telluric" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="TelluricLoc"></a>Telluric</h1>
+<a name="TelluricLoc"></a><a href="SLiPy/Telluric.py">Telluric</a>
+</h1>
 
-<p>Removal of atmospheric adsorption lines in spectra.</p>
+<p>Removal of atmospheric absorption lines in spectra.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Correct</span>(<span class="pl-smi">spectrum</span>, *<span class="pl-smi">calibration</span>, **<span class="pl-smi">kwargs</span>):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Perform a telluric correction on `spectrum` with one or more</span>
-<span class="pl-s">    `calibration` spectra. If more than one calibration spectrum is</span>
-<span class="pl-s">    provided, the one with the best fit after performing both a</span>
-<span class="pl-s">    horizontal cross correlation and a vertical amplitude fit is used.</span>
-<span class="pl-s">    The spectrum and all the calibration spectra must have the same</span>
-<span class="pl-s">    number of pixels (elements). If a horizontal shift in the calibration</span>
-<span class="pl-s">    spectra is appropriate, only the corresponding range of the spectrum</span>
-<span class="pl-s">    is divided out!</span>
-<span class="pl-s"></span>
-<span class="pl-s">    kwargs = {</span>
-<span class="pl-s">            lag  : 25            , # pixel shift limit for XCorr()</span>
-<span class="pl-s">            range:(0.5, 2.0, 151), # numpy.linspace for amplitude trials</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p><a name="CorrectLoc"></a></p>
 
-<p><img src="HD192640.png" alt="example"></p>
+<ul>
+<li>
+<p><strong>Correct</strong> ( <em>spectrum</em>, *<em>calibration</em>, **<em>kwargs</em> ):</p>
+
+<p>Perform a telluric correction on <em>spectrum</em> with one or more
+<em>calibration</em> spectra. If more than one calibration spectrum is
+provided, the one with the best fit after performing both a
+horizontal cross correlation and a vertical amplitude fit is used.
+The spectrum and all the calibration spectra must have the same
+number of pixels (elements). If a horizontal shift in the calibration
+spectra is appropriate, only the corresponding range of the spectrum
+is divided out!</p>
+
+<p><strong>Notice</strong> Your spectra must be continuum normalized for this to work!</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>lag</em></td>
+<td>25</td>
+<td>pixel range to shift over</td>
+</tr>
+<tr>
+<td><em>range</em></td>
+<td>(0.5, 2.0, 151)</td>
+<td>numpy.linspace for amplitude fitting</td>
+</tr>
+</tbody>
+</table>
+
+<p><img src="HD192640.png" alt="example" title="Results of Telluric.Correct()"></p>
 
 <p><strong>Figure 1:</strong> The above figure is an example of applying the
 <strong>Telluric.Correct()</strong> algorithm to a spectrum. In this case, six spectra of
 <em>Regulus</em> from the Elodie archive were used as calibration spectra.</p>
+</li>
+</ul>
 
 <h1>
 <a id="velocity" class="anchor" href="#velocity" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="VelocityLoc"></a>Velocity</h1>
+<a name="VelocityLoc"></a><a href="SLiPy/Velocity.py">Velocity</a>
+</h1>
 
 <p>Radial velocity corrections for 1D spectra.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">HelioCorrect</span>( <span class="pl-smi">obs</span>, *<span class="pl-smi">spectra</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Perform heliocentric velocity corrects on `spectra` based on</span>
-<span class="pl-s">    `obs`ervatory information (longitude, latitude, altitude) and the</span>
-<span class="pl-s">    member attributes, ra (right ascension), dec (declination), and jd</span>
-<span class="pl-s">    (julian date) from the `spectra`.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    The `ra` and `dec` must be attached to each spectrum. `obs` should</span>
-<span class="pl-s">    be of type Observatory.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p><a name="HelioCorrectLoc"></a></p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">IrafInput</span>( *<span class="pl-smi">files</span>, **<span class="pl-smi">kwargs</span>):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Build an input file for IRAF's rvcorrect task.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    `files` should be a list of FITS file names to build the output table for.</span>
-<span class="pl-s">    The user can optionally specify a `toplevel` directory to search for files</span>
-<span class="pl-s">    under. If `outfile` is given, write results to the file.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    kwargs = {</span>
-<span class="pl-s">        'toplevel' : ''      , # search `toplevel` directory for files</span>
-<span class="pl-s">        'pattern'  : '*.fits', # files under `toplevel` fitting `pattern`</span>
-<span class="pl-s">        'recursive': False   , # search recusively under `toplevel`</span>
-<span class="pl-s">        'outfile'  : ''        # write lines to file named `outfile`</span>
-<span class="pl-s">    }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<ul>
+<li>
+<p><strong>HelioCorrect</strong> ( <em>observatory</em>, *<em>spectra</em>, **<em>kwargs</em> ):</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">HeaderInfo</span>( <span class="pl-smi">fpath</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Helper function of IrafInput().</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Return a formatted string containing the year, month, and day of</span>
-<span class="pl-s">    observation from the FITS file with name `fpath`, as well as the</span>
-<span class="pl-s">    universal time of observation and the right ascension and declination</span>
-<span class="pl-s">    of the target.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>Perform heliocentric velocity corrects on <em>spectra</em> based on
+<em>observatory</em> parameters (<em>longitude</em>, <em>latitude</em>, <em>altitude</em>) and the
+member attributes, <em>ra</em> (right ascension), <em>dec</em> (declination), and <em>jd</em>
+(julian date) from the <em>spectra</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>False</td>
+<td>display messages, progress</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+
+<p><a name="BaryCorrectLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>BaryCorrect</strong> ( <em>observatory</em>, *<em>spectra</em>, **<em>kwargs</em> ):</p>
+
+<p>Perform barycentric velocity corrects on <em>spectra</em> based on
+<em>observatory</em> parameters (<em>longitude</em>, <em>latitude</em>, <em>altitude</em>) and the
+member attributes, <em>ra</em> (right ascension), <em>dec</em> (declination), and <em>jd</em>
+(julian date) from the <em>spectra</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>False</td>
+<td>display messages, progress</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+
+<p><a name="IrafInputLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>IrafInput</strong> ( *<em>files</em>, **<em>kwargs</em> ):</p>
+
+<p>Build an input file for IRAF's rvcorrect task.</p>
+
+<p><em>files</em> should be a list of FITS file names to build the output table for.
+The user can optionally specify a <em>toplevel</em> directory to search for files
+under. If <em>outfile</em> is given, write results to the file.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>toplevel</em></td>
+<td>None</td>
+<td>search <em>toplevel</em> directory for files</td>
+</tr>
+<tr>
+<td><em>pattern</em></td>
+<td>'*.fits'</td>
+<td>pattern matching under <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td><em>recursive</em></td>
+<td>False</td>
+<td>search recusively under <em>toplevel</em>
+</td>
+</tr>
+<tr>
+<td><em>outfile</em></td>
+<td>None</td>
+<td>write lines to file named <em>outfile</em>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
 
 <h1>
 <a id="observatory" class="anchor" href="#observatory" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="ObservatoryLoc"></a>Observatory</h1>
+<a name="ObservatoryLoc"></a><a href="SLiPy/Observatory.py">Observatory</a>
+</h1>
 
 <p>Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
 to this module. I welcome suggestions.</p>
+
+<p><a name="OHPLoc"></a></p>
 
 <div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">OHP</span>(<span class="pl-e">Observatory</span>):
     <span class="pl-s"><span class="pl-pds">"""</span></span>
@@ -827,16 +1080,11 @@ the website. More documentation will be provided in the future ...</p>
 <span class="pl-s">            'inline'   : True    # vanish after completion</span>
 <span class="pl-s">        }</span>
 <span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
+      </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">Slipy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-            <script type="text/javascript">
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -849,4 +1097,3 @@ the website. More documentation will be provided in the future ...</p>
 
   </body>
 </html>
-
