@@ -259,7 +259,7 @@ $ Simbad.py
 ```
 
 <a name=PositionLoc></a>
-- **Position** ( *identifier*, \*\**kwargs ):
+- **Position** ( *identifier*, \*\**kwargs* ):
 
     Return the right ascension and declination in decimal degrees of
     *identifier* as a pair.
