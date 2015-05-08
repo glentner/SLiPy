@@ -118,7 +118,7 @@ The above badge is generated using the following snippet
 
 # Documentation
 
-#<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
+##<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
 Manipulate FITS files. Import data into *Spectrum* objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
