@@ -109,11 +109,11 @@ astrophysics library for Python 3 (G. Lentner, 2015).
 If your code either makes use of, borrows from SLiPy, a good way to reference
 this is with a [shield](http://shields.io) in your README file.
 
-[![SLiPy](http://img.shields.io/badge/powered%20by-SLiPy-blue.svg?style=flat)](http://glentner.github.io/slipy)
+[![SLiPy](http://img.shields.io/badge/running-SLiPy-green.svg?style=flat)](http://glentner.github.io/SLiPy)
 
 The above badge is generated using the following snippet
 ```
-[![SLiPy](http://img.shields.io/badge/powered%20by-SLiPy-blue.svg?style=flat)](http://glentner.github.io/slipy)
+[![SLiPy](http://img.shields.io/badge/running-SLiPy-green.svg?style=flat)](http://glentner.github.io/SLiPy)
 ```
 # Documentation
 
