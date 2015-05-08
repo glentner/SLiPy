@@ -38,8 +38,7 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
-## slipy imports
-| Modules | Functions/Classes |
+| SLiPy/ | Functions/Classes |
 |---------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
@@ -51,10 +50,9 @@ to import:
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
 |[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
 
-## slipy.data imports
-| Archives | Functions/Classes |
-|---------|-------------------|
-|[**Elodie**](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
+| SLiPy/Data | Functions/Classes |
+|------------|-------------------|
+|[**Elodie**](#ElodieLoc)|[Archive](#EArchiveLoc), [Script](#EScriptLoc), [Download](#EDownloadLoc), |
 
 ##Installation
 
@@ -508,3 +506,21 @@ at one spectra to another. One can also *overlay* spectra.
     | Options | Defaults  | Descriptions          |
     |---------|-----------|-----------------------|
     | *keep*  | 'name'    | alternative is 'plot' |
+
+#<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
+
+Methods for data retrieval from the Elodie Archive.
+
+<a name=EArchiveLoc></a>
+- class **Archive** ( \*\**kwargs* ):
+
+    Import and parse ascii catalog of Elodie archive files. The complete
+    archive is stored in the member dictionary, *data*. It's organized
+    by unique target names. The reduced archive by default contains only *HD*,
+    *BD*, *HR*, *GC*, and *GJ* objects, choosing the file pertaining to the
+    spectra with the highest signal-to-noise ratio available.
+
+    | Options    | Defaults                   | Descriptions          |
+    |------------|----------------------------|-----------------------|
+    | *infile*   | archives/elodie.csv        | path to input file    |
+    | *catalogs* | ['HD','BD','HR','GC','GJ'] | catalogs to keep      |
