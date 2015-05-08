@@ -436,32 +436,30 @@ class OHP(Observatory):
 		self.altitude  = 650        # meters
 ```
 
-#<a name=PlotLoc></a>Plot
+#<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
 
-Convenience tools for plotting spectra. **SPlot** takes a Spectrum object
-and remains like a handle to the plot for that object. All of the typical
-member commands to matplotlib.pyplot exist, but once called are *remembered*.
-Additionally, spectra can be `overlay`ed. **Iterate** is a function that takes
-any number of SPlot figures and iterates through them interactively and lets
-the user mark which ones to `keep`. The return is a list of either the names
-of the figures or the actually objects themselves.
+Convenient wrappers to matplotlib for plotting spectra. A *SPlot* simply
+creates a handle to remember figure attributes, to quickly go from looking
+at one spectra to another. One can also *overlay* spectra.
 
-```Python
-class SPlot:
-	"""
-	Spectrum Plot - Plot the data in `spectrum`.
-	"""
-	def __init__(self, spectrum, **kwargs):
-		"""
-		Assign `options` in `kwargs` and initialize the plot.
+<a name=SPlotLoc></a>
+- class **SPlot** ( *spectrum*, \*\**kwargs* ):
 
-        kwargs = {
-			'marker': 'b-'          , # marker for plot
-			'label' : 'unspecified' , # label for data
-			'usetex': False           # pdflatex setting
-		}
-        """
-```
+    Spectrum Plot - Create figure of *spectrum*.
+
+    | Options  | Defaults   | Descriptions         |
+    |----------|------------|----------------------|
+    | *marker* | 'b-'       | marker for data      |
+    | *label*  | 'spectrum' | name of object       |
+    | *usetex* | False      | render with pdflatex |
+
+    The following member functions call pyplot equivalent:  
+    xlim, ylim, xlabel, ylabel, title, legend, text, grid, close.
+
+    Here, when these function are called, the arguments are passed to
+    matplotlib; however, these calls are remembered. So when you go to *draw*
+    the figure again, you are back where you left off.
+    
 ```Python
 def Iterate( *plots, **kwargs ):
 	"""
