@@ -55,15 +55,17 @@ to import:
 |------------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#EArchiveLoc), [Script](#EScriptLoc), [Download](#EDownloadLoc), |
 
-##Installation
+## Installation
 
 To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a *tar* or *zip* archive or by
-cloning it - `git clone http://github.com/glentner/SLiPy`. Extract it's
-contents to wherever you like in a directory (ostensibly named *slipy*, but
-actually you can call this library whatever you want as well because all
-the imports are *relative*). Then add the parent directory to your `PYTHONPATH`
-if it isn't already. For example:
+cloning it -
+```git clone http://github.com/glentner/SLiPy```.
+
+Extract it's contents to wherever you like in a directory (ostensibly named
+*slipy*, but actually you can call this library whatever you want as well
+because all the imports are *relative*). Then add the parent directory to your
+*PYTHONPATH* if it isn't already. For example:
 
 ```
 $ cd
@@ -73,7 +75,7 @@ $ echo "export PYTHONPATH=$PYTHONPATH:~" >> ~/.bashrc
 
 And your ready to go!
 
-##Exceptions
+## Exceptions
 
 SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
@@ -81,13 +83,13 @@ for every module derived from *Exception*. The naming convention is for a
 module's exception to be named after the module with the addition of the word
 *Error*. So the *Fits* module will throw a *FitsError*.
 
-##Contribute
+## Contribute
 
 If you use SLiPy or have your own code related to spectroscopy or computing
 for astronomy and think it would be a useful addition (or you find a
 bug/mistake) I'm more than open to suggested contributions/additions.
 
-##Author
+## Author
 
 Geoffrey Lentner, B.S.  
 Graduate Research Assistant  
