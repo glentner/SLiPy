@@ -55,8 +55,8 @@ to import:
 
 To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a *tar* or *zip* archive or by
-cloning it (`git clone http://github.com/glentner/SLiPy`). Extract it's
-contents to wherever you like in a directory (ostensibly names *slipy*, but
+cloning it - `git clone http://github.com/glentner/SLiPy`. Extract it's
+contents to wherever you like in a directory (ostensibly named *slipy*, but
 actually you can call this library whatever you want as well because all
 the imports are *relative*). Then add the parent directory to your `PYTHONPATH`
 if it isn't already. For example:
@@ -68,6 +68,14 @@ $ echo "export PYTHONPATH=$PYTHONPATH:~" >> ~/.bashrc
 ```
 
 And your ready to go!
+
+##Exceptions
+
+SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
+common handle with a human readable message. There is a unique exception class
+for every module derived from `Exception`. The naming convention is for a
+module's exception to be named after the module with the addition of the word
+``Error''. So the *Fits* module will throw *FitsError*s.
 
 ##Contribute
 
@@ -213,8 +221,8 @@ Objects for representing astronomical data. Currently, this includes the
 
     - *.resample* ( \**args*, \*\**kwargs* ):
 
-        If given a single argument, it is taken to be a `Spectrum` object,
-        and `self` is resampled onto the pixel space of the other spectrum.
+        If given a single argument, it is taken to be a *Spectrum* object,
+        and *self* is resampled onto the pixel space of the other spectrum.
         Otherwise, three arguments are expected. The first and second argument
         should define the lower and upper wavelength value of a domain,
         respectively. The third argument should be the number of elements
