@@ -212,11 +212,24 @@ Objects for representing astronomical data. Currently, this includes the
 
     Member functions:
 
-    - *.resample* ( *first*, *last*, *npix*, *kind* = 'linear'):
+    - *.resample* ( \**args*, \*\**kwargs* ):
 
-        Resample onto new wavelength pixel space. Built with numpy.linspace
-        using *first*, *last*, and *npix* as arguments. Here, *kind* is
-        passed on to *scipy.interpolate.interp1d*.
+        If given a single argument, it is taken to be a `Spectrum` object,
+        and `self` is resampled onto the pixel space of the other spectrum.
+        Otherwise, three arguments are expected. The first and second argument
+        should define the lower and upper wavelength value of a domain,
+        respectively. The third argument should be the number of elements
+        (pixels) for the new domain. Think numpy.linspace().
+
+        | Options | Defaults | Descriptions                         |
+        |---------|----------|--------------------------------------|
+        | *kind*  | 'linear' | passed to scipy.interpolate.interp1d |
+
+    - *.copy* ():
+
+        Essentially a wrapper to *deepcopy()*. To say SpectrumA = SpectrumB
+        implies that SpectrumA *is* SpectrumB. If you want to create a new
+        spectrum *equal* to another, say SpectrumA = SpectrumB.copy() 
 
 #<a name=SimbadLoc></a>Simbad
 

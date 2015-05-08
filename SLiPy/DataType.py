@@ -51,7 +51,7 @@ class Spectrum:
 	Spectrum objects consist of a `data` vector, optionally match a
 	`wavelength` vector (accessed with .data and .wave respectively).
 	"""
-	def __init__(self, argument, wavelengths=None, **kwargs ):
+	def __init__(self, filename, wavelengths=None, **kwargs ):
 		"""
 		Hold spectrum `data` from file name `argument`. Alternatively,
 		construct spectra with a one-dimensional numpy.ndarray as `argument`.
@@ -65,49 +65,54 @@ class Spectrum:
 					'crpix1' : 'crpix1'   , # reference pixel header keyword
 					'crval1' : 'crval1'   , # value at reference pixel
 					'cdelt1' : 'cdelt1'   , # resolution (delta lambda)
-					'xunit'  : 'Angstrom' , # units of wavelength from header
-					'yunit'  : 'erg cm-2 s-1'  # units of data
+					'xunits' : 'Angstrom' , # units of wavelength from header
+					'yunits' : 'erg cm-2 s-1'  # units of data
 				})
 
 			self.wavecal = self.options('wavecal')
 			self.crpix1  = self.options('crpix1')
 			self.crval1  = self.options('crval1')
 			self.cdelt1  = self.options('cdelt1')
-			self.xunit   = self.options('xunit')
-			self.yunit   = self.options('yunit')
+			self.xunits  = self.options('xunit')
+			self.yunits  = self.options('yunit')
 
 			# observables (needed for corrections)
 			self.ra  = None # right ascension
 			self.dec = None # declination
 			self.jd  = None # julian date
 
-			if type(argument) is str:
+			if type(filename) is str:
 				# assume we are importing from a file
-				self.data = pyfits.getdata(argument)
+				self.data = pyfits.getdata(filename)
 
 				if self.wavecal:
+
 					# attempt to build vector from header info
-					with pyfits.open(argument) as hdulist:
-						self.rpix = hdulist[0].header[self.crpix1]
-						self.rval = hdulist[0].header[self.crval1]
-						self.delt = hdulist[0].header[self.cdelt1]
-						self.wave = WaveVector(self.rpix, self.rval,
-							self.delt, np.shape(self.data)[0])
+					with pyfits.open(filename) as hdulist:
+
+						self.wave = WaveVector(
+							hdulist[0].header[self.crpix1],
+							hdulist[0].header[self.crval1],
+							hdulist[0].header[self.cdelt1],
+							np.shape(self.data)[0])
 
 				else:
+
 					# wave vector will just be indices of self.data
-					self.wave = np.arange(len(self.data)) * u.dimensionless_unscaled
+					self.wave = np.arange(len(self.data)) * u.pixel
 
-
-			elif (len(np.shape(argument)) == 1  and
+			elif (
+				len(np.shape(filename)) == 1 and
 				len(np.shape(wavelengths)) == 1 and
-				len(argument) == len(wavelengths)):
+				len(filename) == len(wavelengths)):
+
 				# we are initializing from a numpy array
 				self.data = argument.copy()
 				# wavecal ignored on numpy.array construction
 				self.wave = wavelengths.copy()
 
 			else:
+
 				# we got the wrong argument types
 				raise DataError('Spectrum() object expected either a set of '
 				'1D numpy.ndarray`s arrays of equal length or file name as a '
@@ -115,10 +120,10 @@ class Spectrum:
 
 			# add units if necessary
 			if not hasattr(self.data, 'unit'):
-				self.data *= u.Unit(self.yunit)
+				self.data *= u.Unit(self.yunits)
 
 			if not hasattr(self.wave, 'unit'):
-				self.wave *= u.Unit(self.xunit)
+				self.wave *= u.Unit(self.xunits)
 
 		except OptionsError as err:
 			print(' --> OptionsError:', err)
@@ -128,30 +133,74 @@ class Spectrum:
 			print(' --> IOError:', err)
 			raise DataError('Failed to construct Spectrum() object.')
 
-	def resample(self, first, last, npix, kind='linear'):
+	def resample(self, *args, **kwargs):
 		"""
-		Resample onto new wavelength pixel space. Built with numpy.linspace
-		using `first`, `last`, and `npix` as arguments.
+		If given a single argument, it is taken to be a `Spectrum` object,
+		and `self` is resampled onto the pixel space of the other spectrum.
+		Otherwise, three arguments are expected. The first and second argument
+		should define the lower and upper wavelength value of a domain,
+		respectively. The third argument should be the number of elements
+		(pixels) for the new domain. Think numpy.linspace().
 
 		kwargs = {
-				kind : 'linear' # same argument from scipy.interpolate.interp1d
+				kind : 'linear' # passed to scipy.interpolate.interp1d
 			}
 		"""
 
-		# check function arguments
-		if first < self.wave[0] or last > self.wave[-1]:
-			raise DataError('Spectrum.resample() cannot interplate outside '
-			'the original domain of the flux data.')
-		if npix < 1:
-			raise DataError('Spectrum.resample() expects a positive '
-			'integer for `npix` argument.')
+		try:
+			options = Options( kwargs, {
 
-		# build interplant
+				'kind' : 'linear' # passed to scipy.interpolate.interp1d
+			})
+
+			kind = options('kind')
+
+		except OptionsError as err:
+			print(' --> OptionsError: ', err)
+			raise DataError('From Spectrum.resample(), failed keyword '
+			'assignment!')
+
+		# build interpolation function
 		f = interp1d(self.wave, self.data, kind=kind)
-		# build new wave vector
-		self.wave = np.linspace(first, last, npix) * self.wave.unit
+
+		if len(args) == 1:
+
+			# check domain limits
+			if args[0].wave[0] < self.wave[0] or args[0].wave[-1] > self.wave[-1]:
+				raise DataError('Spectrum.resample() cannot interplate outside '
+				'the original domain of the flux data.')
+
+			# build new wave-array from spectrum
+			self.wave = args[0].wave
+
+			# bring back to original units for f()
+			self.wave = self.wave.to(u.Unit(self.xunits))
+
+		elif len(args) == 3:
+
+			low, high, npix = args
+
+			# check function arguments
+			if low < self.wave[0] or high > self.wave[-1]:
+				raise DataError('Spectrum.resample() cannot interplate outside '
+				'the original domain of the flux data.')
+
+			if npix < 1:
+				raise DataError('Spectrum.resample() expects a positive '
+				'integer for `npix` argument.')
+
+			# build new wave vector
+			self.wave = np.linspace(first, last, npix)
+
+			# bring back to original units for f()
+			self.wave = self.wave.to(u.Unit(self.xunits))
+
+		else:
+			raise DataError('Unacceptable number of arguments passed to '
+			'Spectrum.resample()')
+
 		# resample data
-		self.data = f(self.wave) * self.data.unit
+		self.data = f(self.wave) * u.Unit(self.yunits)
 
 	def copy(self):
 		"""
