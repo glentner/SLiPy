@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
@@ -29,6 +28,9 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
+          <h1>
+<a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
+</h1>
 
 <h4>
 <a id="a-spectroscopy-and-astrophysics-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysics-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysics Library for Python 3</h4>
@@ -46,7 +48,7 @@ Python 3.x,
 <a href="http://www.scipy.org">scipy</a></p>
 
 <p><a href="http://www.astropy.org/"><img src="http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat" alt="astropy"></a>
-<a href="http://www.gnu.org/copyleft/gpl.html"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="GitHub license"></a></p>
+<a href="http://www.gnu.org/copyleft/gpl.html"><img src="http://img.shields.io/badge/license-GPLv3-blue.svg?style=flat" alt="GitHub license"></a></p>
 
 <p>Quick note: the subpackage <strong>astrolibpy</strong> was not developed
 by me. It was coded by Sergey Koposov (<a href="https://github.com/segasai" class="user-mention">@segasai</a>) at Cambridge (then at least).
@@ -123,12 +125,17 @@ to import:</p>
 <td>
 <a href="#MSolveGridLoc">SolveGrid</a>, <a href="#MMosaicLoc">Mosaic</a>, <a href="#MSubFieldLoc">SubField</a>, <a href="#MFieldLoc">Field</a>,</td>
 </tr>
-<tr>
-<th>&nbsp;</th>
-</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
 <tr>
 <th>SLiPy/Data</th>
+<th>Functions/Classes</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
@@ -142,14 +149,15 @@ to import:</p>
 
 <p>To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a <em>tar</em> or <em>zip</em> archive or by
-cloning it - <code>git clone http://github.com/glentner/SLiPy</code>. Extract it's
-contents to wherever you like in a directory (ostensibly named <em>slipy</em>, but
-actually you can call this library whatever you want as well because all
-the imports are <em>relative</em>). Then add the parent directory to your <code>PYTHONPATH</code>
-if it isn't already. For example:</p>
+cloning it.</p>
+
+<p>Extract it's contents to wherever you like in a directory (ostensibly named
+<em>slipy</em>, but actually you can call this library whatever you want as well
+because all the imports are <em>relative</em>). Then add the parent directory to your
+<em>PYTHONPATH</em> if it isn't already. For example:</p>
 
 <pre><code>$ cd
-$ git clone http://github.com/glentner/SLiPy
+$ git clone http://github.com/glentner/slipy
 $ echo "export PYTHONPATH=$PYTHONPATH:~" &gt;&gt; ~/.bashrc
 </code></pre>
 
@@ -160,9 +168,9 @@ $ echo "export PYTHONPATH=$PYTHONPATH:~" &gt;&gt; ~/.bashrc
 
 <p>SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
-for every module derived from <code>Exception</code>. The naming convention is for a
+for every module derived from <em>Exception</em>. The naming convention is for a
 module's exception to be named after the module with the addition of the word
-''Error''. So the <em>Fits</em> module will throw a <em>FitsError</em>.</p>
+<em>Error</em>. So the <em>Fits</em> module will throw a <em>FitsError</em>.</p>
 
 <h2>
 <a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h2>
@@ -181,13 +189,36 @@ University of Louisville</p>
 
 <p>Website: <a href="http://glentner.github.io">glentner.github.io</a></p>
 
+<h2>
+<a id="acknowledge-slipy" class="anchor" href="#acknowledge-slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledge SLiPy</h2>
+
+<p>If you have made use of SLiPy in your project/research, you can acknowledge
+your use in the following ways:</p>
+
+<p><strong>Publications</strong><br>
+This research has made use of SLiPy, an open source spectroscopy and
+astrophysics library for Python 3 (G. Lentner, 2015).</p>
+
+<p><strong>Projects</strong><br>
+If your code either makes use of, borrows from SLiPy, a good way to reference
+this is with a <a href="http://shields.io">shield</a> in your README file.</p>
+
+<p><a href="http://glentner.github.io/SLiPy"><img src="http://img.shields.io/badge/running-SLiPy-green.svg?style=flat" alt="SLiPy"></a></p>
+
+<p>The above badge is generated using the following snippet</p>
+
+<pre><code>[![SLiPy](http://img.shields.io/badge/running-SLiPy-green.svg?style=flat)](http://glentner.github.io/SLiPy)
+</code></pre>
+
 <h1>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h1>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="fits" class="anchor" href="#fits" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="FitsLoc"></a><a href="SLiPy/Fits.py">Fits</a>
-</h1>
+</h2>
 
 <p>Manipulate FITS files. Import data into <em>Spectrum</em> objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
@@ -425,10 +456,12 @@ decimal degrees) from <em>center</em>, based on the <em>ra</em> (right ascension
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="datatype" class="anchor" href="#datatype" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="DataTypeLoc"></a><a href="SLiPy/DataType.py">DataType</a>
-</h1>
+</h2>
 
 <p>Objects for representing astronomical data. Currently, this includes the
 <em>Spectrum</em> class and it's helper function <em>WaveVector</em>.</p>
@@ -513,11 +546,12 @@ applied if there are none currently.</p>
 </tbody>
 </table>
 
-<p>Member functions:</p>
+<p><br>
+Member functions:</p>
 
 <ul>
 <li>
-<p><em>.resample</em> ( *<em>args</em>, **<em>kwargs</em> ):</p>
+<p><em>resample</em> ( *<em>args</em>, **<em>kwargs</em> ):</p>
 
 <p>If given a single argument, it is taken to be a <em>Spectrum</em> object,
 and <em>self</em> is resampled onto the pixel space of the other spectrum.
@@ -544,7 +578,7 @@ respectively. The third argument should be the number of elements
 </table>
 </li>
 <li>
-<p><em>.copy</em> ():</p>
+<p><em>copy</em> ():</p>
 
 <p>Essentially a wrapper to <em>deepcopy()</em>. To say SpectrumA = SpectrumB
 implies that SpectrumA <em>is</em> SpectrumB. If you want to create a new
@@ -554,10 +588,12 @@ spectrum <em>equal</em> to another, say SpectrumA = SpectrumB.copy()</p>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="simbad" class="anchor" href="#simbad" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="SimbadLoc"></a><a href="SLiPy/Simbad.py">Simbad</a>
-</h1>
+</h2>
 
 <p>This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts. It's four current major functions
@@ -614,8 +650,8 @@ appropriate types ready for use.</p>
 </tbody>
 </table>
 
-<br>
-<p>Example:</p>
+<p><br>
+Example:</p>
 
 <div class="highlight highlight-python"><pre>ra, dec <span class="pl-k">=</span> Simbad.Position(<span class="pl-s"><span class="pl-pds">'</span>Sirius<span class="pl-pds">'</span></span>)</pre></div>
 </li>
@@ -651,8 +687,8 @@ appropriate types ready for use.</p>
 </tbody>
 </table>
 
-<br>
-<p>Example:</p>
+<p><br>
+Example:</p>
 
 <div class="highlight highlight-python"><pre>distance <span class="pl-k">=</span> Simbad.Distance(<span class="pl-s"><span class="pl-pds">'</span>rigel kent<span class="pl-pds">'</span></span>)</pre></div>
 </li>
@@ -688,8 +724,8 @@ appropriate types ready for use.</p>
 </tbody>
 </table>
 
-<br>
-<p>Example:</p>
+<p><br>
+Example:</p>
 
 <div class="highlight highlight-python"><pre><span class="pl-c"># returns 'B8IVn' (HD 87901 is Regulus)</span>
 sptype <span class="pl-k">=</span> Simbad.Sptype(<span class="pl-s"><span class="pl-pds">'</span>HD 87901<span class="pl-pds">'</span></span>)</pre></div>
@@ -726,17 +762,19 @@ sptype <span class="pl-k">=</span> Simbad.Sptype(<span class="pl-s"><span class=
 </tbody>
 </table>
 
-<br>
-<p>Example:</p>
+<p><br>
+Example:</p>
 
 <div class="highlight highlight-python"><pre>other_names <span class="pl-k">=</span> Simbad.IDList(<span class="pl-s"><span class="pl-pds">'</span>proxima centauri<span class="pl-pds">'</span></span>)</pre></div>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="correlate" class="anchor" href="#correlate" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="CorrelateLoc"></a><a href="SLiPy/Correlate.py">Correlate</a>
-</h1>
+</h2>
 
 <p>Correlation functions for astronomical data.</p>
 
@@ -768,10 +806,12 @@ a <em>lag</em> based on the computed RMS of each configuration.</p>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="telluric" class="anchor" href="#telluric" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="TelluricLoc"></a><a href="SLiPy/Telluric.py">Telluric</a>
-</h1>
+</h2>
 
 <p>Removal of atmospheric absorption lines in spectra.</p>
 
@@ -822,10 +862,12 @@ is divided out!</p>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="velocity" class="anchor" href="#velocity" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="VelocityLoc"></a><a href="SLiPy/Velocity.py">Velocity</a>
-</h1>
+</h2>
 
 <p>Radial velocity corrections for 1D spectra.</p>
 
@@ -938,10 +980,12 @@ under. If <em>outfile</em> is given, write results to the file.</p>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="observatory" class="anchor" href="#observatory" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="ObservatoryLoc"></a><a href="SLiPy/Observatory.py">Observatory</a>
-</h1>
+</h2>
 
 <p>Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
@@ -959,10 +1003,12 @@ to this module. I welcome suggestions.</p>
         <span class="pl-v">self</span>.longitude <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-c"># degrees W</span>
         <span class="pl-v">self</span>.altitude  <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-c"># meters</span></pre></div>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="plot" class="anchor" href="#plot" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="PlotLoc"></a><a href="SLiPy/Plot.py">Plot</a>
-</h1>
+</h2>
 
 <p>Convenient wrappers to matplotlib for plotting spectra. A <em>SPlot</em> simply
 creates a handle to remember figure attributes, to quickly go from looking
@@ -1003,8 +1049,8 @@ at one spectra to another. One can also <em>overlay</em> spectra.</p>
 </tbody>
 </table>
 
-<br>
-<p>The following member functions call pyplot equivalent:<br>
+<p><br>
+The following member functions call pyplot equivalent:<br>
 <strong>xlim</strong>, <strong>ylim</strong>, <strong>xlabel</strong>, <strong>ylabel</strong>, <strong>title</strong>, <strong>legend</strong>,
 <strong>text</strong>, <strong>grid</strong>, <strong>close</strong>.</p>
 
@@ -1086,10 +1132,12 @@ interest. The function returns a list of <em>keepers</em>.</p>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="montage" class="anchor" href="#montage" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="MontageLoc"></a><a href="SLiPy/Montage.py">Montage</a>
-</h1>
+</h2>
 
 <p><a href="http://montage.ipac.caltech.edu/">Montage</a> is a very powerful suite of C code
 for creating image mosaics. This module is a wrapper to automate not only the
@@ -1136,7 +1184,8 @@ directories, there should already exist the standard folder structure</p>
   |--final/
 </code></pre>
 
-<p>The mosaic will be deposited at <em>final/mosaic.fits</em>.</p>
+<p><br>
+The mosaic will be deposited at <em>final/mosaic.fits</em>.</p>
 
 <table>
 <thead>
@@ -1213,8 +1262,8 @@ directory. The final resulting mosaic will be deposited at
 </tbody>
 </table>
 
-<br>
-<p>The available filter band for each survey are as follows</p>
+<p><br>
+The available filter band for each survey are as follows</p>
 
 <table>
 <thead>
@@ -1239,8 +1288,8 @@ directory. The final resulting mosaic will be deposited at
 </tbody>
 </table>
 
-<br>
-<p>The user should execute the following available methods in this order:</p>
+<p><br>
+The user should execute the following available methods in this order:</p>
 
 <ul>
 <li>
@@ -1275,7 +1324,8 @@ now calling Montage.Mosaic() on each <em>site</em>.</p>
 </li>
 </ul>
 
-<p><strong>Example:</strong></p>
+<p><br>
+<strong>Example:</strong></p>
 
 <div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy <span class="pl-k">import</span> Montage, Simbad
 
@@ -1350,8 +1400,8 @@ subfields.</p>
 </tbody>
 </table>
 
-<br>
-<p>The available filter band for each survey are as follows</p>
+<p><br>
+The available filter band for each survey are as follows</p>
 
 <table>
 <thead>
@@ -1376,8 +1426,8 @@ subfields.</p>
 </tbody>
 </table>
 
-<br>
-<p>All the member functions are the same name as in <em>SubField</em>, but now with
+<p><br>
+All the member functions are the same name as in <em>SubField</em>, but now with
 the addition of a final step:</p>
 
 <ul>
@@ -1391,10 +1441,12 @@ run Mosaic() on them for a single final image.</p>
 </li>
 </ul>
 
-<h1>
+<p><br></p>
+
+<h2>
 <a id="elodie" class="anchor" href="#elodie" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <a name="ElodieLoc"></a><a href="Data/Elodie.py">Elodie</a>
-</h1>
+</h2>
 
 <p>Methods for data retrieval from the Elodie Archive.</p>
 
@@ -1434,8 +1486,8 @@ ratio available.</p>
 </tbody>
 </table>
 
-<br>
-<p><strong>Example:</strong></p>
+<p><br>
+<strong>Example:</strong></p>
 
 <div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy.Data <span class="pl-k">import</span> Elodie
 
@@ -1505,8 +1557,8 @@ further reduced via Elodie's pipeline with the following options.</p>
 </tbody>
 </table>
 
-<br>
-<p><strong>Example:</strong></p>
+<p><br>
+<strong>Example:</strong></p>
 
 <div class="highlight highlight-python"><pre><span class="pl-c"># all files in the archive for Altair (file name is first element in pair)</span>
 files <span class="pl-k">=</span> [ x[<span class="pl-c1">0</span>] <span class="pl-k">for</span> x <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD187642<span class="pl-pds">'</span></span>] ]
@@ -1531,7 +1583,6 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
           <p class="repo-owner"><a href="https://github.com/gLENTNER/SLiPy"></a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</p>
 
           <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-          <p><b>Notice:</b> The formatting has been altered by gLENTNER.</p>
         </aside>
       </div>
     </div>
