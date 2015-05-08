@@ -279,15 +279,15 @@ $ Simbad.py
 
     Return the distance in parsecs to *identifier*.
 
-        | Options   | Defaults    | Descriptions                     |
-        |-----------|-------------|----------------------------------|
-        | *parse*   | True        | parse return file from SIMBAD    |
-        | *full*    | False       | return more detailed information |
+    | Options   | Defaults    | Descriptions                     |
+    |-----------|-------------|----------------------------------|
+    | *parse*   | True        | parse return file from SIMBAD    |
+    | *full*    | False       | return more detailed information |
 
-        Example:
-        ```python
-        distance = Simbad.Distance('rigel kent')
-        ```
+    Example:
+    ```python
+    distance = Simbad.Distance('rigel kent')
+    ```
 
 ```Python
 def Sptype(identifier, **kwargs):
