@@ -555,5 +555,5 @@ Methods for data retrieval from the Elodie Archive.
     | *verbose*   | True            | display messages, progress           |
     | *resample*  | (min, max, res) | resample spectra (no default)        |
     | *normalize* | True            | continuum normalization              |
-    | *outpath*   | './'            | directory for downloaded files       |
+    | *outpath*   | './'            | directory for downloaded *files*     |
     | *names*     | []              | alternative output names for *files* |
