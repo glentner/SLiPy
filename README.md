@@ -38,8 +38,8 @@ already using, but for consistency I will keep it as it was from the author.
 The following modules are elevated to the package level and are available
 to import:
 
-| Module | Functions/Classes |
-|--------|-------------------|
+| Modules | Functions/Classes |
+|---------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
 |[**Simbad**](#SimbadLoc)|[Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
@@ -49,6 +49,10 @@ to import:
 |[**Observatory**](#ObservatoryLoc)|[OHP](#OHPLoc), |
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
 |[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
+
+
+| Archives | Functions/Classes |
+|----------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
 ##Installation
@@ -208,14 +212,14 @@ Objects for representing astronomical data. Currently, this includes the
     if the spectrum is initialized via numpy arrays, the units are only
     applied if there are none currently.
 
-    | Options   | Defaults       | Descriptions                    |
-    |-----------|----------------|---------------------------------|
-    | *wavecal* | True           | fit wavelength vector to data   |
-    | *crpix1*  | 'crpix1'       | reference pixel header keyword  |
-    | *crval1*  | 'crval1'       | value at reference pixel        |
-    | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)       |
-    | *xunit*   | 'Angstrom'     | units of wavelength from header |
-    | *yunit*   | 'erg cm-2 s-1' | units of data                   |
+    | Options   | Defaults       | Descriptions                   |
+    |-----------|----------------|--------------------------------|
+    | *wavecal* | True           | fit wavelength vector to data  |
+    | *crpix1*  | 'crpix1'       | reference pixel header keyword |
+    | *crval1*  | 'crval1'       | value at reference pixel       |
+    | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)      |
+    | *xunits*  | 'Angstrom'     | units for wavelength array     |
+    | *yunits*  | 'erg cm-2 s-1' | units for data array           |
 
     Member functions:
 
