@@ -507,6 +507,7 @@ at one spectra to another. One can also *overlay* spectra.
     |---------|-----------|-----------------------|
     | *keep*  | 'name'    | alternative is 'plot' |
 
+
 #<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
 Methods for data retrieval from the Elodie Archive.
