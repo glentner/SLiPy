@@ -454,15 +454,32 @@ at one spectra to another. One can also *overlay* spectra.
     | *usetex* | False      | render with pdflatex |
 
     The following member functions call pyplot equivalent:  
-    xlim, ylim, xlabel, ylabel, title, legend, text, grid, close.
+    **xlim**, **ylim**, **xlabel**, **ylabel**, **title**, **legend**,
+    **text**, **grid**, **close**.
 
     Here, when these function are called, the arguments are passed to
     matplotlib; however, these calls are remembered. So when you go to *draw*
     the figure again, you are back where you left off.
 
-    - **.** *draw*( ):
+    - *draw*( ):
 
         Rebuild and render the figure.
+
+    - *refresh*( ):
+
+        Re-render (refresh) the figure, without clearing the axis.
+
+    - *txtclear*( ):
+
+        Clear all the calls to *text*( ) from the figure.
+
+    - *xoffset*( *value* ):
+
+        Switch either on or off (*value* = True | False) the horizontal offset.
+
+    - *yoffset*( *value* ):
+
+        Switch either on or off (*value* = True | False) the vertical offset.
 
 ```Python
 def Iterate( *plots, **kwargs ):
