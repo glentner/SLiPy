@@ -58,9 +58,7 @@ to import:
 
 To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a *tar* or *zip* archive or by
-cloning it -
-
-```git clone http://github.com/glentner/slipy```.
+cloning it.
 
 Extract it's contents to wherever you like in a directory (ostensibly named
 *slipy*, but actually you can call this library whatever you want as well
@@ -117,6 +115,7 @@ The above badge is generated using the following snippet
 ```
 [![SLiPy](http://img.shields.io/badge/running-SLiPy-green.svg?style=flat)](http://glentner.github.io/SLiPy)
 ```
+
 # Documentation
 
 #<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
