@@ -62,9 +62,9 @@ the imports are *relative*). Then add the parent directory to your `PYTHONPATH`
 if it isn't already. For example:
 
 ```
-cd
-git clone http://github.com/glentner/SLiPy
-echo "export PYTHONPATH=$PYTHONPATH:/~" >> ~/.bashrc
+$ cd
+$ git clone http://github.com/glentner/SLiPy
+$ echo "export PYTHONPATH=$PYTHONPATH:~" >> ~/.bashrc
 ```
 
 And your ready to go!
@@ -82,8 +82,7 @@ Graduate Research Assistant
 Department of Physics & Astronomy  
 University of Louisville
 
-W: [glentner.github.io](http://glentner.github.io)
-E: [grlent01@louisville.edu](mailto:grlent01@louisville.edu)
+Website: [glentner.github.io](http://glentner.github.io)
 
 ---
 
@@ -229,29 +228,34 @@ Objects for representing astronomical data. Currently, this includes the
 
         Essentially a wrapper to *deepcopy()*. To say SpectrumA = SpectrumB
         implies that SpectrumA *is* SpectrumB. If you want to create a new
-        spectrum *equal* to another, say SpectrumA = SpectrumB.copy() 
+        spectrum *equal* to another, say SpectrumA = SpectrumB.copy()
+
 
 #<a name=SimbadLoc></a>Simbad
 
 This module allows the user to query the SIMBAD astronomical database from
-inside Python or shell commands/scripts.
+inside Python or shell commands/scripts. It's four current major functions
+*Position*, *Distance*, *Sptype*, and *IDList* return real variables with
+appropriate types ready for use.
 
 As a shell script:
 
 ```
-usage: Simbad.py @Attribute <identifier> [**kwargs]
+$ Simbad.py
 
-The 'Attribute' points to a function within this module and indicates
-what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
-a specific function. Currently available attributes are: `Position`,
-`Distance`, `Sptype` and `IDList`.
+ usage: Simbad.py @Attribute <identifier> [**kwargs]
 
-The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
-"alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
-sure to use quotation to enclose it.
+ The 'Attribute' points to a function within this module and indicates
+ what is to be run. Execute 'Simbad.py @Attribute help' for usage details of
+ a specific function. Currently available attributes are: `Position`,
+ `Distance`, `Sptype` and `IDList`.
 
-The **kwargs is the conventional reference to Python keyword arguments.
-These should be specific to the 'Attribute' being pointed to.
+ The identifier names can be anything recognized by SIMBAD (e.g., Regulus,
+ "alpha leo", "HD 121475", "del cyg", etc ...) if the name is two parts make
+ sure to use quotation to enclose it.
+
+ The **kwargs is the conventional reference to Python keyword arguments.
+ These should be specific to the 'Attribute' being pointed to.
 ```
 
 The following objects/functions are available:
