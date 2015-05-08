@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# slipy/SLiPy/Montage.py 
+# slipy/SLiPy/Montage.py
 """
 This module makes use of the `Montage` mosaic tools from caltech, see:
 http://montage.ipac.caltech.edu/
@@ -33,7 +33,7 @@ def SolveGrid( sides, grid ):
 
 	The user should mindful of their choices. If the side lengths cannot be
 	subdivided into well-behaved (rational) segments, higher decimal places
-	will be lossed in the SubField.ArchiveList() task resulting in small
+	will be lost in the SubField.ArchiveList() task resulting in small
 	gaps in the mosaic.
 	"""
 	# check arguments

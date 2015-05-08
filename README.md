@@ -508,6 +508,51 @@ at one spectra to another. One can also *overlay* spectra.
     | *keep*  | 'name'    | alternative is 'plot' |
 
 
+#<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
+
+[Montage](http://montage.ipac.caltech.edu/) is a very powerful suite of C code
+for creating image mosaics. This module is a wrapper to automate not only the
+process for small projects, but to segment large fields into a grid and
+mosaic each *site* before combining them into a *master* mosaic.
+
+<a name=MSolveGridLoc></a>
+- **SolveGrid** ( *sides*, *grid* ):
+
+	Helper function for the Field and SubField classes. Both *sides* and *grid*
+	need to be array-like and of length two. *sides* is the side length of the
+	field in decimal degrees in right ascension and declination respectively.
+	*grid* specifies the subdivision along these axis (e.g., (2,2) says 2x2).
+
+	The user should mindful of their choices. If the side lengths cannot be
+	subdivided into well-behaved (rational) segments, higher decimal places
+	will be lost in the SubField.ArchiveList() task resulting in small
+	gaps in the mosaic.
+
+<a name=MMosaicLoc></a>
+- **Mosaic** ( *resolution*, \**folders*, \*\**kwargs* ):
+
+    	Conduct standard build procedures for all *folders*, similar to the
+        [m101 example](http://montage.ipac.caltech.edu/docs/m101tutorial.html).
+        *resolution* is the number of pixels per degree for the output image.
+        Note: *folders* should be absolute paths. Further, below each of these
+        directories, there should already exist the standard folder structure
+        ```
+        folder/
+          |--raw/
+          |    |-- <location of FITS images>
+          |
+          |--projected/
+          |--differences/
+          |--corrected/
+          |--final/
+        ```
+
+        | Options    | Defaults | Descriptions                             |
+        |------------|----------|------------------------------------------|
+        | *verbose*  | True     | display messages, progress               |
+        | *bkmodel*  | True     | model and correct for background effects |
+
+
 #<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
 Methods for data retrieval from the Elodie Archive.
