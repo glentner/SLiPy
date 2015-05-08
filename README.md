@@ -350,6 +350,8 @@ Removal of atmospheric absorption lines in spectra.
 	spectra is appropriate, only the corresponding range of the spectrum
 	is divided out!
 
+    **Notice** Your spectra must be continuum normalized for this to work!
+
     | Options   | Defaults        | Descriptions                         |
     |-----------|-----------------|--------------------------------------|
     | *lag*     | 25              | pixel range to shift over            |
