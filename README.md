@@ -100,11 +100,11 @@ Website: [glentner.github.io](http://glentner.github.io)
 If you have made use of SLiPy in your project/research, you can acknowledge
 your use in the following ways:
 
-**In Publications**  
-This research has made use of SLiPy, a spectroscopy and astrophysics library
-for Python - glentner.github.io/slipy (G. Lentner, 2015).
+**Publications**  
+This research has made use of SLiPy, an open source spectroscopy and
+astrophysics library for Python 3 (G. Lentner, 2015).
 
-**In Projects**  
+**Projects**  
 If your code either makes use of, borrows from SLiPy, a good way to reference
 this is with a [shield](http://shields.io) in your README file.
 
