@@ -553,6 +553,38 @@ mosaic each *site* before combining them into a *master* mosaic.
     | *bkmodel*  | True     | model and correct for background effects |
 
 
+<a name=MSubFieldLoc></a>
+- class **SubField** ( *center*, *sides*, *grid*, \*\**kwargs* ):
+
+    Create a grid of *sites* each of which will be mosaiced separately and
+    then combined. Each of *center*, *sides*, and *grid* should be array-like
+    and of length two. *center* should be the very center location for the
+    mosaic in right ascension and declination (both in decimal degrees),
+    respectively. *sides* needs to give the side lengths of the desired
+    mosaic in decimal degrees (width-RA, height-DEC). *grid* should be the
+    grid division for the field (e.g., (2, 2) means 2x2 grid).
+
+    | Options   | Defaults | Descriptions                             |
+    |-----------|----------|------------------------------------------|
+    | *verbose* | True     | display messages, progress               |
+    | *survey*  | 'DSS'    | DSS, SDSS, 2MASS                         |
+    | *band*    | 'DSS2B'  | filter for *survey*, see *bands* dict    |
+    | *pad*     | 0.0      | amount to add (degrees) around *sites*   |
+
+    The available filter band for each survey are as follows
+
+    | Survey  | Bands                                                   |
+    |---------|---------------------------------------------------------|
+    | 'DSS'   | 'J', 'H', 'K'                                           |
+    | 'SDSS'  | 'U', 'G', 'R', 'I', 'Z'                                 |
+    | '2MASS' | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
+
+    The user should execute the following available methods in this order:
+
+    - *ArchiveList* ( *verbose* = True ):
+
+        Run the `mArchiveList` command on the *site* grid.
+
 #<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
 Methods for data retrieval from the Elodie Archive.
