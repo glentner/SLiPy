@@ -258,24 +258,23 @@ $ Simbad.py
  These should be specific to the 'Attribute' being pointed to.
 ```
 
-The following objects/functions are available:
+<a name=PositionLoc></a>
+- **Position** ( *identifier*, \*\**kwargs ):
 
-```Python
-class Query:
-	"""
-	Query( identifier, criteria, **kwargs ):
+    Return the right ascension and declination in decimal degrees of
+    *identifier* as a pair.
 
-	Class for querying the SIMBAD astronomical database for 'citeria'
-	of 'identifier'. This object is not intended to be used directly; it
-    is an abstraction and is used by the other functions which should be
-    called by the user.
+    | Options   | Defaults    | Descriptions                     |
+    |-----------|-------------|----------------------------------|
+    | *parse*   | True        | parse return file from SIMBAD    |
+    | *full*    | False       | return more detailed information |
 
-	kwargs = {
-		'parse' : True,  # extract relevant data from SIMBAD return file
-		'dtype' : float, # output datatype
-	}
-	"""
-```
+    Example:
+    ```python
+    ra, dec = Position('Sirius')
+    ```
+
+
 ```Python
 def Position( identifier, **kwargs ):
 	"""
