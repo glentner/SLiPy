@@ -302,6 +302,7 @@ $ Simbad.py
     | *parse*   | True        | parse return file from SIMBAD    |
     | *full*    | False       | return more detailed information |
 
+    <br>
     Example:
     ```python
     ra, dec = Simbad.Position('Sirius')
@@ -317,6 +318,7 @@ $ Simbad.py
     | *parse*   | True        | parse return file from SIMBAD    |
     | *full*    | False       | return more detailed information |
 
+    <br>
     Example:
     ```python
     distance = Simbad.Distance('rigel kent')
@@ -332,6 +334,7 @@ $ Simbad.py
     | *parse*   | True        | parse return file from SIMBAD    |
     | *full*    | False       | return more detailed information |
 
+    <br>
     Example:
     ```python
     # returns 'B8IVn' (HD 87901 is Regulus)
@@ -348,10 +351,12 @@ $ Simbad.py
     | *parse*   | True        | parse return file from SIMBAD    |
     | *full*    | False       | return more detailed information |
 
+    <br>
     Example:
     ```python
     other_names = Simbad.IDList('proxima centauri')
     ```
+
 
 ##<a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
 
@@ -366,6 +371,7 @@ Correlation functions for astronomical data.
     | Options   | Defaults    | Descriptions                     |
     |-----------|-------------|----------------------------------|
     | *lag*     | 25          | pixel range to shift over        |
+
 
 ##<a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
 
@@ -478,6 +484,7 @@ at one spectra to another. One can also *overlay* spectra.
     | *label*  | 'spectrum' | name of object       |
     | *usetex* | False      | render with pdflatex |
 
+    <br>
     The following member functions call pyplot equivalent:  
     **xlim**, **ylim**, **xlabel**, **ylabel**, **title**, **legend**,
     **text**, **grid**, **close**.
@@ -569,6 +576,7 @@ mosaic each *site* before combining them into a *master* mosaic.
       |--final/
     ```
 
+    <br>
     The mosaic will be deposited at *final/mosaic.fits*.
 
     | Options    | Defaults | Descriptions                             |
@@ -599,6 +607,7 @@ mosaic each *site* before combining them into a *master* mosaic.
     | *band*    | 'DSS2B'  | filter for *survey*, see *bands* dict    |
     | *pad*     | 0.0      | amount to add (degrees) around *sites*   |
 
+    <br>
     The available filter band for each survey are as follows
 
     | Survey  | Bands                                                   |
@@ -607,6 +616,7 @@ mosaic each *site* before combining them into a *master* mosaic.
     | 'SDSS'  | 'U', 'G', 'R', 'I', 'Z'                                 |
     | '2MASS' | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
 
+    <br>
     The user should execute the following available methods in this order:
 
     - *ArchiveList* ( \*\**kwargs* ):
@@ -634,6 +644,7 @@ mosaic each *site* before combining them into a *master* mosaic.
         Merge all *site* mosaics into a single master SubField mosaic. We are
         now calling Montage.Mosaic() on each *site*.
 
+    <br>
     **Example:**
     ```python
     from slipy import Montage, Simbad
@@ -679,6 +690,7 @@ mosaic each *site* before combining them into a *master* mosaic.
     | *band*    | 'DSS2B'  | filter for *survey*, see *bands* dict    |
     | *pad*     | 0.0      | amount to add (degrees) around *sites*   |
 
+    <br>
     The available filter band for each survey are as follows
 
     | Survey  | Bands                                                   |
@@ -687,6 +699,7 @@ mosaic each *site* before combining them into a *master* mosaic.
     | 'SDSS'  | 'U', 'G', 'R', 'I', 'Z'                                 |
     | '2MASS' | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
 
+    <br>
     All the member functions are the same name as in *SubField*, but now with
     the addition of a final step:
 
@@ -716,6 +729,7 @@ Methods for data retrieval from the Elodie Archive.
     | *infile*   | archives/elodie.csv        | path to input file    |
     | *catalogs* | ['HD','BD','HR','GC','GJ'] | catalogs to keep      |
 
+    <br>
     **Example:**
     ```python
     from slipy.Data import Elodie
@@ -746,6 +760,7 @@ Methods for data retrieval from the Elodie Archive.
     | *outpath*   | './'            | directory for downloaded *files*     |
     | *names*     | []              | alternative output names for *files* |
 
+    <br>
     **Example:**
     ```python
     # all files in the archive for Altair (file name is first element in pair)
