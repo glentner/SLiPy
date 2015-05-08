@@ -48,7 +48,7 @@ to import:
 |[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), [BaryCorrect](#BaryCorrectLoc), [IrafInput](#IrafInputLoc),  |
 |[**Observatory**](#ObservatoryLoc)|[OHP](#OHPLoc), |
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
-|[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
+|[**Montage**](#MontageLoc)|[SolveGrid](#MSolveGridLoc), [Mosaic](#MMosaicLoc), [SubField](#MSubFieldLoc), [Field](#MFieldLoc), |
 
 | SLiPy/Data | Functions/Classes |
 |------------|-------------------|
