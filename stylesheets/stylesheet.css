@@ -451,8 +451,9 @@ header {
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
-  background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
-  border-bottom: solid 1px #275da1;
+  background: url(../Figures/banner.jpg);
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 header h1 {
@@ -598,7 +599,7 @@ th {
 
 td {
   font-weight: 300;
-  text-align: center;
+  text-align: left;
   border: 1px solid #ebebeb;
 }
 
@@ -878,4 +879,3 @@ footer a:hover {
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) { }
-
