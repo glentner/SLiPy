@@ -289,33 +289,36 @@ $ Simbad.py
     distance = Simbad.Distance('rigel kent')
     ```
 
-```Python
-def Sptype(identifier, **kwargs):
-	"""
-	Sptype( identifier, **kwargs ):
+<a name=SptypeLoc></a>
+- **Sptype** ( *identifier*, \*\**kwargs* ):
 
-	Handle to the Query class with criteria='%SP'. Return the
-    spectral type as resolved by SIMBAD.
+    Return the spectral type of *identifier* as resolved by SIMBAD.
 
-    Example:
-
-    sptype = Sptype('HD 87901') # returns 'B8IVn' (HD 87901 is Regulus)
-	"""
-```
-```Python
-def IDList(identifier, **kwargs):
-	"""
-	IDList(identifier, **kwargs):
-
-	Handle to the Query class with criteria='%IDLIST'.
-	With `parse` = True, return a list of alternate IDs for
-	the `identifier` provided.
+    | Options   | Defaults    | Descriptions                     |
+    |-----------|-------------|----------------------------------|
+    | *parse*   | True        | parse return file from SIMBAD    |
+    | *full*    | False       | return more detailed information |
 
     Example:
+    ```python
+    # returns 'B8IVn' (HD 87901 is Regulus)
+    sptype = Simbad.Sptype('HD 87901')
+    ```
 
+<a name=IDListLoc></a>
+- **IDList** ( *identifier*, \*\**kwargs* ):
+
+    Return a list of alternate IDs for *identifier*.
+
+    | Options   | Defaults    | Descriptions                     |
+    |-----------|-------------|----------------------------------|
+    | *parse*   | True        | parse return file from SIMBAD    |
+    | *full*    | False       | return more detailed information |
+
+    Example:
+    ```python
     other_names = IDList('proxima centauri')
-    """
-```
+    ```
 
 #<a name=CorrelateLoc></a>Correlate
 
