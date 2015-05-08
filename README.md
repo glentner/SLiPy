@@ -545,7 +545,7 @@ Methods for data retrieval from the Elodie Archive.
     *pipeline* instructions (e.g., '&z=wrs|fca[1,nor]').
 
 <a name=EDownloadLoc></a>
-- **Download** ( \**files*, \*\**kwargs** ):
+- **Download** ( \**files*, \*\**kwargs* ):
 
     Download *files* from Elodie archive via url scripts. The spectra can be
     further reduced via Elodie's pipeline with the following options.
