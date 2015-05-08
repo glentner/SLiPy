@@ -537,3 +537,23 @@ Methods for data retrieval from the Elodie Archive.
     'HD187642' in archive.files # returns True (Altair)
     'HD045348' in archive.files # returns False (Canopus)
     ```
+
+<a name=EScriptLoc></a>
+- **Script** ( *filename*, *pipeline* = '' ):
+
+    Construct url script for Elodie archive given *filename* and optionally
+    *pipeline* instructions (e.g., '&z=wrs|fca[1,nor]').
+
+<a name=EDownloadLoc></a>
+- **Download** ( \**files*, \*\**kwargs** ):
+
+    Download *files* from Elodie archive via url scripts. The spectra can be
+    further reduced via Elodie's pipeline with the following options.
+
+    | Options     | Defaults        | Descriptions                         |
+    |-------------|-----------------|--------------------------------------|
+    | *verbose*   | True            | display messages, progress           |
+    | *resample*  | (min, max, res) | resample spectra (no default)        |
+    | *normalize* | True            | continuum normalization              |
+    | *outpath*   | './'            | directory for downloaded files       |
+    | *names*     | []              | alternative output names for *files* |
