@@ -517,11 +517,23 @@ Methods for data retrieval from the Elodie Archive.
 
     Import and parse ascii catalog of Elodie archive files. The complete
     archive is stored in the member dictionary, *data*. It's organized
-    by unique target names. The reduced archive by default contains only *HD*,
-    *BD*, *HR*, *GC*, and *GJ* objects, choosing the file pertaining to the
-    spectra with the highest signal-to-noise ratio available.
+    by unique target names. Each target has a list of pairs consisting of the
+	name of the file and the signal to noise for that spectrum. The reduced
+    archive by default contains only *HD*, *BD*, *HR*, *GC*, and *GJ* objects,
+    choosing the file pertaining to the spectra with the highest signal-to-noise
+    ratio available.
 
     | Options    | Defaults                   | Descriptions          |
     |------------|----------------------------|-----------------------|
     | *infile*   | archives/elodie.csv        | path to input file    |
     | *catalogs* | ['HD','BD','HR','GC','GJ'] | catalogs to keep      |
+
+    **Example:**
+    ```python
+    from slipy.Data import Elodie
+
+    archive = Elodie.Archive()
+
+    'HD187642' in archive.files # returns True (Altair)
+    'HD045348' in archive.files # returns False (Canopus)
+    ```

@@ -1,8 +1,8 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# Python/__init__.py
+# SLiPy/__init__.py
 """
-AstroPython
+SLiPy
 ===========
 A Computational Astronomy Package for Python
 
@@ -11,17 +11,17 @@ astronomy research.
 """
 
 # TkAgg must be used first for Mac user's
-import matplotlib as mpl
-mpl.use('TkAgg')
+# import matplotlib as mpl
+# mpl.use('TkAgg')
 
 # exposed modules
-from .AstroPython import Fits, Simbad, Correlate, Telluric, Velocity, \
-		Observatory, Montage
+from .SLiPy import Fits, Simbad, Correlate, Telluric, Velocity, \
+		Observatory, Montage, Plot, DataType, Measure
 
-from .AstroPython.Plot     import SPlot, Iterate
-from .AstroPython.DataType import Spectrum
-from .AstroPython.Measure  import Deblend
+# from .SLiPy.Plot     import SPlot, Iterate
+# from .SLiPy.DataType import Spectrum
+# from .SLiPy.Measure  import Deblend
 
-from .Data import Elodie
+# from .Data import Elodie
 
 from .Framework import Display
