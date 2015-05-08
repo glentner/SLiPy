@@ -45,7 +45,7 @@ to import:
 |[**Simbad**](#SimbadLoc)|[Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
 |[**Correlate**](#CorrelateLoc)|[XCorr](#XCorrLoc), |
 |[**Telluric**](#TelluricLoc)|[Correct](#CorrectLoc), |
-|[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), [IrafInput](#IrafInputLoc),  |
+|[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), [BaryCorrect](#BaryCorrectLoc), [IrafInput](#IrafInputLoc),  |
 |[**Observatory**](#ObservatoryLoc)|[OHP](#OHPLoc), |
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
 |[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
@@ -380,6 +380,17 @@ Radial velocity corrections for 1D spectra.
     |------------|-----------------|----------------------------|
     | *verbose*  | False           | display messages, progress |
 
+<a name=BaryCorrectLoc></a>
+- **BaryCorrect** ( *observatory*, \**spectra*, \*\**kwargs* ):
+
+    Perform barycentric velocity corrects on *spectra* based on
+    *observatory* parameters (*longitude*, *latitude*, *altitude*) and the
+    member attributes, *ra* (right ascension), *dec* (declination), and *jd*
+    (julian date) from the *spectra*.
+
+    | Options    | Defaults        | Descriptions               |
+    |------------|-----------------|----------------------------|
+    | *verbose*  | False           | display messages, progress |
 
 <a name=IrafInputLoc></a>
 - **IrafInput** ( \**files*, \*\**kwargs* ):

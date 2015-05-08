@@ -1,6 +1,6 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
 # See LICENSE (GPLv2)
-# slipy/SLiPy/Velocity.Py 
+# slipy/SLiPy/Velocity.Py
 """
 Radial velocity corrections for 1D spectra.
 """
@@ -148,6 +148,68 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 			# heliocentric velocity correction in km s^-1
 			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
 				spectrum.ra, spectrum.dec, spectrum.jd)[1]
+			# apply correction to wave vector
+			spectrum.wave -= spectrum.wave * 1000 * hcorr / c.value
+			# show progress if desired
+			if verbose: display.progress(a, len(spectra))
+
+		# finalize progress bar (erase)
+		if verbose: display.complete()
+
+	except OptionsError as err:
+		print(' --> OptionsError:', err)
+		raise VelocityError('Failed to perform HelioCorrect() task.')
+
+	except DisplayError as err:
+		print(' --> DisplayError:', err)
+		raise VelocityError('Exception from Display.Monitor in HelioCorrect().')
+
+
+def BaryCorrect( obs, *spectra, **kwargs ):
+	"""
+	Perform barycentric velocity corrects on `spectra` based on
+	`obs`ervatory information (longitude, latitude, altitude) and the
+	member attributes, ra (right ascension), dec (declination), and jd
+	(julian date) from the `spectra`.
+	"""
+	try:
+
+		# define function parameters
+		options = Options( kwargs,
+			{
+				'verbose': False # display messages, progress
+			})
+
+		# assign parameters
+		verbose = options('verbose')
+
+		# check `obs` type
+		if not issubclass( type(obs), Observatory):
+			raise VelocityError('HelioCorrect() expects its first argument to '
+			'be derived from the Observatory class.')
+		elif ( not hasattr(obs, 'latitude') or not hasattr(obs,'longitude') or
+			not hasattr(obs, 'altitude') ):
+			raise VelocityError('HelioCorrect expects `obs`ervatory to have '
+			'all three: latitude, longitude, and altitude attributes.')
+
+		# check `spectra` arguments
+		for a, spectrum in enumerate(spectra):
+			if type(spectrum) is not Spectrum:
+				raise VelocityError('HelioCorrect() expects all `spectrum` '
+				'arguments to be of type Spectrum.')
+			if not spectrum.ra or not spectrum.dec or not spectrum.jd:
+				raise VelocityError('Spectrum {} lacks one or all of `ra`, '
+				'`dec`, and `jd`; from HelioCorrect().'.format(a))
+
+		if verbose:
+				display = Monitor()
+				print(' Running HelioCorrect on {} spectra ...'
+				.format(len(spectra)))
+
+		for a, spectrum in enumerate(spectra):
+			# heliocentric velocity correction in km s^-1
+			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
+				spectrum.ra, spectrum.dec, spectrum.jd)[0]
 			# apply correction to wave vector
 			spectrum.wave -= spectrum.wave * 1000 * hcorr / c.value
 			# show progress if desired
