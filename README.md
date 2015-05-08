@@ -531,26 +531,26 @@ mosaic each *site* before combining them into a *master* mosaic.
 <a name=MMosaicLoc></a>
 - **Mosaic** ( *resolution*, \**folders*, \*\**kwargs* ):
 
-    	Conduct standard build procedures for all *folders*, similar to the
-        [m101 example](http://montage.ipac.caltech.edu/docs/m101tutorial.html).
-        *resolution* is the number of pixels per degree for the output image.
-        Note: *folders* should be absolute paths. Further, below each of these
-        directories, there should already exist the standard folder structure
-        ```
-        folder/
-          |--raw/
-          |    |-- <location of FITS images>
-          |
-          |--projected/
-          |--differences/
-          |--corrected/
-          |--final/
-        ```
+    Conduct standard build procedures for all *folders*, similar to the
+    [m101 example](http://montage.ipac.caltech.edu/docs/m101tutorial.html).
+    *resolution* is the number of pixels per degree for the output image.
+    Note: *folders* should be absolute paths. Further, below each of these
+    directories, there should already exist the standard folder structure
+    ```
+    folder/
+      |--raw/
+      |    |-- <location of FITS images>
+      |
+      |--projected/
+      |--differences/
+      |--corrected/
+      |--final/
+    ```
 
-        | Options    | Defaults | Descriptions                             |
-        |------------|----------|------------------------------------------|
-        | *verbose*  | True     | display messages, progress               |
-        | *bkmodel*  | True     | model and correct for background effects |
+    | Options    | Defaults | Descriptions                             |
+    |------------|----------|------------------------------------------|
+    | *verbose*  | True     | display messages, progress               |
+    | *bkmodel*  | True     | model and correct for background effects |
 
 
 #<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
