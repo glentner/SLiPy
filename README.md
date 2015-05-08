@@ -231,7 +231,7 @@ Objects for representing astronomical data. Currently, this includes the
         spectrum *equal* to another, say SpectrumA = SpectrumB.copy()
 
 
-#<a name=SimbadLoc></a>Simbad
+#<a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts. It's four current major functions
@@ -271,36 +271,24 @@ $ Simbad.py
 
     Example:
     ```python
-    ra, dec = Position('Sirius')
+    ra, dec = Simbad.Position('Sirius')
     ```
 
+<a name=DistanceLoc></a>
+- **Distance** ( *identifier*, \*\**kwargs* ):
 
-```Python
-def Position( identifier, **kwargs ):
-	"""
-	Position( identifier, **kwargs ):
+    Return the distance in parsecs to *identifier*.
 
-	Handle to the Query class with criteria='%C00(d;C)'. Return right
-    ascension and declination in decimal degrees of `identifier`.
+        | Options   | Defaults    | Descriptions                     |
+        |-----------|-------------|----------------------------------|
+        | *parse*   | True        | parse return file from SIMBAD    |
+        | *full*    | False       | return more detailed information |
 
-    Example:
+        Example:
+        ```python
+        distance = Simbad.Distance('rigel kent')
+        ```
 
-    ra, dec = Simbad.Position('Sirius')
-	"""
-```
-```Python
-def Distance( identifier, **kwargs ):
-	"""
-	Distance( identifier, **kwargs ):
-
-	Handle to the Query class with criteria='%PLX' Return the distance
-    in parsecs to `identifier`.
-
-    Example:
-
-    d = Distance('rigel kent')
-	"""
-```
 ```Python
 def Sptype(identifier, **kwargs):
 	"""
