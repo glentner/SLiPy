@@ -51,6 +51,7 @@ to import:
 |[**Montage**](#MontageLoc)|[SolveGrid](#MSolveGridLoc), [Mosaic](#MMosaicLoc), [SubField](#MSubFieldLoc), [Field](#MFieldLoc), |
 
 <br>
+
 | SLiPy/Data | Functions/Classes |
 |------------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#EArchiveLoc), [Script](#EScriptLoc), [Download](#EDownloadLoc), |
