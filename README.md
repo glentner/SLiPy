@@ -1,6 +1,6 @@
 # [SLiPy](http://glentner.github.io/SLiPy)
 
-#### A Spectroscopy and astrophysical Library for Python 3
+#### A Spectroscopy and astrophysics Library for Python 3
 
 This Python package is an expanding code base for doing computational
 astronomy, particularly spectroscopy. It contains both a *Spectrum* class
