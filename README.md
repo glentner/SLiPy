@@ -106,7 +106,7 @@ for Python - glentner.github.io/slipy (G. Lentner, 2015).
 
 **In Projects**  
 If your code either makes use of, borrows from SLiPy, a good way to reference
-this is with a badge in your README file.
+this is with a [shield](http://shields.io) in your README file.
 
 [![SLiPy](http://img.shields.io/badge/powered%20by-SLiPy-blue.svg?style=flat)](http://glentner.github.io/slipy)
 
