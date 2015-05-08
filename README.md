@@ -118,6 +118,7 @@ The above badge is generated using the following snippet
 
 # Documentation
 
+<br>
 ##<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
 
 Manipulate FITS files. Import data into *Spectrum* objects. Filter results
@@ -197,6 +198,7 @@ of the data such as distance, spectral type, etc.
     *useSimbad* | False    | use *Simbad* instead of header elements  |
 
 
+<br>
 ##<a name=DataTypeLoc></a>[DataType](SLiPy/DataType.py)
 
 Objects for representing astronomical data. Currently, this includes the
@@ -264,6 +266,7 @@ Objects for representing astronomical data. Currently, this includes the
         spectrum *equal* to another, say SpectrumA = SpectrumB.copy()
 
 
+<br>
 ##<a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
 
 This module allows the user to query the SIMBAD astronomical database from
@@ -358,6 +361,7 @@ $ Simbad.py
     ```
 
 
+<br>
 ##<a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
 
 Correlation functions for astronomical data.
@@ -373,6 +377,7 @@ Correlation functions for astronomical data.
     | *lag*     | 25          | pixel range to shift over        |
 
 
+<br>
 ##<a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
 
 Removal of atmospheric absorption lines in spectra.
@@ -403,6 +408,7 @@ Removal of atmospheric absorption lines in spectra.
     *Regulus* from the Elodie archive were used as calibration spectra.
 
 
+<br>
 ##<a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
 
 Radial velocity corrections for 1D spectra.
@@ -448,6 +454,7 @@ Radial velocity corrections for 1D spectra.
     | *outfile*   | None      | write lines to file named *outfile*   |
 
 
+<br>
 ##<a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
 
 Define observatory parameter similar to the IRAF task. All observatories
@@ -467,6 +474,7 @@ class OHP(Observatory):
 		self.altitude  = 650        # meters
 ```
 
+<br>
 ##<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
 
 Convenient wrappers to matplotlib for plotting spectra. A *SPlot* simply
@@ -537,6 +545,7 @@ at one spectra to another. One can also *overlay* spectra.
     | *keep*  | 'name'    | alternative is 'plot' |
 
 
+<br>
 ##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
 
 [Montage](http://montage.ipac.caltech.edu/) is a very powerful suite of C code
@@ -709,6 +718,7 @@ mosaic each *site* before combining them into a *master* mosaic.
         run Mosaic() on them for a single final image.
 
 
+<br>
 ##<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
 Methods for data retrieval from the Elodie Archive.
