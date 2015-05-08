@@ -39,7 +39,7 @@ The following modules are elevated to the package level and are available
 to import:
 
 ## slipy imports
-| Modules | Functions/Classes |
+| slipy imports | Functions/Classes |
 |---------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
@@ -52,7 +52,7 @@ to import:
 |[**Montage**](#MontageLoc)|[Mosaic](#MosaicLoc), [SubField](#SubFieldLoc), [Field](#FieldLoc), |
 
 ## slipy.data imports
-| Archives | Functions/Classes |
+| slipy.data imports | Functions/Classes |
 |---------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#ArchiveLoc), [Script](#ScriptLoc), [Download](#DownloadLoc), |
 
