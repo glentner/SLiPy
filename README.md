@@ -416,15 +416,17 @@ should follow the following pattern. The user can add as many as they like
 to this module. I welcome suggestions.
 
 <a name=OHPLoc></a>
-- class **OHP** (Observatory):
-
+```Python
+class OHP(Observatory):
+	"""
 	The Observatoire de Haute-Provence, France.
-
-    - *.name*      = 'Observatoire de Haute-Provence'
-	- *.latitude*  = 43.9308334 # degrees N
-	- *.longitude* = 356.28667  # degrees W
-	- *.altitude*  = 650        # meters
-
+	"""
+	def __init__(self):
+		self.name      = 'Observatoire de Haute-Provence'
+		self.latitude  = 43.9308334 # degrees N
+		self.longitude = 356.28667  # degrees W
+		self.altitude  = 650        # meters
+```
 
 #<a name=PlotLoc></a>Plot
 
