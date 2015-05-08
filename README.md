@@ -285,7 +285,7 @@ def Position( identifier, **kwargs ):
 
     Example:
 
-    ra, dec = Position('Sirius')
+    ra, dec = Simbad.Position('Sirius')
 	"""
 ```
 ```Python
