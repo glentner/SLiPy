@@ -4,7 +4,7 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Ubuntu";
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #606c71; }
@@ -56,12 +56,8 @@ a {
 .page-header {
   color: #fff;
   text-align: center;
-  background: url(../Figures/banner.jpg);
-  background-attachment: fixed;
-  background-size: cover;
-  /*
   background-color: #159957;
-  background-image: linear-gradient(120deg, #155799, #159957);*/}
+  background-image: linear-gradient(120deg, #155799, #159957); }
 
 @media screen and (min-width: 64em) {
   .page-header {

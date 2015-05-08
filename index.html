@@ -5,13 +5,13 @@
     <title>Slipy by gLENTNER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">SLiPy</h1>
+      <h1 class="project-name">Slipy</h1>
       <h2 class="project-tagline">A Spectroscopy and astrophysical Library for Python 3</h2>
       <a href="https://github.com/gLENTNER/SLiPy" class="btn">View on GitHub</a>
       <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="btn">Download .zip</a>
@@ -944,133 +944,129 @@ to this module. I welcome suggestions.</p>
 
 <h1>
 <a id="plot" class="anchor" href="#plot" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="PlotLoc"></a>Plot</h1>
+<a name="PlotLoc"></a><a href="SLiPy/Plot.py">Plot</a>
+</h1>
 
-<p>Convenience tools for plotting spectra. <strong>SPlot</strong> takes a Spectrum object
-and remains like a handle to the plot for that object. All of the typical
-member commands to matplotlib.pyplot exist, but once called are <em>remembered</em>.
-Additionally, spectra can be <code>overlay</code>ed. <strong>Iterate</strong> is a function that takes
-any number of SPlot figures and iterates through them interactively and lets
-the user mark which ones to <code>keep</code>. The return is a list of either the names
-of the figures or the actually objects themselves.</p>
+<p>Convenient wrappers to matplotlib for plotting spectra. A <em>SPlot</em> simply
+creates a handle to remember figure attributes, to quickly go from looking
+at one spectra to another. One can also <em>overlay</em> spectra.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">SPlot</span>:
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Spectrum Plot - Plot the data in `spectrum`.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span>
-    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, <span class="pl-smi">spectrum</span>, **<span class="pl-smi">kwargs</span>):
-        <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">        Assign `options` in `kwargs` and initialize the plot.</span>
-<span class="pl-s"></span>
-<span class="pl-s">        kwargs = {</span>
-<span class="pl-s">            'marker': 'b-'          , # marker for plot</span>
-<span class="pl-s">            'label' : 'unspecified' , # label for data</span>
-<span class="pl-s">            'usetex': False           # pdflatex setting</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
+<p><a name="SPlotLoc"></a></p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Iterate</span>( *<span class="pl-smi">plots</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Iterate thru `plots` to inspect data, the user marks `plots` of</span>
-<span class="pl-s">    interest. The function returns a list of `names` marked.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<ul>
+<li>
+<p>class <strong>SPlot</strong> ( <em>spectrum</em>, **<em>kwargs</em> ):</p>
 
-<h1>
-<a id="elodie" class="anchor" href="#elodie" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="ElodieLoc"></a>Elodie</h1>
+<p>Spectrum Plot - Create figure of <em>spectrum</em>.</p>
 
-<p>Methods for data retrieval from the Elodie Archive.</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>marker</em></td>
+<td>'b-'</td>
+<td>marker for data</td>
+</tr>
+<tr>
+<td><em>label</em></td>
+<td>'spectrum'</td>
+<td>name of object</td>
+</tr>
+<tr>
+<td><em>usetex</em></td>
+<td>False</td>
+<td>render with pdflatex</td>
+</tr>
+</tbody>
+</table>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Archive</span>:
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Import and parse ascii catalog of Elodie archive files. The complete</span>
-<span class="pl-s">    archive is stored in the member `data`. It's organized in a dictionary</span>
-<span class="pl-s">    by unique target names. The reduced archive of contains identified `HD`,</span>
-<span class="pl-s">    `BD`, `GC`, and `GJ` objects, choosing the file pertaining to the spectra</span>
-<span class="pl-s">    with the highest signal-to-noise ratio available.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>The following member functions call pyplot equivalent:<br>
+<strong>xlim</strong>, <strong>ylim</strong>, <strong>xlabel</strong>, <strong>ylabel</strong>, <strong>title</strong>, <strong>legend</strong>,
+<strong>text</strong>, <strong>grid</strong>, <strong>close</strong>.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Script</span>(<span class="pl-smi">filename</span>, <span class="pl-smi">pipeline</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Construct url script for Elodie archive given `filename` and optionally</span>
-<span class="pl-s">    `pipeline` instructions (e.g., `&amp;z=wrs|fca[1,nor]`).</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>Here, when these function are called, the arguments are passed to
+matplotlib; however, these calls are remembered. So when you go to <em>draw</em>
+the figure again, you are back where you left off.</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Download</span>( *<span class="pl-smi">files</span>, **<span class="pl-smi">kwargs</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Download `files` from Elodie archive via url scripts. The spectra can be</span>
-<span class="pl-s">    further reduced via Elodie`s pipeline with the following options.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    kwargs = {</span>
-<span class="pl-s">            'verbose'  : True           , # display messages, progress</span>
-<span class="pl-s">            'resample' : (min, max, res), # resample spectra (no default)</span>
-<span class="pl-s">            'normalize': True           , # continuum normalization</span>
-<span class="pl-s">            'outpath'  : './'           , # directory for downloaded files</span>
-<span class="pl-s">            'names'    : []               # alternative output names for `files`</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<ul>
+<li>
+<p><em>draw</em>( ):</p>
 
-<h1>
-<a id="montage" class="anchor" href="#montage" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="MontageLoc"></a>Montage</h1>
+<p>Rebuild and render the figure.</p>
+</li>
+<li>
+<p><em>refresh</em>( ):</p>
 
-<p>Wrapper to the <em>montage</em> mosaic software. See
-<a href="http://montage.ipac.caltech.edu/">online</a>. The user should have Montage`s
-executables available on their path. This module automates the process of
-constructing large mosaics. It is largely modeled after the examples given on
-the website. More documentation will be provided in the future ...</p>
+<p>Re-render (refresh) the figure, without clearing the axis.</p>
+</li>
+<li>
+<p><em>txtclear</em>( ):</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">Mosaic</span>(<span class="pl-smi">resolution</span>, *<span class="pl-smi">folders</span>, **<span class="pl-smi">kwargs</span>):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Mosaic(resolution, *folders, **kwargs):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Conduct standard build procedures for all `folders`. `resolution` is the</span>
-<span class="pl-s">    number of pixels per degree for the output image. Note: `folders` should</span>
-<span class="pl-s">    be absolute paths. See the M101 example online. All `folder`s should</span>
-<span class="pl-s">    have subfolders "projected", "corrected", "final", and "differences"</span>
-<span class="pl-s">    available as well as a "raw" directory containing the images to be</span>
-<span class="pl-s">    mosaic-ed.</span>
-<span class="pl-s"></span>
-<span class="pl-s">    kwargs = {</span>
-<span class="pl-s">            verbose : True, # display messages, progress</span>
-<span class="pl-s">            bkmodel : True  # model and correct for background effects</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>Clear all the calls to <em>text</em>( ) from the figure.</p>
+</li>
+<li>
+<p><em>xoffset</em>( <em>value</em> ):</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">def</span> <span class="pl-en">SolveGrid</span>( <span class="pl-smi">sides</span>, <span class="pl-smi">grid</span> ):
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    SolveGrid( sides, grid ):</span>
-<span class="pl-s"></span>
-<span class="pl-s">    Helper function for the Field and SubField classes. Both `sides` and `grid`</span>
-<span class="pl-s">    need to be array-like and of length two. `sides` is the side length of the</span>
-<span class="pl-s">    field in decimal degrees in right ascension and declination respectively.</span>
-<span class="pl-s">    `grid` specifies the subdivision along these axis (e.g., (2,2) says 2x2).</span>
-<span class="pl-s"></span>
-<span class="pl-s">    The user should mindful of their choices. If the side lengths cannot be</span>
-<span class="pl-s">    subdivided into well-behaved (rational) segments, higher decimal places</span>
-<span class="pl-s">    will be lossed in the SubField.ArchiveList() task resulting in small</span>
-<span class="pl-s">    gaps in the mosaic.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span></pre></div>
+<p>Switch either on or off (<em>value</em> = True | False) the horizontal offset.</p>
+</li>
+<li>
+<p><em>yoffset</em>( <em>value</em> ):</p>
 
-<h1>
-<a id="display" class="anchor" href="#display" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="DisplayLoc"></a>Display</h1>
+<p>Switch either on or off (<em>value</em> = True | False) the vertical offset.</p>
+</li>
+<li>
+<p><em>overlay</em>( *<em>splots</em> ):</p>
 
-<div class="highlight highlight-Python"><pre><span class="pl-k">class</span> <span class="pl-en">Monitor</span>:
-    <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">    Class for displaying a progress bar during iterative tasks.</span>
-<span class="pl-s">    <span class="pl-pds">"""</span></span>
-    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, **<span class="pl-smi">kwargs</span> ):
-        <span class="pl-s"><span class="pl-pds">"""</span></span>
-<span class="pl-s">        kwargs = {</span>
-<span class="pl-s">            'width'    : 45    , # number of characters wide</span>
-<span class="pl-s">            'numbers'  : True  , # display numberical percent</span>
-<span class="pl-s">            'template' : '[=&gt;]', # template for progress bars</span>
-<span class="pl-s">            'freq'     : 0.25  , # refresh rate</span>
-<span class="pl-s">            'ETC'      : False , # display estimated time of completion</span>
-<span class="pl-s">            'inline'   : True    # vanish after completion</span>
-<span class="pl-s">        }</span>
-<span class="pl-s">        <span class="pl-pds">"""</span></span></pre></div>
+<p>Given one or more <em>splots</em>, <em>overlay</em> the figures.</p>
+</li>
+<li>
+<p><em>restore</em>( ):</p>
+
+<p>Restore the figure to only the original spectrum.</p>
+</li>
+<li>
+<p><em>save</em>( <em>filename</em> ):</p>
+
+<p>Save the figure to a file called <em>filename</em>. The file format is derived
+from the extention of <em>filename</em>.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<p><a name="IterateLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Iterate</strong>( *<em>splots</em>, **<em>kwargs</em> ):</p>
+
+<p>Iterate thru <em>splots</em> to inspect data, the user marks spectra of
+interest. The function returns a list of <em>keepers</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>keep</em></td>
+<td>'name'</td>
+<td>alternative is 'plot'</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">Slipy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
@@ -1093,3 +1089,4 @@ the website. More documentation will be provided in the future ...</p>
 
   </body>
 </html>
+
