@@ -16,7 +16,7 @@ Python 3.x,
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
 [![GitHub license](http://img.shields.io/badge/license-GPLv3-blue.svg?style=flat)](http://www.gnu.org/copyleft/gpl.html)
-[![downloads](https://img.shields.io/github/downloads/atom/atom/latest/total.svg)](http://github.com/glentner/slipy)
+[![downloads](https://img.shields.io/github/downloads/astroml/astroml/latest/total.svg)](http://github.com/glentner/slipy)
 
 Quick note: the subpackage **astrolibpy** was not developed
 by me. It was coded by Sergey Koposov (@segasai) at Cambridge (then at least).
