@@ -61,7 +61,7 @@ To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a *tar* or *zip* archive or by
 cloning it -
 
-```git clone http://github.com/glentner/SLiPy```.
+```git clone http://github.com/glentner/slipy```.
 
 Extract it's contents to wherever you like in a directory (ostensibly named
 *slipy*, but actually you can call this library whatever you want as well
@@ -70,7 +70,7 @@ because all the imports are *relative*). Then add the parent directory to your
 
 ```
 $ cd
-$ git clone http://github.com/glentner/SLiPy
+$ git clone http://github.com/glentner/slipy
 $ echo "export PYTHONPATH=$PYTHONPATH:~" >> ~/.bashrc
 ```
 
