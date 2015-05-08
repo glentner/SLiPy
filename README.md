@@ -59,7 +59,7 @@ to import:
 
 To install SLiPy, there is no setup procedure. Simply download the package,
 either by clicking on the download link for a *tar* or *zip* archive or by
-cloning it -
+cloning it -  
 ```git clone http://github.com/glentner/SLiPy```.
 
 Extract it's contents to wherever you like in a directory (ostensibly named
