@@ -1,30 +1,39 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Slipy by gLENTNER</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">SLiPy</h1>
-      <h2 class="project-tagline">A Spectroscopy and astrophysics Library for Python 3</h2>
-      <a href="https://github.com/gLENTNER/SLiPy" class="btn">View on GitHub</a>
-      <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <section class="main-content">
-      <h1>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>SLiPy by gLENTNER</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>SLiPy</h1>
+        <h2>A Spectroscopy and astrophysics Library for Python 3</h2>
+        <a href="https://github.com/gLENTNER/SLiPy" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
 <a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
 </h1>
 
 <h4>
-<a id="a-spectroscopy-and-astrophysical-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysical-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysics Library for Python 3</h4>
+<a id="a-spectroscopy-and-astrophysics-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysics-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysics Library for Python 3</h4>
 
 <p>This Python package is an expanding code base for doing computational
 astronomy, particularly spectroscopy. It contains both a <em>Spectrum</em> class
@@ -66,7 +75,7 @@ to import:</p>
 <table>
 <thead>
 <tr>
-<th>Module</th>
+<th>SLiPy/</th>
 <th>Functions/Classes</th>
 </tr>
 </thead>
@@ -114,12 +123,23 @@ to import:</p>
 <tr>
 <td><a href="#MontageLoc"><strong>Montage</strong></a></td>
 <td>
-<a href="#MosaicLoc">Mosaic</a>, <a href="#SubFieldLoc">SubField</a>, <a href="#FieldLoc">Field</a>,</td>
+<a href="#MSolveGridLoc">SolveGrid</a>, <a href="#MMosaicLoc">Mosaic</a>, <a href="#MSubFieldLoc">SubField</a>, <a href="#MFieldLoc">Field</a>,</td>
 </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>SLiPy/Data</th>
+<th>Functions/Classes</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
-<a href="#ArchiveLoc">Archive</a>, <a href="#ScriptLoc">Script</a>, <a href="#DownloadLoc">Download</a>,</td>
+<a href="#EArchiveLoc">Archive</a>, <a href="#EScriptLoc">Script</a>, <a href="#EDownloadLoc">Download</a>,</td>
 </tr>
 </tbody>
 </table>
@@ -488,14 +508,14 @@ applied if there are none currently.</p>
 <td>resolution (delta lambda)</td>
 </tr>
 <tr>
-<td><em>xunit</em></td>
+<td><em>xunits</em></td>
 <td>'Angstrom'</td>
-<td>units of wavelength from header</td>
+<td>units for wavelength array</td>
 </tr>
 <tr>
-<td><em>yunit</em></td>
+<td><em>yunits</em></td>
 <td>'erg cm-2 s-1'</td>
-<td>units of data</td>
+<td>units for data array</td>
 </tr>
 </tbody>
 </table>
@@ -1068,14 +1088,448 @@ interest. The function returns a list of <em>keepers</em>.</p>
 </li>
 </ul>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">SLiPy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
+<h1>
+<a id="montage" class="anchor" href="#montage" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="MontageLoc"></a><a href="SLiPy/Montage.py">Montage</a>
+</h1>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-        <span class="site-footer-credits"><br>But elements modified by gLentner</span>
-      </footer>
+<p><a href="http://montage.ipac.caltech.edu/">Montage</a> is a very powerful suite of C code
+for creating image mosaics. This module is a wrapper to automate not only the
+process for small projects, but to segment large fields into a grid and
+mosaic each <em>site</em> before combining them into a <em>master</em> mosaic.</p>
 
-    </section>
+<p><a name="MSolveGridLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>SolveGrid</strong> ( <em>sides</em>, <em>grid</em> ):</p>
+
+<p>Helper function for the Field and SubField classes. Both <em>sides</em> and <em>grid</em>
+need to be array-like and of length two. <em>sides</em> is the side length of the
+field in decimal degrees in right ascension and declination respectively.
+<em>grid</em> specifies the subdivision along these axis (e.g., (2,2) says 2x2).</p>
+
+<p>The user should mindful of their choices. If the side lengths cannot be
+subdivided into well-behaved (rational) segments, higher decimal places
+will be lost in the SubField.ArchiveList() task resulting in small
+gaps in the mosaic.</p>
+</li>
+</ul>
+
+<p><a name="MMosaicLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Mosaic</strong> ( <em>resolution</em>, *<em>folders</em>, **<em>kwargs</em> ):</p>
+
+<p>Conduct standard build procedures for all <em>folders</em>, similar to the
+<a href="http://montage.ipac.caltech.edu/docs/m101tutorial.html">m101 example</a>.
+<em>resolution</em> is the number of pixels per degree for the output image.
+Note: <em>folders</em> should be absolute paths. Further, below each of these
+directories, there should already exist the standard folder structure</p>
+
+<pre><code>folder/
+  |--images/
+  |    |-- &lt;location of raw FITS images&gt;
+  |
+  |--projected/
+  |--differences/
+  |--corrected/
+  |--final/
+</code></pre>
+
+<p>The mosaic will be deposited at <em>final/mosaic.fits</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td><em>bkmodel</em></td>
+<td>True</td>
+<td>model and correct for background effects</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+
+<p><a name="MSubFieldLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>SubField</strong> ( <em>center</em>, <em>sides</em>, <em>grid</em>, **<em>kwargs</em> ):</p>
+
+<p>Create a grid of <em>sites</em> each of which will be mosaiced separately and
+then combined. Each of <em>center</em>, <em>sides</em>, and <em>grid</em> should be array-like
+and of length two. <em>center</em> should be the very center location for the
+mosaic in right ascension and declination (both in decimal degrees),
+respectively. <em>sides</em> needs to give the side lengths of the desired
+mosaic in decimal degrees (width-RA, height-DEC). <em>grid</em> should be the
+grid division for the field (e.g., (2, 2) means 2x2 grid).</p>
+
+<p>There will be a directory created for each <em>site</em> and also another <em>master</em>
+directory. The final resulting mosaic will be deposited at
+<em>final/mosaic.fits</em> here.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td><em>survey</em></td>
+<td>'DSS'</td>
+<td>DSS, SDSS, 2MASS</td>
+</tr>
+<tr>
+<td><em>band</em></td>
+<td>'DSS2B'</td>
+<td>filter for <em>survey</em>, see <em>bands</em> dict</td>
+</tr>
+<tr>
+<td><em>pad</em></td>
+<td>0.0</td>
+<td>amount to add (degrees) around <em>sites</em>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>The available filter band for each survey are as follows</p>
+
+<table>
+<thead>
+<tr>
+<th>Survey</th>
+<th>Bands</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>'DSS'</td>
+<td>'J', 'H', 'K'</td>
+</tr>
+<tr>
+<td>'SDSS'</td>
+<td>'U', 'G', 'R', 'I', 'Z'</td>
+</tr>
+<tr>
+<td>'2MASS'</td>
+<td>'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V'</td>
+</tr>
+</tbody>
+</table>
+
+<p>The user should execute the following available methods in this order:</p>
+
+<ul>
+<li>
+<p><em>ArchiveList</em> ( **<em>kwargs</em> ):</p>
+
+<p>Run the <code>mArchiveList</code> command on the <em>site</em> grid. The only keyword
+argument is <em>verbose</em> which defaults to True.</p>
+</li>
+<li>
+<p><em>ArchiveExec</em> ( **<em>kwargs</em> ):</p>
+
+<p>Run <code>mArchiveExec</code> on each <em>site</em> in the SubField. The only keyword
+argument is <em>verbose</em> which defaults to True.</p>
+</li>
+<li>
+<p><em>Build</em> ( <em>resolution</em>, **<em>kwargs</em>):</p>
+
+<p>Run the build process for the <em>sites</em> in this SubField. See the
+Montage.Mosaic() function documentation.</p>
+</li>
+<li>
+<p><em>Collect</em> ( **<em>kwargs</em> ):</p>
+
+<p>Collect the mosaics from all <em>site</em> locations into a master <em>images</em>
+folder. The only keyword argument is <em>verbose</em> which defaults to True.</p>
+</li>
+<li>
+<p><em>Merge</em> ( <em>resolution</em>, **<em>kwargs</em> ):</p>
+
+<p>Merge all <em>site</em> mosaics into a single master SubField mosaic. We are
+now calling Montage.Mosaic() on each <em>site</em>.</p>
+</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy <span class="pl-k">import</span> Montage, Simbad
+
+mosaic <span class="pl-k">=</span> Montage.SubField(
+
+    Simbad.Position(<span class="pl-s"><span class="pl-pds">'</span>Pleiades<span class="pl-pds">'</span></span>), <span class="pl-c"># center of the Pleiades</span>
+    (<span class="pl-c1">4</span>, <span class="pl-c1">4</span>),                      <span class="pl-c"># side lengths of mosaic</span>
+    (<span class="pl-c1">2</span>, <span class="pl-c1">2</span>)                       <span class="pl-c"># grid pattern creates 2x2 degree `sites`</span>
+)
+
+mosaic.ArchiveList()
+mosaic.ArchiveExec()
+mosaic.Build()
+mosaic.Collect()
+mosaic.Merge()
+
+<span class="pl-c"># If you have APLpy</span>
+<span class="pl-k">import</span> aplpy
+
+fig <span class="pl-k">=</span> aplpy.FITSFigure(<span class="pl-s"><span class="pl-pds">'</span>master/final/mosaic.fits<span class="pl-pds">'</span></span>)
+fig.show_grayscale()
+</pre></div>
+</li>
+</ul>
+
+<p><a name="MFieldLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>Field</strong> (<em>center</em>, <em>sides</em>, <em>grid</em>, <em>subgrid</em>, **<em>kwargs</em> ):</p>
+
+<p>Large image mosaic manager for Montage. This class (in terms of its
+usage) is the same as the <em>SubField</em> class, except that here we managing
+the subfields. So all the member functions are the same name and purpose,
+but instead act to call that same function on each subfield. Here, all
+the constructor arguments are as before, with the additions of <em>subgrid</em>
+which is also to be array-like of length two. <em>grid</em> will be the first
+level division to find the centers and side lengths of all the subfields
+and <em>subgrid</em> will be the further sub-division passed down to the daughter
+subfields.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td><em>survey</em></td>
+<td>'DSS'</td>
+<td>DSS, SDSS, 2MASS</td>
+</tr>
+<tr>
+<td><em>band</em></td>
+<td>'DSS2B'</td>
+<td>filter for <em>survey</em>, see <em>bands</em> dict</td>
+</tr>
+<tr>
+<td><em>pad</em></td>
+<td>0.0</td>
+<td>amount to add (degrees) around <em>sites</em>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>The available filter band for each survey are as follows</p>
+
+<table>
+<thead>
+<tr>
+<th>Survey</th>
+<th>Bands</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>'DSS'</td>
+<td>'J', 'H', 'K'</td>
+</tr>
+<tr>
+<td>'SDSS'</td>
+<td>'U', 'G', 'R', 'I', 'Z'</td>
+</tr>
+<tr>
+<td>'2MASS'</td>
+<td>'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V'</td>
+</tr>
+</tbody>
+</table>
+
+<p>All the member functions are the same name as in <em>SubField</em>, but now with
+the addition of a final step:</p>
+
+<ul>
+<li>
+<p><em>Finalize</em> ( <em>resolution</em>, **<em>kwargs</em> ):</p>
+
+<p>Collect all SubField/master mosaics into a single folder and
+run Mosaic() on them for a single final image.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="elodie" class="anchor" href="#elodie" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="ElodieLoc"></a><a href="Data/Elodie.py">Elodie</a>
+</h1>
+
+<p>Methods for data retrieval from the Elodie Archive.</p>
+
+<p><a name="EArchiveLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>Archive</strong> ( **<em>kwargs</em> ):</p>
+
+<p>Import and parse ascii catalog of Elodie archive files. The complete
+archive is stored in the member dictionary, <em>data</em>. It's organized
+by unique target names. Each target has a list of pairs consisting of the
+name of the file and the signal to noise for that spectrum. The reduced
+archive by default contains only <em>HD</em>, <em>BD</em>, <em>HR</em>, <em>GC</em>, and <em>GJ</em> objects,
+choosing the file pertaining to the spectra with the highest signal-to-noise
+ratio available.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>infile</em></td>
+<td>archives/elodie.csv</td>
+<td>path to input file</td>
+</tr>
+<tr>
+<td><em>catalogs</em></td>
+<td>['HD','BD','HR','GC','GJ']</td>
+<td>catalogs to keep</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy.Data <span class="pl-k">import</span> Elodie
+
+archive <span class="pl-k">=</span> Elodie.Archive()
+
+<span class="pl-s"><span class="pl-pds">'</span>HD187642<span class="pl-pds">'</span></span> <span class="pl-k">in</span> archive.files <span class="pl-c"># returns True (Altair)</span>
+<span class="pl-s"><span class="pl-pds">'</span>HD045348<span class="pl-pds">'</span></span> <span class="pl-k">in</span> archive.files <span class="pl-c"># returns False (Canopus)</span></pre></div>
+</li>
+</ul>
+
+<p><a name="EScriptLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Script</strong> ( <em>filename</em>, <em>pipeline</em> = '' ):</p>
+
+<p>Construct url script for Elodie archive given <em>filename</em> and optionally
+<em>pipeline</em> instructions (e.g., '&amp;z=wrs|fca[1,nor]').</p>
+</li>
+</ul>
+
+<p><a name="EDownloadLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Download</strong> ( *<em>files</em>, **<em>kwargs</em> ):</p>
+
+<p>Download <em>files</em> from Elodie archive via url scripts. The spectra can be
+further reduced via Elodie's pipeline with the following options.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>verbose</em></td>
+<td>True</td>
+<td>display messages, progress</td>
+</tr>
+<tr>
+<td><em>resample</em></td>
+<td>(min, max, res)</td>
+<td>resample spectra (no default)</td>
+</tr>
+<tr>
+<td><em>normalize</em></td>
+<td>True</td>
+<td>continuum normalization</td>
+</tr>
+<tr>
+<td><em>outpath</em></td>
+<td>'./'</td>
+<td>directory for downloaded <em>files</em>
+</td>
+</tr>
+<tr>
+<td><em>names</em></td>
+<td>[]</td>
+<td>alternative output names for <em>files</em>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># all files in the archive for Altair (file name is first element in pair)</span>
+files <span class="pl-k">=</span> [ x[<span class="pl-c1">0</span>] <span class="pl-k">for</span> x <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD187642<span class="pl-pds">'</span></span>] ]
+
+<span class="pl-c"># download files to current directory, resample spectrum to wavelengths</span>
+<span class="pl-c"># between 5850 and 5950 with a resolution of 0.01 Angstroms per pixel</span>
+Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample</span><span class="pl-k">=</span>(<span class="pl-c1">5850</span>, <span class="pl-c1">5950</span>, <span class="pl-c1">0.01</span>) )</pre></div>
+</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/gLENTNER/SLiPy"></a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
 
             <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
