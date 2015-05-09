@@ -73,8 +73,8 @@ class Spectrum:
 			self.crpix1  = self.options('crpix1')
 			self.crval1  = self.options('crval1')
 			self.cdelt1  = self.options('cdelt1')
-			self.xunits  = self.options('xunit')
-			self.yunits  = self.options('yunit')
+			self.xunits  = self.options('xunits')
+			self.yunits  = self.options('yunits')
 
 			# observables (needed for corrections)
 			self.ra  = None # right ascension

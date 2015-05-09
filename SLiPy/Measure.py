@@ -42,30 +42,30 @@ def OnSelect_Deblend(eclick, erelease):
     global regions
     global plot
 
-    x1 *= plot.wave[0].unit
-    x2 *= plot.wave[0].unit
+    # x1 *= plot.wave[0].unit
+    # x2 *= plot.wave[0].unit
 
     print(x1, x2)
 
     # create new Spectrum of region
-    data = plot.data[0].copy()
-    wave = plot.wave[0].copy()
-    data = data[ wave[wave < x2] > x1 ]
-    wave = wave[ wave[wave < x2] > x1 ]
-
-    this_region = Spectrum(data, wave)
+    # data = plot.data[0].copy()
+    # wave = plot.wave[0].copy()
+    # data = data[ wave[wave < x2] > x1 ]
+    # wave = wave[ wave[wave < x2] > x1 ]
+    #
+    # this_region = Spectrum(data, wave)
 
     # append selected region to list
-    regions.append( SPlot(this_region) )
+    # regions.append( SPlot(this_region) )
 
     # add it to the current `SPlot`
-    plot.overlay( regions[-1] )
+    # plot.overlay( regions[-1] )
 
     # make it a red dashed line
-    plot.marker[-1] = 'r-'
+    # plot.marker[-1] = 'r-'
 
     # push updates
-    plot.refresh()
+    # plot.refresh()
 
 def toggle_selector(event):
     '''activate/deactivate selection tool'''
