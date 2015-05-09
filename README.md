@@ -483,6 +483,81 @@ class OHP(Observatory):
 		self.altitude  = 650        # meters
 ```
 
+There are currently 69 defined observatories:
+
+| Class ID       | Observatory Name                                         |
+|----------------|----------------------------------------------------------|
+|            OHP |              The Observatoire de Haute-Provence, France. |
+|           KPNO |                           Kitt Peak National Observatory |
+|           WIYN |                                         WIYN Observatory |
+|           CTIO |                   Cerro Tololo Interamerican Observatory |
+|        LASILLA |                 European Southern Observatory: La Silla. |
+|        PARANAL |                   European Southern Observatory: Paranal |
+|           LICK |                                         Lick Observatory |
+|           MMTO |                                          MMT Observatory |
+|           CFHT |                           Canada-France-Hawaii Telescope |
+|        LAPALMA |                        Roque de los Muchachos, La Palma. |
+|            MSO |                                  Mt. Stromlo Observatory |
+|            SSO |                                Siding Spring Observatory |
+|            AAO |                             Anglo-Australian Observatory |
+|       MCDONALD |                                     McDonald Observatory |
+|            LCO |                                 Las Campanas Observatory |
+|      MTBIGELOW |                  Catalina Observatory: 61 inch telescope |
+|            DAO |                       Dominion Astrophysical Observatory |
+|            SPM |     Observatorio Astronomico Nacional, San Pedro Martir. |
+|           TONA |         Observatorio Astronomico Nacional, Tonantzintla. |
+|        PALOMAR |                                       The Hale Telescope |
+|            MDM |                       Michigan-Dartmouth-MIT Observatory |
+|            NOV |                        National Observatory of Venezuela |
+|            BMO |                              Black Moshannon Observatory |
+|            BAO |                             Beijing XingLong Observatory |
+|           KECK |                                   W. M. Keck Observatory |
+|           EKAR |                               Mt. Ekar 182 cm. Telescope |
+|            APO |                                 Apache Point Observatory |
+|         LOWELL |                                       Lowell Observatory |
+|            VBO |                                  Vainu Bappu Observatory |
+|            IAO |                   Indian Astronomical Observatory, Hanle |
+|           FLWO |                                      Whipple Observatory |
+|          FLWO1 |                                      Whipple Observatory |
+|            ORO |                                    Oak Ridge Observatory |
+|            LNA |             Laboratorio Nacional de Astrofisica - Brazil |
+|           SAAO |                   South African Astronomical Observatory |
+|         CASLEO |              Complejo Astronomico El Leoncito, San Juan. |
+|         BOSQUE |             Estacion Astrofisica Bosque Alegre, Cordoba. |
+|         ROZHEN |     National Astronomical Observatory Rozhen - Bulgaria. |
+|           IRTF |                         NASA Infrared Telescope Facility |
+|          BGSUO |                    Bowling Green State Univ Observatory. |
+|           DSAZ |     Deutsch-Spanisches Observatorium Calar Alto - Spain. |
+|             CA |                                   Calar Alto Observatory |
+|           HOLI |  Observatorium Hoher List (Universitaet Bonn) - Germany. |
+|            LMO |                            Leander McCormick Observatory |
+|            FMO |                                 Fan Mountain Observatory |
+|         WHITIN |                     Whitin Observatory,Wellesley College |
+|            OSN |                            Observatorio de Sierra Nevada |
+|   GEMINI-NORTH |                                 Gemini North Observatory |
+|   GEMINI-SOUTH |                                 Gemini South Observatory |
+|        LASILLA |                 European Southern Observatory: La Silla. |
+|        PARANAL |                  European Southern Observatory: Paranal. |
+|         ESONTT |            European Southern Observatory, NTT, La Silla. |
+|         ESO36M | European Southern Observatory, 3.6m Telescope, La Silla. |
+|         ESOVLT |             European Southern Observatory, VLT, Paranal. |
+|            SLN |                 SLN - Catania Astrophysical Observatory. |
+|            EUO |                               Ege University Observatory |
+|            TNO |                             Turkiye National Observatory |
+|            TUG |                    TUBITAK National Observatory, Turkey. |
+|            MGO |                                 Mount Graham Observatory |
+|          ARIES | Aryabhatta Research Institute of Observational Sciences. |
+|           OALP |                     Observatorio Astronomico de La Plata |
+|           OLIN |                   Connecticut College - Olin Observatory |
+|         BOYDEN |                                       Boyden Observatory |
+|          LULIN |                                        Lulin Observatory |
+|           SOAR |               Southern Astrophysical Research Telescope. |
+|          BAKER |                                        Baker Observatory |
+|            HET |           McDonald Observatory - Hobby-Eberly Telescope. |
+|           JCDO |        Jack C. Davis Observatory, Western Nevada College |
+|            LNO |                            Langkawi National Observatory |
+
+
 <br>
 ##<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
 
