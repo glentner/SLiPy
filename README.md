@@ -534,8 +534,8 @@ There are currently 69 defined observatories:
 |            FMO |                                 Fan Mountain Observatory |
 |         WHITIN |                     Whitin Observatory,Wellesley College |
 |            OSN |                            Observatorio de Sierra Nevada |
-|   GEMINI-NORTH |                                 Gemini North Observatory |
-|   GEMINI-SOUTH |                                 Gemini South Observatory |
+|   GEMINI NORTH |                                 Gemini North Observatory |
+|   GEMINI SOUTH |                                 Gemini South Observatory |
 |        LASILLA |                 European Southern Observatory: La Silla. |
 |        PARANAL |                  European Southern Observatory: Paranal. |
 |         ESONTT |            European Southern Observatory, NTT, La Silla. |
