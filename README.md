@@ -628,6 +628,26 @@ at one spectra to another. One can also *overlay* spectra.
     |---------|-----------|-----------------------|
     | *keep*  | 'name'    | alternative is 'plot' |
 
+    <br>
+    **Example:**
+    ```python
+    from slipy import Fits, Plot
+
+    fpath = '?' # toplevel directory name where your FITS files are
+    files = Fits.Find(fpath)
+
+    spectra = Fits.GetData( *files )
+
+    figure = [
+
+        Plot.SPlot( spectrum, label=Fits.Header(fname, 'object') )
+        for spectrum, fname in zip(spectra, files)
+    ]
+
+    keepers = Plot.Iterate( *figure )
+    # enter either 'y', 'n', or 'x' as prompted by the terminal
+    ```
+
 
 <br>
 ##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
