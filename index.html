@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
@@ -28,9 +29,6 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h1>
-<a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
-</h1>
 
 <h4>
 <a id="a-spectroscopy-and-astrophysics-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysics-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysics Library for Python 3</h4>
@@ -125,19 +123,12 @@ to import:</p>
 <td>
 <a href="#MSolveGridLoc">SolveGrid</a>, <a href="#MMosaicLoc">Mosaic</a>, <a href="#MSubFieldLoc">SubField</a>, <a href="#MFieldLoc">Field</a>,</td>
 </tr>
-</tbody>
-</table>
-
-<p><br></p>
-
-<table>
-<thead>
+<tr>
+<th>&nbsp;</th>
+</tr>
 <tr>
 <th>SLiPy/Data</th>
-<th>Functions/Classes</th>
 </tr>
-</thead>
-<tbody>
 <tr>
 <td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
@@ -1011,295 +1002,6 @@ to this module. I welcome suggestions.</p>
         <span class="pl-v">self</span>.longitude <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-c"># degrees W</span>
         <span class="pl-v">self</span>.altitude  <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-c"># meters</span></pre></div>
 
-<p>There are currently 69 defined observatories:</p>
-
-<table>
-<thead>
-<tr>
-<th>Class ID</th>
-<th>Observatory Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OHP</td>
-<td>The Observatoire de Haute-Provence, France.</td>
-</tr>
-<tr>
-<td>KPNO</td>
-<td>Kitt Peak National Observatory</td>
-</tr>
-<tr>
-<td>WIYN</td>
-<td>WIYN Observatory</td>
-</tr>
-<tr>
-<td>CTIO</td>
-<td>Cerro Tololo Interamerican Observatory</td>
-</tr>
-<tr>
-<td>LASILLA</td>
-<td>European Southern Observatory: La Silla.</td>
-</tr>
-<tr>
-<td>PARANAL</td>
-<td>European Southern Observatory: Paranal</td>
-</tr>
-<tr>
-<td>LICK</td>
-<td>Lick Observatory</td>
-</tr>
-<tr>
-<td>MMTO</td>
-<td>MMT Observatory</td>
-</tr>
-<tr>
-<td>CFHT</td>
-<td>Canada-France-Hawaii Telescope</td>
-</tr>
-<tr>
-<td>LAPALMA</td>
-<td>Roque de los Muchachos, La Palma.</td>
-</tr>
-<tr>
-<td>MSO</td>
-<td>Mt. Stromlo Observatory</td>
-</tr>
-<tr>
-<td>SSO</td>
-<td>Siding Spring Observatory</td>
-</tr>
-<tr>
-<td>AAO</td>
-<td>Anglo-Australian Observatory</td>
-</tr>
-<tr>
-<td>MCDONALD</td>
-<td>McDonald Observatory</td>
-</tr>
-<tr>
-<td>LCO</td>
-<td>Las Campanas Observatory</td>
-</tr>
-<tr>
-<td>MTBIGELOW</td>
-<td>Catalina Observatory: 61 inch telescope</td>
-</tr>
-<tr>
-<td>DAO</td>
-<td>Dominion Astrophysical Observatory</td>
-</tr>
-<tr>
-<td>SPM</td>
-<td>Observatorio Astronomico Nacional, San Pedro Martir.</td>
-</tr>
-<tr>
-<td>TONA</td>
-<td>Observatorio Astronomico Nacional, Tonantzintla.</td>
-</tr>
-<tr>
-<td>PALOMAR</td>
-<td>The Hale Telescope</td>
-</tr>
-<tr>
-<td>MDM</td>
-<td>Michigan-Dartmouth-MIT Observatory</td>
-</tr>
-<tr>
-<td>NOV</td>
-<td>National Observatory of Venezuela</td>
-</tr>
-<tr>
-<td>BMO</td>
-<td>Black Moshannon Observatory</td>
-</tr>
-<tr>
-<td>BAO</td>
-<td>Beijing XingLong Observatory</td>
-</tr>
-<tr>
-<td>KECK</td>
-<td>W. M. Keck Observatory</td>
-</tr>
-<tr>
-<td>EKAR</td>
-<td>Mt. Ekar 182 cm. Telescope</td>
-</tr>
-<tr>
-<td>APO</td>
-<td>Apache Point Observatory</td>
-</tr>
-<tr>
-<td>LOWELL</td>
-<td>Lowell Observatory</td>
-</tr>
-<tr>
-<td>VBO</td>
-<td>Vainu Bappu Observatory</td>
-</tr>
-<tr>
-<td>IAO</td>
-<td>Indian Astronomical Observatory, Hanle</td>
-</tr>
-<tr>
-<td>FLWO</td>
-<td>Whipple Observatory</td>
-</tr>
-<tr>
-<td>FLWO1</td>
-<td>Whipple Observatory</td>
-</tr>
-<tr>
-<td>ORO</td>
-<td>Oak Ridge Observatory</td>
-</tr>
-<tr>
-<td>LNA</td>
-<td>Laboratorio Nacional de Astrofisica - Brazil</td>
-</tr>
-<tr>
-<td>SAAO</td>
-<td>South African Astronomical Observatory</td>
-</tr>
-<tr>
-<td>CASLEO</td>
-<td>Complejo Astronomico El Leoncito, San Juan.</td>
-</tr>
-<tr>
-<td>BOSQUE</td>
-<td>Estacion Astrofisica Bosque Alegre, Cordoba.</td>
-</tr>
-<tr>
-<td>ROZHEN</td>
-<td>National Astronomical Observatory Rozhen - Bulgaria.</td>
-</tr>
-<tr>
-<td>IRTF</td>
-<td>NASA Infrared Telescope Facility</td>
-</tr>
-<tr>
-<td>BGSUO</td>
-<td>Bowling Green State Univ Observatory.</td>
-</tr>
-<tr>
-<td>DSAZ</td>
-<td>Deutsch-Spanisches Observatorium Calar Alto - Spain.</td>
-</tr>
-<tr>
-<td>CA</td>
-<td>Calar Alto Observatory</td>
-</tr>
-<tr>
-<td>HOLI</td>
-<td>Observatorium Hoher List (Universitaet Bonn) - Germany.</td>
-</tr>
-<tr>
-<td>LMO</td>
-<td>Leander McCormick Observatory</td>
-</tr>
-<tr>
-<td>FMO</td>
-<td>Fan Mountain Observatory</td>
-</tr>
-<tr>
-<td>WHITIN</td>
-<td>Whitin Observatory,Wellesley College</td>
-</tr>
-<tr>
-<td>OSN</td>
-<td>Observatorio de Sierra Nevada</td>
-</tr>
-<tr>
-<td>GEMINI-NORTH</td>
-<td>Gemini North Observatory</td>
-</tr>
-<tr>
-<td>GEMINI-SOUTH</td>
-<td>Gemini South Observatory</td>
-</tr>
-<tr>
-<td>LASILLA</td>
-<td>European Southern Observatory: La Silla.</td>
-</tr>
-<tr>
-<td>PARANAL</td>
-<td>European Southern Observatory: Paranal.</td>
-</tr>
-<tr>
-<td>ESONTT</td>
-<td>European Southern Observatory, NTT, La Silla.</td>
-</tr>
-<tr>
-<td>ESO36M</td>
-<td>European Southern Observatory, 3.6m Telescope, La Silla.</td>
-</tr>
-<tr>
-<td>ESOVLT</td>
-<td>European Southern Observatory, VLT, Paranal.</td>
-</tr>
-<tr>
-<td>SLN</td>
-<td>SLN - Catania Astrophysical Observatory.</td>
-</tr>
-<tr>
-<td>EUO</td>
-<td>Ege University Observatory</td>
-</tr>
-<tr>
-<td>TNO</td>
-<td>Turkiye National Observatory</td>
-</tr>
-<tr>
-<td>TUG</td>
-<td>TUBITAK National Observatory, Turkey.</td>
-</tr>
-<tr>
-<td>MGO</td>
-<td>Mount Graham Observatory</td>
-</tr>
-<tr>
-<td>ARIES</td>
-<td>Aryabhatta Research Institute of Observational Sciences.</td>
-</tr>
-<tr>
-<td>OALP</td>
-<td>Observatorio Astronomico de La Plata</td>
-</tr>
-<tr>
-<td>OLIN</td>
-<td>Connecticut College - Olin Observatory</td>
-</tr>
-<tr>
-<td>BOYDEN</td>
-<td>Boyden Observatory</td>
-</tr>
-<tr>
-<td>LULIN</td>
-<td>Lulin Observatory</td>
-</tr>
-<tr>
-<td>SOAR</td>
-<td>Southern Astrophysical Research Telescope.</td>
-</tr>
-<tr>
-<td>BAKER</td>
-<td>Baker Observatory</td>
-</tr>
-<tr>
-<td>HET</td>
-<td>McDonald Observatory - Hobby-Eberly Telescope.</td>
-</tr>
-<tr>
-<td>JCDO</td>
-<td>Jack C. Davis Observatory, Western Nevada College</td>
-</tr>
-<tr>
-<td>LNO</td>
-<td>Langkawi National Observatory</td>
-</tr>
-</tbody>
-</table>
-
 <p><br></p>
 
 <h2>
@@ -1880,6 +1582,7 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
           <p class="repo-owner"><a href="https://github.com/gLENTNER/SLiPy"></a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</p>
 
           <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+          <p><b>Notice:</b> The formatting has been altered by gLENTNER.</p>
         </aside>
       </div>
     </div>
