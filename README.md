@@ -115,7 +115,7 @@ This research has made use of SLiPy, an open source spectroscopy and
 astrophysics library for Python 3 (G. Lentner, 2015).
 
 **Projects**  
-If your code either makes use of, borrows from SLiPy, a good way to reference
+If your code either makes use of or borrows from SLiPy, a good way to reference
 this is with a [shield](http://shields.io) in your README file.
 
 [![SLiPy](http://img.shields.io/badge/running-SLiPy-green.svg?style=flat)](http://glentner.github.io/SLiPy)
