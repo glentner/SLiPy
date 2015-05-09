@@ -89,7 +89,7 @@ If you use SLiPy or have your own code related to spectroscopy or computing
 for astronomy and think it would be a useful addition (or you find a
 bug/mistake) I'm more than open to suggested contributions/additions.
 
-## Author
+## Author(s)
 
 [Geoffrey Lentner](http://glentner.github.io), B.S.  
 Graduate Research Assistant  
@@ -103,8 +103,6 @@ specifically in terms of the science behind much of this package.
 Associate Professor  
 Department of Physics & Astronomy  
 University of Louisville
-
-Publications: [ADS](http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?sim_query=YES&author=Lauroesch%2C+J%0D%0A)
 
 
 ##Acknowledge SLiPy
