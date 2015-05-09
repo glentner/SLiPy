@@ -91,15 +91,20 @@ bug/mistake) I'm more than open to suggested contributions/additions.
 
 ## Author
 
-Geoffrey Lentner, B.S.  
+[Geoffrey Lentner](http://glentner.github.io), B.S.  
 Graduate Research Assistant  
 Department of Physics & Astronomy  
 University of Louisville
 
-Website: [glentner.github.io](http://glentner.github.io)
-
 Significant intellectual contributions have been made by my thesis advisor,
-[James Lauroesch](http://www.physics.louisville.edu/jtl/) (Associate Professor)
+specifically in terms of the science behind much of this package.
+
+[James Lauroesch](http://www.physics.louisville.edu/jtl/), Ph.D.  
+Associate Professor
+Department of Physics & Astronomy
+University of Louisville
+
+[ADS](http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?sim_query=YES&author=Lauroesch%2C+J%0D%0A)
 
 
 ##Acknowledge SLiPy
