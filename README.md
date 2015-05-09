@@ -149,7 +149,7 @@ of the data such as distance, spectral type, etc.
 <a name=GetDataLoc></a>
 - **GetData** ( \**files*, \*\**kwargs*):
 
-	Import data from FITS `files`. Returns a list of *Spectrum* objects.
+	Import data from FITS *files*. Returns a list of *Spectrum* objects.
 
     |Options     | Defaults        | Descriptions
     |------------|-----------------|------------------------------------------|
