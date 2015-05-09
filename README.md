@@ -98,6 +98,10 @@ University of Louisville
 
 Website: [glentner.github.io](http://glentner.github.io)
 
+Significant intellectual contributions have been made by my thesis advisor,
+[James Lauroesch](http://www.physics.louisville.edu/jtl/) (Associate Professor)
+
+
 ##Acknowledge SLiPy
 
 If you have made use of SLiPy in your project/research, you can acknowledge
