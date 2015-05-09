@@ -592,7 +592,7 @@ class GEMININORTH(Observatory):
 	# """
 	# Gemini South Observatory
 	# """
-	def __init__(self):
+	#def __init__(self):
 		# 	self.name = "Gemini South Observatory"
 		# 	self.longitude = 70.7233333333
 		# 	self.latitude = -29.7716666667
