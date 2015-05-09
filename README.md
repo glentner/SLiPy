@@ -100,11 +100,11 @@ Significant intellectual contributions have been made by my thesis advisor,
 specifically in terms of the science behind much of this package.
 
 [James Lauroesch](http://www.physics.louisville.edu/jtl/), Ph.D.  
-Associate Professor
-Department of Physics & Astronomy
+Associate Professor  
+Department of Physics & Astronomy  
 University of Louisville
 
-[ADS](http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?sim_query=YES&author=Lauroesch%2C+J%0D%0A)
+Publications: [ADS](http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?sim_query=YES&author=Lauroesch%2C+J%0D%0A)
 
 
 ##Acknowledge SLiPy
