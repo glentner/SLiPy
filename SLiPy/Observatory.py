@@ -527,7 +527,7 @@ Observatorio de Sierra Nevada
 # These values are from the aerial survey made Sept 25, 1996
 #    http://www.ifa.hawaii.edu/mko/coordinates.html
 
-class GEMINI-NORTH(Observatory):
+class GEMININORTH(Observatory):
 """
 Gemini North Observatory
 """
@@ -552,7 +552,7 @@ Gemini North Observatory
 # 	self.timezone = 4
 
 # Corrected coords from Bryan Miller, 5/18/2006
-class GEMINI-SOUTH(Observatory):
+class GEMINISOUTH(Observatory):
 """
 Gemini South Observatory
 """
