@@ -71,7 +71,7 @@ class KernelFit1D():
     def mean(self, x):
         """
         Solve for smooth profile through the data on the new `x` array.
-        This is essential a weighted mean.
+        This is essentially a weighted mean.
         """
         
         if not hasattr(x, '__iter__'):
