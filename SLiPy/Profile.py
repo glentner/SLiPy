@@ -144,10 +144,12 @@ def Extract(splot, kernel = Gaussian, **kwargs):
     try:
         
         options = Options( kwargs, {
-            'kind' : 'cubic', # given to scipy...interp1d for continuum
+            'kind'      : 'cubic', # given to scipy...interp1d for continuum
+            'bandwidth' : 0.1*u.nm # user should provide this!
         })
         
-        kind = options('kind')
+        kind      = options('kind')
+        bandwidth = options('bandwidth')
         
     except OptionsError as err:
         print(' --> OptionsError:', err)
@@ -185,13 +187,16 @@ def Extract(splot, kernel = Gaussian, **kwargs):
     yc = yc[np.where(np.logical_or(xc < wave[1], xc > wave[2]))]
     xc = xc[np.where(np.logical_or(xc < wave[1], xc > wave[2]))]
     
+    # use `kernel smoothing` to model the continuum
+    model  = KernelFit1D(xc, yc, kernel = kernel, bandwidth = bandwidth)
+    interp = interp1d(xc, model.mean(xc), kind = kind)
+    
     # now use interpolation to cross the gap
-    interp    = interp1d(xc, yc, kind = kind)
     continuum = Spectrum(interp(xx), xx)
 
     # display visual aid
-    plt.plot(xx, interp(xx), 'r--')
-    plt.fill_between(xl, yl, interp(xl), color = 'blue', alpha = 0.5)
+    plt.plot(xx, interp(xx), 'r--', linewidth = 3)
+    plt.fill_between(xl, yl, interp(xl), color = 'blue', alpha = 0.25)
     plt.draw()
 
     return line, continuum
