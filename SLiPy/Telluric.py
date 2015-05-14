@@ -1,16 +1,18 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
-# slipy/SLiPy/Tellucic.Py 
+# See LICENSE (GPLv3)
+# slipy/SLiPy/Tellucic.Py
 """
 Telluric - Corrections for atmospheric absoption lines.
 """
 import numpy as np
+from astropy import units as u
 
+from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 from .Correlate import Xcorr, CorrelateError
-from .DataType import Spectrum, DataError
+from .DataType import Spectrum, DataTypeError
 
-class TelluricError(Exception):
+class TelluricError(SlipyError):
 	"""
 	Exception specific to the Telluric module.
 	"""
@@ -74,6 +76,10 @@ def Correct(spectrum, *calibration, **kwargs):
 			'if it detects a request to operate on matrices with more '
 			'than 10**8 elements.')
 
+		# resample all the calibration spectra
+		for cal in calibration:
+			cal.resample(spectrum)
+
 		# find best XCorr and amplitude adjustment
 		best = None
 		for cal in calibration:
@@ -92,6 +98,11 @@ def Correct(spectrum, *calibration, **kwargs):
 			# amplitude matrix has identical columns
 			size = np.shape(calmatrix)[1]
 			ampmatrix = np.tile(amp, (size,1)).T
+
+			# remove units for dimensionless operations
+			calmatrix = calmatrix.value
+			objmatrix = objmatrix.value
+
 			# flip arrays for amplification
 			diff = objmatrix - (1 - (1 - calmatrix) * ampmatrix)
 			# compute the RMS for each trial
@@ -108,13 +119,19 @@ def Correct(spectrum, *calibration, **kwargs):
 		shift = best[2] # XCorr
 		cal   = best[3] # which calibration spectrum
 
+        # we can't update an attribute...
+		update = spectrum.data.value
+        
 		# divide spectrum
 		if shift < 0:
-			spectrum.data[-shift:] /= 1 -  (1 - cal.data[:shift]) * amp[index]
+			update[-shift:] /= 1 - (1 - cal.data[:shift].value) * amp[index]
 		elif shift > 0:
-			spectrum.data[:-shift] /= 1 - (1 - cal.data[shift:]) * amp[index]
+			update[:-shift] /= 1 - (1 - cal.data[shift:].value) * amp[index]
 		else:
-			spectrum.data /= 1 - (1 - cal.data) * amp[index]
+			update /= 1 - (1 - cal.data.value) * amp[index]
+
+        # re-incorporate units
+		spectrum.data = update * u.Unit(spectrum.yunits)
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err)

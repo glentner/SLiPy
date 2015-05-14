@@ -1,5 +1,5 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/SLiPy/Measure.py
 
 '''
@@ -11,7 +11,7 @@ from matplotlib.widgets import  RectangleSelector
 from pylab import *
 
 from .Plot import SPlot, PlotError
-from .DataType import Spectrum, DataError
+from .DataType import Spectrum, DataTypeError
 
 class MeasureError(Exception):
     '''
@@ -45,6 +45,7 @@ def OnSelect_Deblend(eclick, erelease):
     # x1 *= plot.wave[0].unit
     # x2 *= plot.wave[0].unit
 
+    regions.append([x1, x2])
     print(x1, x2)
 
     # create new Spectrum of region
@@ -78,7 +79,7 @@ def toggle_selector(event):
 
 def Deblend(spectrum, **kwargs):
     '''
-    Remove feature from `spectrum` via subtraction. The user manually selects
+    Remove feature from `spectrum` via division. The user manually selects
     regions in the `spectrum` and a `line` is fit to and subtracted. The
     original `spectrum` object is modified.
 
@@ -90,7 +91,7 @@ def Deblend(spectrum, **kwargs):
         # create a SPlot object out of the spectrum
         spectrum = SPlot(spectrum)
     elif type(spectrum) is not SPlot:
-        raise MeasureError('From Deblend(), argument was be either of type '
+        raise MeasureError('From Deblend(), argument must be either of type '
         'Spectrum or SPlot!')
 
     # make spectrum window active
@@ -98,13 +99,24 @@ def Deblend(spectrum, **kwargs):
 
     # pass off spectrum to global plot object
     global plot
+    global regions
     plot = spectrum
 
+    domain = ' Select a region, the press enter: '
+    # while domain:
 
-    toggle_selector.RS = RectangleSelector(plot.ax, OnSelect_Deblend,
+    selector = RectangleSelector(plot.ax, OnSelect_Deblend,
     	minspanx=1, minspany=1)
 
-    connect('key_press_event', toggle_selector)
+    #connect('key_press_event', toggle_selector)
+    # selector = RectangleSelector(plot.ax, OnSelect_Deblend,
+    # 	drawtype='box', useblit=True,
+    # 	button=[1,3], # don't use middle button
+    # 	minspanx=5, minspany=5,
+    # 	spancoords='pixels')
 
-    print('Select regions for continuum fitting: <press enter when done>')
-    if input(): return plot
+    #domain = input(domain)
+    #print('Region -> ', regions[-1])
+
+    #print('Select regions for continuum fitting: <press enter when done>')
+    return plot

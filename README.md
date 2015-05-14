@@ -202,7 +202,7 @@ of the data such as distance, spectral type, etc.
     *raconvert* | True     | convert decimal hours to decimal degrees |
     *verbose*   | True     | display messages, progress               |
     *toplevel*  | None     | *toplevel* directory to look for files   |
-    *recursive* | False    | search *toplevel*ly below *toplevel*     |
+    *recursive* | False    | search below *toplevel* recursively      |
     *pattern*   |'\*.fits' | glob *pattern* for file search           |
     *useSimbad* | False    | use *Simbad* instead of header elements  |
 

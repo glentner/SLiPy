@@ -1,5 +1,5 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # AstroPython/Data/Elodie.py
 """
 Methods for data retrieval from the Elodie Archive.

@@ -1,9 +1,11 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/SLiPy/Observatory.py
 """
 Classes for defining observatory parameters (similar to the IRAF task).
 """
+
+# there is no need for an `ObservatoryError` class ...
 
 class Observatory:
 	"""

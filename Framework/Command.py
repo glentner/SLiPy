@@ -1,17 +1,16 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2).
+# See LICENSE (GPLv3).
 # slipy/Framework/Interface.py 
 """
-Interface.py
-
-Command Line Interface tools.
+Command line interface tools.
 """
 
+from .. import SlipyError
 from .Options import Options, OptionsError
 
-class CommandError(Exception):
+class CommandError(SlipyError):
 	"""
-	Exception for Interface module.
+	Exception specific to Command module.
 	"""
 	pass
 

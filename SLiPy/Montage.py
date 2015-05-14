@@ -1,5 +1,5 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/SLiPy/Montage.py
 """
 This module makes use of the `Montage` mosaic tools from caltech, see:
@@ -12,11 +12,13 @@ import os, shutil as sh, numpy as np
 from subprocess import check_output as call, CalledProcessError
 from sys import stdout
 from numbers import Number
+
+from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
 
 
-class MontageError(Exception):
+class MontageError(SlipyError):
 	"""
 	Exception specific to the Montage module
 	"""

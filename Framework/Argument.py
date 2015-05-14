@@ -1,12 +1,14 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/Framework/Arguments.py
 """
 Module contains `Argument` class for handling conversions and type
 checking for function/class keyword argument options.
 """
 
-class ArgumentError(Exception):
+from .. import SlipyError
+
+class ArgumentError(SlipyError):
 	"""
 	Exception specific to Argument module.
 	"""

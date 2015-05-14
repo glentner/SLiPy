@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/SLiPy/Fits.py
 """
 Fits - FITS file handling module.
@@ -8,13 +8,15 @@ Fits - FITS file handling module.
 import os, sys, fnmatch
 from astropy.io import fits as pyfits
 from numbers import Number
+
+from .. import SlipyError
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
-from .DataType import Spectrum, DataError
+from .DataType import Spectrum, DataTypeError
 from .Simbad import Position, Distance, Sptype, IDList, SimbadError
 
-class FitsError(Exception):
+class FitsError(SlipyError):
     """
     Exception for Fits module.
     """
@@ -110,8 +112,8 @@ def GetData( *files, **kwargs ):
 		print(' --> OptionsError:', err)
 		raise FitsError('Data retrieval failure.')
 
-	except DataError as err:
-		print(' --> DataError:', err)
+	except DataTypeError as err:
+		print(' --> DataTypeError:', err)
 		raise FitsError('Failed to construct spectrum.')
 
 def Header( filename, keyword, **kwargs ):

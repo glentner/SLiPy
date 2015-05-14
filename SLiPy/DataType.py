@@ -1,5 +1,5 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # SLiPy/SLiPy/DataType.py
 """
 Class object representations for astronomical data.
@@ -9,11 +9,13 @@ from scipy.interpolate import interp1d
 from copy import deepcopy
 from astropy.io import fits as pyfits
 from astropy import units as u
+
+from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 
-class DataError(Exception):
+class DataTypeError(SlipyError):
 	"""
-	Exception specific to Python.Astro.DataType's.
+	Exception specific to this module.
 	"""
 	pass
 
@@ -107,14 +109,14 @@ class Spectrum:
 				len(filename) == len(wavelengths)):
 
 				# we are initializing from a numpy array
-				self.data = argument.copy()
+				self.data = filename.copy()
 				# wavecal ignored on numpy.array construction
 				self.wave = wavelengths.copy()
 
 			else:
 
 				# we got the wrong argument types
-				raise DataError('Spectrum() object expected either a set of '
+				raise DataTypeError('Spectrum() object expected either a set of '
 				'1D numpy.ndarray`s arrays of equal length or file name as a '
 				'constructor argument.')
 
@@ -127,11 +129,11 @@ class Spectrum:
 
 		except OptionsError as err:
 			print(' --> OptionsError:', err)
-			raise DataError('Failed to construct Spectrum() object.')
+			raise DataTypeError('Failed to construct Spectrum() object.')
 
 		except IOError as err:
 			print(' --> IOError:', err)
-			raise DataError('Failed to construct Spectrum() object.')
+			raise DataTypeError('Failed to construct Spectrum() object.')
 
 	def resample(self, *args, **kwargs):
 		"""
@@ -157,7 +159,7 @@ class Spectrum:
 
 		except OptionsError as err:
 			print(' --> OptionsError: ', err)
-			raise DataError('From Spectrum.resample(), failed keyword '
+			raise DataTypeError('From Spectrum.resample(), failed keyword '
 			'assignment!')
 
 		# build interpolation function
@@ -165,16 +167,29 @@ class Spectrum:
 
 		if len(args) == 1:
 
+			spectrum = args[0]
+
+			if type(spectrum) is not Spectrum:
+				raise DataTypeError('When `resample()` is given a single '
+				'argument, it is expected to by of type `Spectrum`.')
+
 			# check domain limits
-			if args[0].wave[0] < self.wave[0] or args[0].wave[-1] > self.wave[-1]:
-				raise DataError('Spectrum.resample() cannot interplate outside '
+			if spectrum.wave[0] < self.wave[0] or spectrum.wave[-1] > self.wave[-1]:
+				raise DataTypeError('Spectrum.resample() cannot interplate outside '
 				'the original domain of the flux data.')
 
 			# build new wave-array from spectrum
-			self.wave = args[0].wave
+			self.wave = spectrum.wave
 
 			# bring back to original units for f()
 			self.wave = self.wave.to(u.Unit(self.xunits))
+
+			# resample data
+			self.data = f(self.wave) * u.Unit(self.yunits)
+
+			# conver to units of the given spectrum
+			self.wave = self.wave.to(u.Unit(spectrum.wave.unit))
+			self.data = self.data.to(u.Unit(spectrum.data.unit))
 
 		elif len(args) == 3:
 
@@ -182,25 +197,25 @@ class Spectrum:
 
 			# check function arguments
 			if low < self.wave[0] or high > self.wave[-1]:
-				raise DataError('Spectrum.resample() cannot interplate outside '
+				raise DataTypeError('Spectrum.resample() cannot interplate outside '
 				'the original domain of the flux data.')
 
 			if npix < 1:
-				raise DataError('Spectrum.resample() expects a positive '
+				raise DataTypeError('Spectrum.resample() expects a positive '
 				'integer for `npix` argument.')
 
 			# build new wave vector
-			self.wave = np.linspace(first, last, npix)
+			self.wave = np.linspace(low, high, npix)
 
 			# bring back to original units for f()
 			self.wave = self.wave.to(u.Unit(self.xunits))
 
-		else:
-			raise DataError('Unacceptable number of arguments passed to '
-			'Spectrum.resample()')
+			# resample data
+			self.data = f(self.wave) * u.Unit(self.yunits)
 
-		# resample data
-		self.data = f(self.wave) * u.Unit(self.yunits)
+		else:
+			raise DataTypeError('Unacceptable number of arguments passed to '
+			'Spectrum.resample()')
 
 	def copy(self):
 		"""
@@ -213,7 +228,7 @@ class Spectrum:
 		Create `copy`s of `self` and `other` for operator overloading.
 		"""
 		operand = other.copy()
-		operand.resample(self.wave[0], self.wave[-1], len(self.wave))
+		operand.resample(self)
 		return self.copy(), operand
 
 	def __add__(self, other):
@@ -238,7 +253,7 @@ class Spectrum:
 		if type(other) is Spectrum:
 			# resample the data and return `new` spectrum
 			result, operand = self.__new_pair(other)
-			result.data -= operand.data
+			result.data = result.data - operand.data
 			return result
 
 		# otherwise, assume we have a scalar (be careful)
@@ -354,7 +369,7 @@ class Spectrum:
 		result.data *= other
 		return result
 
-	def __rdiv__(self, other):
+	def __rtruediv__(self, other):
 		"""
 		Right-hand division
 		"""

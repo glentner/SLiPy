@@ -1,5 +1,5 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/Framework/Display.py
 """
 Display - Python module for displaying content to the terminal.
@@ -9,11 +9,12 @@ import os, sys, math
 from time import time
 from datetime import datetime, timedelta
 
+from .. import SlipyError
 from .Options import Options, OptionsError
 
-class DisplayError(Exception):
+class DisplayError(SlipyError):
 	"""
-	Module specific exception.
+	Exception specific to the Display module.
 	"""
 	pass
 
@@ -56,7 +57,7 @@ class Monitor:
 
 	def __EstimatedCompletionTime(self):
 		"""
-		Estimated time of completion, based off percent complete and
+		Estimated time of completion, based on percent complete and
 		current total elapsed time.
 		"""
 		if self.percent > 0:
@@ -69,8 +70,8 @@ class Monitor:
 		"""
 		Build the progress bar
 		"""
-		bars   = self.char * math.floor( self.percent * self.width )
-		empty  = ' ' * (self.width - len(bars) - 1)
+		bars    = self.char * math.floor( self.percent * self.width )
+		empty   = ' ' * (self.width - len(bars) - 1)
 		display = self.left + bars + self.tip + empty + self.right
 
 		if self.numbers:
@@ -87,7 +88,7 @@ class Monitor:
 		Request a progress bar.
 		"""
 		if time() - self.last > self.freq:
-			# refresh rate surpasses,
+			# refresh rate surpassed,
 			# update time of last call and percent complete
 			self.last    = time()
 			self.percent = float(i) / float(imax)
@@ -114,7 +115,7 @@ class Monitor:
 		"""
 		Display total time elapsed since instantiation.
 		"""
-		total  = time() - self.start
+		total = time() - self.start
 		abrv  = [ 'd',        'h',      'm',    's']
 		unit  = { 'd': 86400, 'h':3600, 'm':60 }
 		count = { 'd':0,      'h':0,    'm':0,  's':0 }

@@ -21,12 +21,14 @@ These should be specific to the 'Attribute' being pointed to.
 """
 from sys import version_info, argv, exit
 from urllib.request import urlopen
+
+from .. import SlipyError
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
 
-class SimbadError(Exception):
+class SimbadError(SlipyError):
 	"""
-	Module specific exception.
+	Exception specific to the Simbad module.
 	"""
 	pass
 

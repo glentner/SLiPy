@@ -1,5 +1,5 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/SLiPy/Velocity.Py
 """
 Radial velocity corrections for 1D spectra.
@@ -7,6 +7,8 @@ Radial velocity corrections for 1D spectra.
 
 from astropy.io import fits as pyfits
 from astropy.constants import c
+
+from .. import SlipyError
 from ..astrolibpy.astrolib.helcorr import helcorr
 from .Fits import Find, RFind
 from .Observatory import Observatory
@@ -14,7 +16,7 @@ from .DataType import Spectrum
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
 
-class VelocityError(Exception):
+class VelocityError(SlipyError):
 	"""
 	Exception specific to the Velocity module
 	"""

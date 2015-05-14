@@ -1,15 +1,16 @@
 # Copyright (c) Geoffrey Lentner 2015. All Rights Reserved.
-# See LICENSE (GPLv2)
+# See LICENSE (GPLv3)
 # slipy/Framework/Options.py
 """
 Class object for handling kwargs in classes and functions.
 """
 
+from .. import SlipyError
 from .Argument import Argument as Arg, ArgumentError
 
-class OptionsError(Exception):
+class OptionsError(SlipyError):
 	"""
-	Module specific exception.
+	Exception specific to Options module.
 	"""
 	pass
 
