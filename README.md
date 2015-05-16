@@ -707,7 +707,7 @@ Profile fitting tasks for spectra.
 	archive = Elodie.Archive()
 	
 	# the one with highest S/N
-	sci_file  = archive.files['HD332329']
+	sci_file = archive.files['HD332329']
 	
 	# all files are in `data` member, first column is the file name 
 	cal_files = [ entry[0] for entry in archive.data['HD087901A'] ]
@@ -724,7 +724,7 @@ Profile fitting tasks for spectra.
 			outpath = 'Calibration-Files'  # put under this directory
 		)
 	
-	sci_file  = Fits.Find('Science-Files')     # one file
+	sci_file  = Fits.Find('Science-Files')[0]  # one file
 	cal_files = Fits.Find('Calibration-Files') # six files
 	
 	spectrum = Spectrum(sci_file)       # create spectrum object
