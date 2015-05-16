@@ -840,7 +840,7 @@ Profile fitting tasks for spectra.
     | Options      | Defaults   | Descriptions                            |
     |--------------|------------|-----------------------------------------|
     | *kind*       | 'cubic'    | given to scipy...interp1d for continuum |
-	| *bandwidth*  | 'cubic'    | for kernel, user should provide this!   |
+	| *bandwidth*  | 0.1 * u.nm | for kernel, user should provide this!   |
 	| *rms*        | False      | return an error estimate for the line   |
 	
 	<br>
