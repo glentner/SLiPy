@@ -10,10 +10,10 @@ from astropy import units as u
 # there is no need for an `ObservatoryError` class ...
 
 class Observatory:
-	"""
-	The Abstract base class for Observatory types.
-	"""
-	def __init__(self):
+    """
+    The Abstract base class for Observatory types.
+    """
+    def __init__(self):
         raise TypeError('The Observatory base class should not be '
         'instantiated on its own.')
 
