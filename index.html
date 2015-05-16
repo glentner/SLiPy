@@ -1,34 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
+    <meta charset="UTF-8">
     <title>SLiPy by gLENTNER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>SLiPy</h1>
-        <h2>A Spectroscopy and astrophysics Library for Python 3</h2>
-        <a href="https://github.com/gLENTNER/SLiPy" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <section class="page-header">
+      <h1 class="project-name">SLiPy</h1>
+      <h2 class="project-tagline">A Spectroscopy and astrophysics Library for Python 3</h2>
+      <a href="https://github.com/gLENTNER/SLiPy" class="btn">View on GitHub</a>
+      <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
+    <section class="main-content">
+      <h1>
+<a id="slipy" class="anchor" href="#slipy" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://glentner.github.io/SLiPy">SLiPy</a>
+</h1>
 
 <h4>
 <a id="a-spectroscopy-and-astrophysics-library-for-python-3" class="anchor" href="#a-spectroscopy-and-astrophysics-library-for-python-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Spectroscopy and astrophysics Library for Python 3</h4>
@@ -119,16 +112,28 @@ to import:</p>
 <a href="#SPlotLoc">SPlot</a>, <a href="#IterateLoc">Iterate</a>,</td>
 </tr>
 <tr>
+<td><a href="#ProfileLoc"><strong>Profile</strong></a></td>
+<td>
+<a href="#SelectLoc">Select</a>, <a href="#FitLoc">Fit</a>, <a href="#ExtractLoc">Extract</a>,</td>
+</tr>
+<tr>
 <td><a href="#MontageLoc"><strong>Montage</strong></a></td>
 <td>
 <a href="#MSolveGridLoc">SolveGrid</a>, <a href="#MMosaicLoc">Mosaic</a>, <a href="#MSubFieldLoc">SubField</a>, <a href="#MFieldLoc">Field</a>,</td>
 </tr>
-<tr>
-<th>&nbsp;</th>
-</tr>
+</tbody>
+</table>
+
+<p><br></p>
+
+<table>
+<thead>
 <tr>
 <th>SLiPy/Data</th>
+<th>Functions/Classes</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
@@ -437,8 +442,7 @@ decimal degrees) from <em>center</em>, based on the <em>ra</em> (right ascension
 <tr>
 <td><em>recursive</em></td>
 <td>False</td>
-<td>search <em>toplevel</em>ly below <em>toplevel</em>
-</td>
+<td>search below <em>toplevel</em> recursively</td>
 </tr>
 <tr>
 <td><em>pattern</em></td>
@@ -879,7 +883,7 @@ is divided out!</p>
 <p>Perform heliocentric velocity corrects on <em>spectra</em> based on
 <em>observatory</em> parameters (<em>longitude</em>, <em>latitude</em>, <em>altitude</em>) and the
 member attributes, <em>ra</em> (right ascension), <em>dec</em> (declination), and <em>jd</em>
-(julian date) from the <em>spectra</em>.</p>
+(julian date) from the <em>spectra</em>. These should all have units.</p>
 
 <table>
 <thead>
@@ -909,7 +913,7 @@ member attributes, <em>ra</em> (right ascension), <em>dec</em> (declination), an
 <p>Perform barycentric velocity corrects on <em>spectra</em> based on
 <em>observatory</em> parameters (<em>longitude</em>, <em>latitude</em>, <em>altitude</em>) and the
 member attributes, <em>ra</em> (right ascension), <em>dec</em> (declination), and <em>jd</em>
-(julian date) from the <em>spectra</em>.</p>
+(julian date) from the <em>spectra</em>. These should all have units.</p>
 
 <table>
 <thead>
@@ -998,9 +1002,10 @@ to this module. I welcome suggestions.</p>
 <span class="pl-s">    <span class="pl-pds">"""</span></span>
     <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>):
         <span class="pl-v">self</span>.name      <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Observatoire de Haute-Provence<span class="pl-pds">'</span></span>
-        <span class="pl-v">self</span>.latitude  <span class="pl-k">=</span> <span class="pl-c1">43.9308334</span> <span class="pl-c"># degrees N</span>
-        <span class="pl-v">self</span>.longitude <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-c"># degrees W</span>
-        <span class="pl-v">self</span>.altitude  <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-c"># meters</span></pre></div>
+        <span class="pl-v">self</span>.longitude <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-k">*</span> u.degree <span class="pl-c"># West</span>
+        <span class="pl-v">self</span>.latitude  <span class="pl-k">=</span> <span class="pl-c1">43.9308334</span> <span class="pl-k">*</span> u.degree <span class="pl-c"># North</span>
+        <span class="pl-v">self</span>.altitude  <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-k">*</span> u.meter
+        <span class="pl-v">self</span>.timezone  <span class="pl-k">=</span> <span class="pl-c1">1</span>          <span class="pl-k">*</span> u.hourangle</pre></div>
 
 <p>There are currently 69 defined observatories:</p>
 
@@ -1201,11 +1206,11 @@ to this module. I welcome suggestions.</p>
 <td>Observatorio de Sierra Nevada</td>
 </tr>
 <tr>
-<td>GEMININORTH</td>
+<td>GEMINI NORTH</td>
 <td>Gemini North Observatory</td>
 </tr>
 <tr>
-<td>GEMINISOUTH</td>
+<td>GEMINI SOUTH</td>
 <td>Gemini South Observatory</td>
 </tr>
 <tr>
@@ -1378,6 +1383,13 @@ the figure again, you are back where you left off.</p>
 <p>Given one or more <em>splots</em>, <em>overlay</em> the figures.</p>
 </li>
 <li>
+<p><em>markers</em>( *<em>args</em> ):</p>
+
+<p>Reassign the values for the <code>marker</code>s in the figure. The number
+of arguments must equal the number of spectra in the figure. This
+starts out as one, but will increase for ever call to SPlot.overlay().</p>
+</li>
+<li>
 <p><em>restore</em>( ):</p>
 
 <p>Restore the figure to only the original spectrum.</p>
@@ -1417,6 +1429,267 @@ interest. The function returns a list of <em>keepers</em>.</p>
 </tr>
 </tbody>
 </table>
+
+<p><br>
+<strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy <span class="pl-k">import</span> Fits, Plot
+
+fpath <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>?<span class="pl-pds">'</span></span> <span class="pl-c"># toplevel directory name where your FITS files are</span>
+files <span class="pl-k">=</span> Fits.Find(fpath)
+
+spectra <span class="pl-k">=</span> Fits.GetData( <span class="pl-k">*</span>files )
+
+figure <span class="pl-k">=</span> [
+
+    Plot.SPlot( spectrum, <span class="pl-smi">label</span><span class="pl-k">=</span>Fits.Header(fname, <span class="pl-s"><span class="pl-pds">'</span>object<span class="pl-pds">'</span></span>) )
+    <span class="pl-k">for</span> spectrum, fname <span class="pl-k">in</span> <span class="pl-c1">zip</span>(spectra, files)
+]
+
+keepers <span class="pl-k">=</span> Plot.Iterate( <span class="pl-k">*</span>figure )
+<span class="pl-c"># enter either 'y', 'n', or 'x' as prompted by the terminal</span></pre></div>
+</li>
+</ul>
+
+<p><br></p>
+
+<h2>
+<a id="profile" class="anchor" href="#profile" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="ProfileLoc"></a><a href="SLiPy/Profile.py">Profile</a>
+</h2>
+
+<p>Profile fitting tasks for spectra.</p>
+
+<p><a name="SelectLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Select</strong> ( <em>splot</em> ):</p>
+
+<p>Select points from the <em>splot</em>. This should be of type SPlot 
+(or it can optionally be a Spectrum type, for which a SPlot will be
+created). The splot will be rendered and the user clicks on the 
+figure. When finished, return to the terminal prompt. A dictionary is
+returned with two entries, <em>wave</em> and <em>data</em>, representing the x-y
+locations selected by the user. This can always be retrieved later by
+accessing the module member <em>Profile.selected</em>.</p>
+
+<p>While the user makes selections, temporary markers appear on the figure
+indicating the data point that was just selected. If a mark does not 
+appear, try moving the curser slightly and trying again. Even if the line
+goes through that point, there might not actually be data there.</p>
+</li>
+</ul>
+
+<p><a name="FitLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Fit</strong> ( <em>splot</em>, <em>function</em> = InvertedLorentzian, <em>params</em> = None)</p>
+
+<p>Given a <em>splot</em> of type Plot.SPlot, the user selects four points on the 
+spectrum and a parameterized function is fit (an inverted Lorentzian by
+default). Optionally, <em>splot</em> can be of type spectrum and a basic SPlot
+will be created for you. If the user gives an alternative <em>function</em>, 
+<em>params</em> (parameters) must be provided. <em>params</em> is to be the first guess, 
+<em>p0</em> given to scipy...curve_fit; the user can provide them expicitely, 
+or in the form of functions with the templates <code>f(x, y)</code>
+where <em>x</em> and <em>y</em> are the <em>wave</em> and <em>data</em> arrays (respectively) extracted
+between the two inner points selected by the user.</p>
+
+<p><em>InvertedLorentian</em> is defined in SLiPy.Algorithms.Functions. The user does
+not need to provide <em>params</em> for the default behavior.</p>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># In this example I use an alternative function simply as an illustration.</span>
+<span class="pl-c"># I show the download, calibration, and fitting procedure involved ...</span>
+
+<span class="pl-k">from</span> slipy <span class="pl-k">import</span> Fits, Simbad, Plot, Velocity, Telluric, Profile
+<span class="pl-k">from</span> slipy <span class="pl-k">import</span> Spectrum, Observatory, SlipyError, Units <span class="pl-k">as</span> u
+<span class="pl-k">from</span> slipy.Data <span class="pl-k">import</span> Elodie
+
+<span class="pl-c"># See the Data package for more information about this section</span>
+archive <span class="pl-k">=</span> Elodie.Archive()
+
+<span class="pl-c"># the one with highest S/N</span>
+sci_file <span class="pl-k">=</span> archive.files[<span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>]
+
+<span class="pl-c"># all files are in `data` member, first column is the file name </span>
+cal_files <span class="pl-k">=</span> [ entry[<span class="pl-c1">0</span>] <span class="pl-k">for</span> entry <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD087901A<span class="pl-pds">'</span></span>] ]
+
+Elodie.Download(
+        sci_file,                      <span class="pl-c"># file name to download</span>
+        <span class="pl-smi">resample</span> <span class="pl-k">=</span> (<span class="pl-c1">5850</span>, <span class="pl-c1">5950</span>, <span class="pl-c1">0.01</span>), <span class="pl-c"># pipeline command</span>
+        <span class="pl-smi">outpath</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Science-Files<span class="pl-pds">'</span></span>      <span class="pl-c"># put under this directory</span>
+    )
+
+Elodie.Download(
+        <span class="pl-k">*</span>cal_files,                    <span class="pl-c"># HD087901A is Regulus</span>
+        <span class="pl-smi">resample</span> <span class="pl-k">=</span> (<span class="pl-c1">5850</span>, <span class="pl-c1">5950</span>, <span class="pl-c1">0.01</span>), <span class="pl-c"># pipeline command</span>
+        <span class="pl-smi">outpath</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Calibration-Files<span class="pl-pds">'</span></span>  <span class="pl-c"># put under this directory</span>
+    )
+
+sci_file  <span class="pl-k">=</span> Fits.Find(<span class="pl-s"><span class="pl-pds">'</span>Science-Files<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>]  <span class="pl-c"># one file</span>
+cal_files <span class="pl-k">=</span> Fits.Find(<span class="pl-s"><span class="pl-pds">'</span>Calibration-Files<span class="pl-pds">'</span></span>) <span class="pl-c"># six files (list)</span>
+
+spectrum <span class="pl-k">=</span> Spectrum(sci_file)       <span class="pl-c"># create spectrum object</span>
+regulus  <span class="pl-k">=</span> Fits.GetData(<span class="pl-k">*</span>cal_files) <span class="pl-c"># return list of spectrum objects</span>
+
+<span class="pl-c"># remove absorption due to Earth's atmosphere</span>
+Telluric.Correct(spectrum, <span class="pl-k">*</span>regulus)
+
+<span class="pl-c"># attach `ra`, `dec` and `jd` to spectrum for HelioCorrect()</span>
+<span class="pl-c"># Simbad returns values in units of decimal degrees</span>
+ra, dec <span class="pl-k">=</span> Simbad.Position(<span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>)
+
+<span class="pl-c"># elements returned from Fits.Header() are unitless. Here we take</span>
+<span class="pl-c"># the MJD at beginning of exposure and solve for JD at middle of exposure</span>
+MJD     <span class="pl-k">=</span> Fits.Header(sci_file, <span class="pl-s"><span class="pl-pds">'</span>MJD-OBS<span class="pl-pds">'</span></span>)
+EXPTIME <span class="pl-k">=</span> Fits.Header(sci_file, <span class="pl-s"><span class="pl-pds">'</span>EXPTIME<span class="pl-pds">'</span></span>)
+JD      <span class="pl-k">=</span> MJD <span class="pl-k">+</span> <span class="pl-c1">2400000.5</span> <span class="pl-k">+</span> <span class="pl-c1">0.5</span> <span class="pl-k">*</span> EXPTIME <span class="pl-k">/</span> <span class="pl-c1">86400</span>
+
+<span class="pl-c"># attach to spectrum object as members</span>
+spectrum.ra  <span class="pl-k">=</span> ra
+spectrum.dec <span class="pl-k">=</span> dec
+spectrum.jd  <span class="pl-k">=</span> JD <span class="pl-k">*</span> u.day
+
+<span class="pl-c"># Elodie is at the Observatoire de Haute-Provence, France (OHP).</span>
+Velocity.HelioCorrect( Observatory.OHP(), spectrum )
+
+<span class="pl-c"># create figure</span>
+fig <span class="pl-k">=</span> Plot.SPlot(spectrum, <span class="pl-smi">label</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>, <span class="pl-smi">marker</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>k-<span class="pl-pds">'</span></span>)
+fig.xlabel(<span class="pl-s"><span class="pl-pds">'</span>Wavelength (Angstrom)<span class="pl-pds">'</span></span>, <span class="pl-smi">labelpad</span><span class="pl-k">=</span><span class="pl-c1">20</span>)
+fig.ylabel(<span class="pl-s"><span class="pl-pds">'</span>Normalized Flux<span class="pl-pds">'</span></span>, <span class="pl-smi">labelpad</span><span class="pl-k">=</span><span class="pl-c1">20</span>)
+fig.xlim(<span class="pl-c1">5885</span>, <span class="pl-c1">5905</span>)
+fig.legend(<span class="pl-smi">frameon</span><span class="pl-k">=</span><span class="pl-c1">False</span>)
+
+<span class="pl-c"># Now we need to define some parameter functions to pass to Profile.Fit()</span>
+<span class="pl-c"># with our user function</span>
+<span class="pl-k">from</span> slipy.Algorithms.Functions <span class="pl-k">import</span> InvertedGaussian
+
+<span class="pl-c"># best guess for amplitude of gaussian</span>
+<span class="pl-k">def</span> <span class="pl-en">A</span>(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>):
+    <span class="pl-k">return</span> <span class="pl-c1">1</span> <span class="pl-k">-</span> y.min().value
+
+<span class="pl-c"># best guess for mean of gaussian</span>
+<span class="pl-k">def</span> <span class="pl-en">mu</span>(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>):
+    <span class="pl-k">return</span> x[ y.argmin() ].value
+
+<span class="pl-c"># best guess for standard deviation of gaussian</span>
+<span class="pl-k">def</span> <span class="pl-en">sigma</span>(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>):
+    <span class="pl-k">return</span> y.std().value
+
+<span class="pl-c"># call the Profile.Fit() function with our user defined parameterization</span>
+line <span class="pl-k">=</span> Profile.Fit(fig, <span class="pl-smi">function</span><span class="pl-k">=</span>InvertedGaussian, <span class="pl-smi">params</span><span class="pl-k">=</span>[A, mu, sigma])
+
+<span class="pl-c"># Please select four points identifying the spectral line.</span>
+<span class="pl-c"># Outer points mark the domain of the line.</span>
+<span class="pl-c"># Inner points mark the sample of the line to fit.</span>
+<span class="pl-c"># Press &lt;Return&gt; after making your selections ...</span>
+
+<span class="pl-c"># now `line` is a Spectrum object generated by evaluating the </span>
+<span class="pl-c"># `InvertedGaussian` function on the larger domain selected by the</span>
+<span class="pl-c"># user with coefficients optimized using Profile.Fit().</span>
+<span class="pl-c"># You might use it to deblend this inner line with the overlapping ones.</span>
+
+<span class="pl-c"># save the figure ...</span>
+fig.tight_layout()
+fig.xoffset(<span class="pl-c1">False</span>)
+fig.refresh()
+fig.save(<span class="pl-s"><span class="pl-pds">'</span>HD332329.png<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><img src="Figures/Profile-Fit.png" alt="example"></p>
+
+<p><strong>Figure 2:</strong> The above figure was generated by running the above code 
+snippet.</p>
+</li>
+</ul>
+
+<p><a name="ExtractLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>Extract</strong> ( <em>splot</em>, <em>kernel</em> = Gaussian, **<em>kwargs</em>):</p>
+
+<p>Select locations in the <em>splot</em> figure, expected to be of type SPlot.
+Exactly four points should be selected. These are used to extract a 
+line profile from the spectrum plotted in the splot figure. The inner
+section is used for the line, and the outer intervals are used to model
+the continuum; these, respectively, are both returned as Spectrum objects.
+The gap is jumped using 1D interpolation (scipy...interp1d). In order
+to get a smooth continuum and error estimates, this function uses
+non-parametric kernel regression (a.k.a. kernel smoothing) to fit a
+curve through the data marked as continuum. Be default, the kernel
+function is the Gaussian. The user can actually use a different, user
+defined kernel function, but it's template must match that of
+SLiPy.Algorithms.Functions.Gaussian. See the SLiPy.Algorithms.KernelFit
+module to better understand how this happens. The <em>bandwidth</em> is actually
+the standard deviation in the Gaussian. It is a length scale that defines
+how influencial data is at a particular distance. The default bandwidth
+will almost definitely be too large (resulting in a largely flat result
+at the average of the data points). As the bandwidth decreases to smaller
+than the resolution of the data, you will essentially being performing
+linear interpolation (no smoothing). You want to choose a length that is
+larger than the small scale variation in the noise, but smaller than the 
+larger scale variation in the overall continuum level.</p>
+
+<p>The <em>rms</em> can optionally be computed between the continuum data and the 
+curve fit to it. This rms value is used to scale the error profile 
+that is returned for the line extracted. Explicitely, the error for a
+line extraction is <code>error_spectrum = continuum_rms * I_0 / I</code> where
+<em>I</em> is the line data and <em>I_0</em> is the interpolated continuum over the 
+gap.</p>
+
+<p>From the documentation of scipy.interpolate...interp1d: <em>kind</em> specifies the 
+kind of interpolation as a string ('linear', 'nearest', 'zero', 'slinear', 
+'quadratic', 'cubic') where 'slinear', 'quadratic' and 'cubic' refer to a 
+spline interpolation of first, second,  or third order respectively;  or as 
+an integer specifying the order of the spline interpolator to use.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>kind</em></td>
+<td>'cubic'</td>
+<td>given to scipy...interp1d for continuum</td>
+</tr>
+<tr>
+<td><em>bandwidth</em></td>
+<td>0.1 * u.nm</td>
+<td>for kernel, user should provide this!</td>
+</tr>
+<tr>
+<td><em>rms</em></td>
+<td>False</td>
+<td>return an error estimate for the line</td>
+</tr>
+</tbody>
+</table>
+
+<p><br>
+<strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># drawing from the previous example, but using HD200723 instead.</span>
+
+line, continuum, rms <span class="pl-k">=</span> Profile.Extract(fig, <span class="pl-smi">bandwidth</span><span class="pl-k">=</span>u.Angstrom<span class="pl-k">/</span><span class="pl-c1">15</span>, <span class="pl-smi">rms</span><span class="pl-k">=</span><span class="pl-c1">True</span>)
+
+<span class="pl-c"># Please select four points identifying the spectral line.</span>
+<span class="pl-c"># Outer intervals sample the continuum.</span>
+<span class="pl-c"># Center interval contains the line.</span>
+<span class="pl-c"># Press &lt;Return&gt; after making your selections ...</span></pre></div>
+
+<p><img src="Figures/Profile-Extract.png" alt="example"></p>
+
+<p><strong>Figure 3:</strong> The above figure was generated by running the above code 
+snippet.</p>
 </li>
 </ul>
 
@@ -1848,33 +2121,24 @@ further reduced via Elodie's pipeline with the following options.</p>
 <p><br>
 <strong>Example:</strong></p>
 
-<div class="highlight highlight-python"><pre><span class="pl-c"># all files in the archive for Altair (file name is first element in pair)</span>
-files <span class="pl-k">=</span> [ x[<span class="pl-c1">0</span>] <span class="pl-k">for</span> x <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD187642<span class="pl-pds">'</span></span>] ]
+<div class="highlight highlight-python"><pre><span class="pl-c"># continuing from the previous example ...</span>
+
+<span class="pl-c"># all files in the archive for Altair (file name is first element in pair)</span>
+files <span class="pl-k">=</span> [ entry[<span class="pl-c1">0</span>] <span class="pl-k">for</span> entry <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD187642<span class="pl-pds">'</span></span>] ]
 
 <span class="pl-c"># download files to current directory, resample spectrum to wavelengths</span>
 <span class="pl-c"># between 5850 and 5950 with a resolution of 0.01 Angstroms per pixel</span>
 Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample</span><span class="pl-k">=</span>(<span class="pl-c1">5850</span>, <span class="pl-c1">5950</span>, <span class="pl-c1">0.01</span>) )</pre></div>
 </li>
 </ul>
-        </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/gLENTNER/SLiPy/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/gLENTNER/SLiPy/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">SLiPy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
 
-          <p class="repo-owner"><a href="https://github.com/gLENTNER/SLiPy"></a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</p>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-          <p><b>Notice:</b> The formatting has been altered by gLENTNER.</p>
-        </aside>
-      </div>
-    </div>
+    </section>
 
             <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -1889,3 +2153,4 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
 
   </body>
 </html>
+
