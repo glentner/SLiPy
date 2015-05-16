@@ -831,6 +831,12 @@ Profile fitting tasks for spectra.
 	*I* is the line data and *I_0* is the interpolated continuum over the 
 	gap.
 	
+	From the documentation of scipy.interpolate...interp1d: *kind* specifies the 
+	kind of interpolation as a string ('linear', 'nearest', 'zero', 'slinear', 
+	'quadratic', 'cubic') where 'slinear', 'quadratic' and 'cubic' refer to a 
+	spline interpolation of first, second,  or third order respectively;  or as 
+	an integer specifying the order of the spline interpolator to use.
+	
     | Options      | Defaults   | Descriptions                            |
     |--------------|------------|-----------------------------------------|
     | *kind*       | 'cubic'    | given to scipy...interp1d for continuum |
