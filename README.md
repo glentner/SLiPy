@@ -789,6 +789,8 @@ Profile fitting tasks for spectra.
 	
 	# save the figure ...
 	fig.tight_layout()
+	fig.xoffset(False)
+	fig.refresh()
 	fig.save('HD332329.png')
 	```
 	
