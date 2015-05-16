@@ -22,6 +22,8 @@ These should be specific to the 'Attribute' being pointed to.
 from sys import version_info, argv, exit
 from urllib.request import urlopen
 
+from astropy import units as u
+
 from .. import SlipyError
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
@@ -194,7 +196,7 @@ def Distance( identifier, **kwargs ):
 		else:
 			print( '{0:.2f}'.format( query() ) )
 
-	else: return query()
+	else: return query() * u.pc
 
 def Sptype(identifier, **kwargs):
 	"""
