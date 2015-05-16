@@ -117,38 +117,37 @@ def GetData( *files, **kwargs ):
 		raise FitsError('Failed to construct spectrum.')
 
 def Header( filename, keyword = None, **kwargs ):
-	"""
-	Retrieve `keyword` from FITS header in `filename`. If not provided a
+    """
+    Retrieve `keyword` from FITS header in `filename`. If not provided a
     keyword, the entire header object is returned.
-	"""
-	try:
+    """
+    try:
 
-		options = Options( kwargs,
-			{
-				'is_main' : False # reserved for calls from Main()
-			})
+        options = Options( kwargs,
+            {
+                'is_main' : False # reserved for calls from Main()
+            })
 
-		is_main = options('is_main')
+        is_main = options('is_main')
 
-		with pyfits.open(filename) as hdulist:
+        with pyfits.open(filename) as hdulist:
             header = hdulist[0].header
-            if keyword:
-                header = header[keyword]
+            if keyword: header = header[keyword]
 
-		if is_main:
-			print( header )
-			return
+        if is_main:
+            print( header )
+            return
 
-		else: 
+        else: 
             return header
 
-	except OptionsError as err:
-		print(' --> OptionsError:', err)
-		raise FitsError('Failed keyword assignment in Header().')
+    except OptionsError as err:
+        print(' --> OptionsError:', err)
+        raise FitsError('Failed keyword assignment in Header().')
 
-	except KeyError as key:
-		raise FitsError('Header element `{}` was not accessible '
-			'from `{}`'.format(keyword, filename))
+    except KeyError as key:
+        raise FitsError('Header element `{}` was not accessible '
+        'from `{}`'.format(keyword, filename))
 
 def Search( *files, **kwargs ):
 	"""
