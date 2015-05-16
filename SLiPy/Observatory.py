@@ -18,14 +18,14 @@ class Observatory:
         'instantiated on its own.')
 
 class OHP(Observatory):
-	"""
-	The Observatoire de Haute-Provence, France.
-	"""
-	def __init__(self):
-		self.name      = 'Observatoire de Haute-Provence'
-		self.longitude = 356.28667 * u.degree # West
-		self.latitude  = 43.9308334 * u.degree # North
-		self.altitude  = 650 * u.meter
+    """
+    The Observatoire de Haute-Provence, France.
+    """
+    def __init__(self):
+        self.name      = 'Observatoire de Haute-Provence'
+        self.longitude = 356.28667 * u.degree # West
+        self.latitude  = 43.9308334 * u.degree # North
+        self.altitude  = 650 * u.meter
         self.timezone  = 1 * u.hourangle
 
 
