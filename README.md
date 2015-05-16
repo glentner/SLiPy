@@ -802,7 +802,7 @@ Profile fitting tasks for spectra.
 <a name=ExtractLoc></a>
 - **Extract** ( *splot*, *kernel* = Gaussian, \*\**kwargs*):
 
-    Select locations in the `splot` figure, expected to be of type SPlot.
+    Select locations in the *splot* figure, expected to be of type SPlot.
     Exactly four points should be selected. These are used to extract a 
     line profile from the spectrum plotted in the splot figure. The inner
     section is used for the line, and the outer intervals are used to model
