@@ -687,8 +687,8 @@ Profile fitting tasks for spectra.
     will be created for you. If the user gives an alternative *function*, 
     *params* (parameters) must be provided. *params* is to be the first guess, 
     *p0* given to scipy...curve_fit; the user can provide them expicitely, 
-    or in the form of functions with the templates `f(xarray, yarray)`
-    where `xarray` and `yarray` are the `wave` and `data` arrays extracted
+    or in the form of functions with the templates `f(x, y)`
+    where *x* and *y* are the *wave* and *data* arrays (respectively) extracted
     between the two inner points selected by the user.
 	
 	*InvertedLorentian* is defined in SLiPy.Algorithms.Functions. The user does
