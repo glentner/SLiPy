@@ -214,7 +214,6 @@ class SPlot:
         """
         pyplot.draw()
         """
-        self.__build()
         plt.draw()
 
     def draw(self, picker = False):
@@ -260,6 +259,12 @@ class SPlot:
         Toggle the offset for the y axis
         """
         plt.gca().get_yaxis().get_major_formatter().set_useOffset(value)
+    
+    def tight_layout(self):
+        """
+        pyplot.tight_layout()
+        """
+        plt.tight_layout()
 
     def overlay(self, *splots ):
         """
