@@ -742,30 +742,30 @@ Profile fitting tasks for spectra.
 	MJD     = Fits.Header(sci_file, 'MJD-OBS')
 	EXPTIME = Fits.Header(sci_file, 'EXPTIME')
 	JD      = MJD + 2400000.5 + 0.5 * EXPTIME / 86400
-	 
-	 # attach to spectrum object as members
-	 spectrum.ra  = ra
-	 spectrum.dec = dec
-	 spectrum.jd  = JD * u.day
-	 
-	 # Elodie as at the Observatoire de Haute-Provence, France (OHP).
-	 Velocity.HelioCorrect( Observatory.OHP(), spectrum )
-	 
-	 # create figure
-	 fig = Plot.SPlot(spectrum, label='HD332329', marker='k-')
-	 fig.xlabel('Wavelength (Angstrom)', labelpad=20)
-	 fig.ylabel('Normalized Flux', labelpad=20)
-	 fig.xlim(5885, 5905)
-	 fig.legend(frameon=False)
-	 
-	 # Now we need to define some parameter functions to pass to Profile.Fit()
-	 # with our user function
-	 from slipy.Algorithms.Functions import InvertedGaussian
-	 
-	 # best guess for amplitude of gaussian
-	 def A(x, y):
-	 	return 1 - y.min().value
-		
+ 
+	# attach to spectrum object as members
+	spectrum.ra  = ra
+	spectrum.dec = dec
+	spectrum.jd  = JD * u.day
+ 
+	# Elodie is at the Observatoire de Haute-Provence, France (OHP).
+	Velocity.HelioCorrect( Observatory.OHP(), spectrum )
+ 
+	# create figure
+	fig = Plot.SPlot(spectrum, label='HD332329', marker='k-')
+	fig.xlabel('Wavelength (Angstrom)', labelpad=20)
+	fig.ylabel('Normalized Flux', labelpad=20)
+	fig.xlim(5885, 5905)
+	fig.legend(frameon=False)
+	
+	# Now we need to define some parameter functions to pass to Profile.Fit()
+	# with our user function
+	from slipy.Algorithms.Functions import InvertedGaussian
+ 
+	# best guess for amplitude of gaussian
+	def A(x, y):
+		return 1 - y.min().value
+	
 	# best guess for mean of gaussian
 	def mu(x, y):
 		return x[ y.argmin() ].value
