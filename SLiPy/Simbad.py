@@ -163,7 +163,7 @@ def Position( identifier, **kwargs ):
 		else:
 			print('{0:.2f} {1:.2f}'.format(*query()))
 
-	else: return query()
+	else: return [ pos * u.degree for pos in query() ]
 
 def Distance( identifier, **kwargs ):
 	"""
