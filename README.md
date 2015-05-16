@@ -1027,6 +1027,8 @@ Methods for data retrieval from the Elodie Archive.
     <br>
     **Example:**
     ```python
+	# continuing from the previous example ...
+	
     # all files in the archive for Altair (file name is first element in pair)
     files = [ x[0] for x in archive.data['HD187642'] ]
 
