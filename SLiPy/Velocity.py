@@ -107,77 +107,86 @@ def IrafInput( *files, **kwargs):
 		'IrafInput().')
 
 def HelioCorrect( obs, *spectra, **kwargs ):
-	"""
-	Perform heliocentric velocity corrects on `spectra` based on
-	`obs`ervatory information (longitude, latitude, altitude) and the
-	member attributes, ra (right ascension), dec (declination), and jd
-	(julian date) from the `spectra`.
-	"""
-	try:
+    """
+    Perform heliocentric velocity corrects on `spectra` based on
+    `obs`ervatory information (longitude, latitude, altitude) and the
+    member attributes, ra (right ascension), dec (declination), and jd
+    (julian date) from the `spectra`.
+    """
+    try:
 
-		# define function parameters
-		options = Options( kwargs,
-			{
-				'verbose': False # display messages, progress
-			})
+        # define function parameters
+        options = Options( kwargs,
+            {
+                'verbose': False # display messages, progress
+            })
 
-		# assign parameters
-		verbose = options('verbose')
+        # assign parameters
+        verbose = options('verbose')
 
-		# check `obs` type
-		if not issubclass( type(obs), Observatory):
-			raise VelocityError('HelioCorrect() expects its first argument to '
-			'be derived from the Observatory class.')
-		elif ( not hasattr(obs, 'latitude') or not hasattr(obs,'longitude') or
-			not hasattr(obs, 'altitude') ):
-			raise VelocityError('HelioCorrect expects `obs`ervatory to have '
-			'all three: latitude, longitude, and altitude attributes.')
+        # check `obs` type
+        if not issubclass( type(obs), Observatory):
+            raise VelocityError('HelioCorrect() expects its first argument to '
+            'be derived from the Observatory class.')
+        elif ( not hasattr(obs, 'latitude') or not hasattr(obs,'longitude') or
+            not hasattr(obs, 'altitude') ):
+            raise VelocityError('HelioCorrect expects `obs`ervatory to have '
+            'all three: latitude, longitude, and altitude attributes.')
 
-		# check `spectra` arguments
-		for a, spectrum in enumerate(spectra):
-			if type(spectrum) is not Spectrum:
-				raise VelocityError('HelioCorrect() expects all `spectrum` '
-				'arguments to be of type Spectrum.')
-			if not spectrum.ra or not spectrum.dec or not spectrum.jd:
-				raise VelocityError('Spectrum {} lacks one or all of `ra`, '
-				'`dec`, and `jd`; from HelioCorrect().'.format(a))
+        # check `spectra` arguments
+        for a, spectrum in enumerate(spectra):
+            if type(spectrum) is not Spectrum:
+                raise VelocityError('HelioCorrect() expects all `spectrum` '
+                'arguments to be of type Spectrum.')
+            if not spectrum.ra or not spectrum.dec or not spectrum.jd:
+                raise VelocityError('Spectrum {} lacks one or all of `ra`, '
+                '`dec`, and `jd`; from HelioCorrect().'.format(a))
+            if not hasattr(spectrum.ra, 'unit'):
+                raise VelocityError('From HelioCorrect(), in spectrum {}, '
+                '`ra` doesn`t have units!'.format(a))
+            if not hasattr(spectrum.dec, 'unit'):
+                raise VelocityError('From HelioCorrect(), in spectrum {}, '
+                '`dec` doesn`t have units!'.format(a))
+            if not hasattr(spectrum.jd, 'unit'):
+                raise VelocityError('From HelioCorrect(), in spectrum {}, '
+                '`jd` doesn`t have units!'.format(a))
 
-		if verbose:
-				display = Monitor()
-				print(' Running HelioCorrect on {} spectra ...'
-				.format(len(spectra)))
+        if verbose:
+            display = Monitor()
+            print(' Running HelioCorrect on {} spectra ...'
+                .format(len(spectra)))
 
-		for a, spectrum in enumerate(spectra):
-			
+        for a, spectrum in enumerate(spectra):
+
             # heliocentric velocity correction in km s^-1,
             # the `astrolibpy...helcorr` function doesn't work with units,
             # so I convert to appropriate units and strip them.
-			hcorr = helcorr(
+            hcorr = helcorr(
                     obs.longitude.to(u.degree).value, 
                     obs.latitude.to(u.degree).value, 
                     obs.altitude.to(u.meter).value,
                     spectrum.ra.to(u.hourangle).value, 
                     spectrum.dec.to(u.degree).value, 
-                    spectrum.jd.to(u.second).value
+                    spectrum.jd.to(u.day).value
                 )[1] * u.Unit('km s-1')
-                
-			# apply correction to wave vector, 
+
+            # apply correction to wave vector, 
             # del[Lambda] / Lambda = del[V] / c
-			spectrum.wave -= spectrum.wave * hcorr / c
-            
-			# show progress if desired
-			if verbose: display.progress(a, len(spectra))
+            spectrum.wave -= spectrum.wave * hcorr / c
 
-		# finalize progress bar (erase)
-		if verbose: display.complete()
+            # show progress if desired
+            if verbose: display.progress(a, len(spectra))
 
-	except OptionsError as err:
-		print(' --> OptionsError:', err)
-		raise VelocityError('Failed to perform HelioCorrect() task.')
+        # finalize progress bar (erase)
+        if verbose: display.complete()
 
-	except DisplayError as err:
-		print(' --> DisplayError:', err)
-		raise VelocityError('Exception from Display.Monitor in HelioCorrect().')
+    except OptionsError as err:
+        print(' --> OptionsError:', err)
+        raise VelocityError('Failed to perform HelioCorrect() task.')
+
+    except DisplayError as err:
+        print(' --> DisplayError:', err)
+        raise VelocityError('Exception from Display.Monitor in HelioCorrect().')
 
 
 def BaryCorrect( obs, *spectra, **kwargs ):

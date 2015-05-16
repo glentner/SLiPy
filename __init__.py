@@ -21,3 +21,6 @@ from .SLiPy import Fits, Simbad, Correlate, Telluric, Velocity, \
 
 # elevate `Spectrum` to the package level
 from .SLiPy.DataType import Spectrum
+
+# roll in astropy.units to SLiPy
+from astropy import units as Units

@@ -48,6 +48,7 @@ to import:
 |[**Velocity**](#VelocityLoc)|[HelioCorrect](#HelioCorrectLoc), [BaryCorrect](#BaryCorrectLoc), [IrafInput](#IrafInputLoc),  |
 |[**Observatory**](#ObservatoryLoc)|[...](#OHPLoc), |
 |[**Plot**](#PlotLoc)|[SPlot](#SPlotLoc), [Iterate](#IterateLoc), |
+|[**Profile**](#ProfileLoc)|[Select](#SelectLoc), [Fit](#FitLoc), [Extract](#ExtractLoc),   |
 |[**Montage**](#MontageLoc)|[SolveGrid](#MSolveGridLoc), [Mosaic](#MMosaicLoc), [SubField](#MSubFieldLoc), [Field](#MFieldLoc), |
 
 <br>
@@ -428,7 +429,7 @@ Radial velocity corrections for 1D spectra.
     Perform heliocentric velocity corrects on *spectra* based on
     *observatory* parameters (*longitude*, *latitude*, *altitude*) and the
     member attributes, *ra* (right ascension), *dec* (declination), and *jd*
-    (julian date) from the *spectra*.
+    (julian date) from the *spectra*. These should all have units.
 
     | Options    | Defaults        | Descriptions               |
     |------------|-----------------|----------------------------|
@@ -440,7 +441,7 @@ Radial velocity corrections for 1D spectra.
     Perform barycentric velocity corrects on *spectra* based on
     *observatory* parameters (*longitude*, *latitude*, *altitude*) and the
     member attributes, *ra* (right ascension), *dec* (declination), and *jd*
-    (julian date) from the *spectra*.
+    (julian date) from the *spectra*. These should all have units.
 
     | Options    | Defaults        | Descriptions               |
     |------------|-----------------|----------------------------|
@@ -473,14 +474,15 @@ to this module. I welcome suggestions.
 <a name=OHPLoc></a>
 ```Python
 class OHP(Observatory):
-	"""
-	The Observatoire de Haute-Provence, France.
-	"""
-	def __init__(self):
-		self.name      = 'Observatoire de Haute-Provence'
-		self.latitude  = 43.9308334 # degrees N
-		self.longitude = 356.28667  # degrees W
-		self.altitude  = 650        # meters
+    """
+    The Observatoire de Haute-Provence, France.
+    """
+    def __init__(self):
+        self.name      = 'Observatoire de Haute-Provence'
+        self.longitude = 356.28667  * u.degree # West
+        self.latitude  = 43.9308334 * u.degree # North
+        self.altitude  = 650        * u.meter
+        self.timezone  = 1          * u.hourangle
 ```
 
 There are currently 69 defined observatories:
@@ -608,6 +610,12 @@ at one spectra to another. One can also *overlay* spectra.
     - *overlay*( \**splots* ):
 
         Given one or more *splots*, *overlay* the figures.
+		
+	- *markers*( \**args* ):
+	
+		Reassign the values for the `marker`s in the figure. The number
+		of arguments must equal the number of spectra in the figure. This
+		starts out as one, but will increase for ever call to SPlot.overlay().
 
     - *restore*( ):
 
@@ -649,6 +657,146 @@ at one spectra to another. One can also *overlay* spectra.
     ```
 
 
+<br>
+##<a name=ProfileLoc></a>[Profile](SLiPy/Profile.py)
+
+Profile fitting tasks for spectra.
+
+<a name=SelectLoc></a>
+- **Select** ( *splot* ):
+
+    Select points from the *splot*. This should be of type SPlot 
+    (or it can optionally be a Spectrum type, for which a SPlot will be
+    created). The splot will be rendered and the user clicks on the 
+    figure. When finished, return to the terminal prompt. A dictionary is
+    returned with two entries, *wave* and *data*, representing the x-y
+    locations selected by the user. This can always be retrieved later by
+    accessing the module member *Profile.selected*.
+	
+	While the user makes selections, temporary markers appear on the figure
+	indicating the data point that was just selected. If a mark does not 
+	appear, try moving the curser slightly and trying again. Even if the line
+	goes through that point, there might not actually be data there.
+
+<a name=FitLoc></a>
+- **Fit** ( *splot*, *function* = InvertedLorentzian, *params* = None)
+
+    Given a *splot* of type Plot.SPlot, the user selects four points on the 
+    spectrum and a parameterized function is fit (an inverted Lorentzian by
+    default). Optionally, *splot* can be of type spectrum and a basic SPlot
+    will be created for you. If the user gives an alternative *function*, 
+    *params* (parameters) must be provided. *params* is to be the first guess, 
+    *p0* given to scipy...curve_fit; the user can provide them expicitely, 
+    or in the form of functions with the templates `f(xarray, yarray)`
+    where `xarray` and `yarray` are the `wave` and `data` arrays extracted
+    between the two inner points selected by the user.
+	
+	*InvertedLorentian* is defined in SLiPy.Algorithms.Functions. The user does
+	not need to provide *params* for the default behavior.
+	
+	**Example:**
+	```python
+	# In this example I use an alternative function simply as an illustration.
+	# I show the download, calibration, and fitting procedure involved ...
+	
+	from slipy import Fits, Simbad, Plot, Velocity, Telluric, Profile
+	from slipy import Spectrum, Observatory, SlipyError, Units as u
+	from slipy.Data import Elodie
+	
+	# See the Data package for more information about this section
+	archive   = Elodie.Archive()
+	
+	# the one with highest S/N
+	sci_file  = archive.files['HD332329']
+	
+	# all files are in `data` member, first column is the file name 
+	cal_files = [ entry[0] for entry in archive.data['HD087901A'] ]
+	
+	Elodie.Download(
+			sci_file,                      # file name to download
+			resample = (5850, 5950, 0.01), # pipeline command
+			outpath = 'Science-Files'      # put under this directory
+		)
+		
+	Elodie.Download(
+			*cal_files,                    # HD087901A is Regulus
+			resample = (5850, 5950, 0.01), # pipeline command
+			outpath = 'Calibration-Files'  # put under this directory
+		)
+	
+	sci_file  = Fits.Find('Science-Files')     # one file
+	cal_files = Fits.Find('Calibration-Files') # six files
+	
+	spectrum = Spectrum(sci_file)       # create spectrum object
+	regulus  = Fits.GetData(*cal_files) # return list of spectrum objects
+	
+	# remove absorption due to Earth's atmosphere
+	Telluric.Correct(spectrum, *regulus)
+	
+	# attach `ra`, `dec` and `jd` to spectrum for HelioCorrect()
+	# Simbad returns values in units of decimal degrees
+	ra, dec = Simbad.Position('HD332329')
+	
+	# elements returned from Fits.Header() are unitless. Here we take
+	# the MJD at beginning of exposure and solve for JD at middle of exposure
+	 MJD     = Fits.Header(sci_file, 'MJD-OBS')
+	 EXPTIME = Fits.Header(sci_file, 'EXPTIME')
+	 JD      = MJD + 2400000.5 + 0.5 * EXPTIME / 86400
+	 
+	 # attach to spectrum object as members
+	 spectrum.ra  = ra
+	 spectrum.dec = dec
+	 spectrum.jd  = JD * u.day
+	 
+	 # Elodie as at the Observatoire de Haute-Provence, France (OHP).
+	 Velocity.HelioCorrect( Observatory.OHP(), spectrum )
+	 
+	 # create figure
+	 fig = Plot.SPlot(spectrum, label='HD332329', marker='k-')
+	 fig.xlabel('Wavelength (Angstrom)', labelpad=20)
+	 fig.ylabel('Normalized Flux', labelpad=20)
+	 fig.xlim(5885, 5905)
+	 fig.legend(frameon=False)
+	 
+	 # Now we need to define some parameter functions to pass to Profile.Fit()
+	 # with our user function
+	 from slipy.Algorithms.Functions import InvertedGaussian
+	 
+	 # best guess for amplitude of gaussian
+	 def A(x, y):
+	 	return 1 - y.min().value
+		
+	# best guess for mean of gaussian
+	def mu(x, y):
+		return x[ y.argmin() ].value
+		
+	# best guess for standard deviation of gaussian
+	def sigma(x, y):
+		return y.std().value
+	
+	# call the Profile.Fit() function with our user defined parameterization
+	line = Profile.Fit(fig, function=InvertedGaussian, params=[A, mu, sigma])
+	
+	# Please select four points identifying the spectral line.
+	# Outer points mark the domain of the line.
+	# Inner points mark the sample of the line to fit.
+	# Press <Return> after making your selections ...
+	
+	# now `line` is a Spectrum object generated by evaluating the 
+	# `InvertedGaussian` function on the larger domain selected by the
+	# user with coefficients optimized using Profile.Fit().
+	# You might use it to deblend this inner line with the overlapping ones.
+	
+	# save the figure ...
+	fig.tight_layout()
+	fig.save('HD332329.png')
+	```
+	
+    ![example](Figures/Profile-Fit.png)
+
+    **Figure 2:** The above figure was generated by running the above code 
+	snippet.
+	
 <br>
 ##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
 

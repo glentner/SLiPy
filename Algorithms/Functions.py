@@ -9,14 +9,34 @@ import numpy as np
 
 # No FunctionsError implimented yet
 
-def Gaussian(x, A = 1, mu = 0, sigma = 1):
+def Gaussian(x, *params):
     """
-    The Gaussian function.
+    The Gaussian function. The function template has `*params` to work with
+    scipy...curve_fit; the user *must* specify `A, mu, sigma = params`.
     """
+    A, mu, sigma = params
     return A * np.exp( -0.5 * (x - mu)**2 / sigma**2 )
     
-def InvertedGaussian(x, A = 1, mu = 0, sigma = 1):
+def InvertedGaussian(x, *params):
     """
-    An inverted Gaussian function (i.e., 1 - Guassian()).
+    An inverted Gaussian function (i.e., 1 - Guassian()). The function 
+    template has `*params` to work with scipy...curve_fit; the user *must* 
+    specify `A, mu, sigma = params`.
     """
-    return 1 - Gaussian(x, A, mu, sigma)
+    return 1 - Gaussian(x, *params)
+    
+def Lorentzian(x, *params):
+    """
+    The Lorentzian function.
+    """
+    x0, gamma = params
+    return (0.5 * gamma / np.pi) / ( (x - x0)**2 + (0.5 * gamma)**2 )
+    
+def InvertedLorentzian(x, *params):
+    """
+    An inverted Lorentzian (i.e, A - Lorentzian()).
+    """
+    A, x0, gamma = params
+    
+    return A - Lorentzian(x, *params[1:])
+    

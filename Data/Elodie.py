@@ -7,10 +7,13 @@ Methods for data retrieval from the Elodie Archive.
 
 import os, shutil, numpy as np
 from urllib.request import urlopen
+
+from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
 
-class ElodieError(Exception):
+
+class ElodieError(SlipyError):
 	"""
 	Exception specific to Elodie module.
 	"""
@@ -21,10 +24,10 @@ class Archive:
     Import and parse ascii catalog of Elodie archive files. The complete
     archive is stored in the member `data`. It's organized in a dictionary
     by unique target names. Each target has a list of pairs consisting of the
-	name of the file and the signal to noise for that spectrum. The reduced
-	archive, accessed with `files`, contains identified `HD`, `HR`, `BD`, `GC`,
-	and `GJ` objects, choosing the file pertaining to the spectra with the
-	highest signal-to-noise ratio available.
+    name of the file and the signal to noise for that spectrum. The reduced
+    archive, accessed with `files`, contains identified `HD`, `HR`, `BD`, `GC`,
+    and `GJ` objects, choosing the file pertaining to the spectra with the
+    highest signal-to-noise ratio available.
     """
     def __init__(self, **kwargs):
         try:
@@ -74,16 +77,18 @@ class Archive:
         # members
         self.data  = targets
         self.files = files
-        self.names = [ '-'.join('-'.join(x.split(':')).split('/')) + '.fits'
-            for x in files.values() ]
+        self.names = [
+                '-'.join('-'.join(x.split(':')).split('/')) + '.fits'
+                for x in files.values()
+            ]
 
 def Script(filename, pipeline=''):
-	"""
-	Construct url script for Elodie archive given `filename` and optionally
-	`pipeline` instructions (e.g., `&z=wrs|fca[1,nor]`).
-	"""
-	return ''.join(['http://atlas.obs-hp.fr/elodie/E.cgi?&c=i&o=',
-		filename, pipeline, '&a=mime:application/x-fits'])
+    """
+    Construct url script for Elodie archive given `filename` and optionally
+    `pipeline` instructions (e.g., `&z=wrs|fca[1,nor]`).
+    """
+    return ''.join(['http://atlas.obs-hp.fr/elodie/E.cgi?&c=i&o=',
+        filename, pipeline, '&a=mime:application/x-fits'])
 
 def Download( *files, **kwargs ):
     """
@@ -147,7 +152,7 @@ def Download( *files, **kwargs ):
         pipeline += '|fca[1,nor]'
 
     if resample:
-		resample = [ str(x) for x in resample ]
+        resample = [ str(x) for x in resample ]
         pipeline += '|wrs[1,' + ','.join(resample) + ']'
 
     if verbose:
@@ -163,7 +168,7 @@ def Download( *files, **kwargs ):
         # download file
         with urlopen( Script(spectra, pipeline) ) as response, open(
             os.path.join(outpath, names[a]), 'wb') as outfile:
-                shutil.copyfileobj(response, outfile)
+            shutil.copyfileobj(response, outfile)
 
     if verbose:
         display.complete()
