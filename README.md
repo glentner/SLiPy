@@ -725,7 +725,7 @@ Profile fitting tasks for spectra.
 		)
 	
 	sci_file  = Fits.Find('Science-Files')[0]  # one file
-	cal_files = Fits.Find('Calibration-Files') # six files
+	cal_files = Fits.Find('Calibration-Files') # six files (list)
 	
 	spectrum = Spectrum(sci_file)       # create spectrum object
 	regulus  = Fits.GetData(*cal_files) # return list of spectrum objects
