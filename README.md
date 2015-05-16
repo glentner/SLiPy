@@ -704,7 +704,7 @@ Profile fitting tasks for spectra.
 	from slipy.Data import Elodie
 	
 	# See the Data package for more information about this section
-	archive   = Elodie.Archive()
+	archive = Elodie.Archive()
 	
 	# the one with highest S/N
 	sci_file  = archive.files['HD332329']
@@ -739,9 +739,9 @@ Profile fitting tasks for spectra.
 	
 	# elements returned from Fits.Header() are unitless. Here we take
 	# the MJD at beginning of exposure and solve for JD at middle of exposure
-	 MJD     = Fits.Header(sci_file, 'MJD-OBS')
-	 EXPTIME = Fits.Header(sci_file, 'EXPTIME')
-	 JD      = MJD + 2400000.5 + 0.5 * EXPTIME / 86400
+	MJD     = Fits.Header(sci_file, 'MJD-OBS')
+	EXPTIME = Fits.Header(sci_file, 'EXPTIME')
+	JD      = MJD + 2400000.5 + 0.5 * EXPTIME / 86400
 	 
 	 # attach to spectrum object as members
 	 spectrum.ra  = ra
