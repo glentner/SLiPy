@@ -197,6 +197,8 @@ def Extract(splot, kernel = Gaussian, **kwargs):
         raise ProfileError('Unrecognized option given to Extract()!')
         
     print(' Please select four points identifying the spectral line.')
+    print(' Outer intervals sample the continuum.')
+    print(' Center interval contains the line.')
 
     # make selections
     selected = Select(splot)
