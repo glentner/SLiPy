@@ -7,6 +7,7 @@ Radial velocity corrections for 1D spectra.
 
 from astropy.io import fits as pyfits
 from astropy.constants import c
+from astropy import units as u
 
 from .. import SlipyError
 from ..astrolibpy.astrolib.helcorr import helcorr
@@ -147,11 +148,23 @@ def HelioCorrect( obs, *spectra, **kwargs ):
 				.format(len(spectra)))
 
 		for a, spectrum in enumerate(spectra):
-			# heliocentric velocity correction in km s^-1
-			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
-				spectrum.ra, spectrum.dec, spectrum.jd)[1]
-			# apply correction to wave vector
-			spectrum.wave -= spectrum.wave * 1000 * hcorr / c.value
+			
+            # heliocentric velocity correction in km s^-1,
+            # the `astrolibpy...helcorr` function doesn't work with units,
+            # so I convert to appropriate units and strip them.
+			hcorr = helcorr(
+                    obs.longitude.to(u.degree).value, 
+                    obs.latitude.to(u.degree).value, 
+                    obs.altitude.to(u.meter).value,
+                    spectrum.ra.to(u.hourangle).value, 
+                    spectrum.dec.to(u.degree).value, 
+                    spectrum.jd.to(u.second).value
+                )[1] * u.Unit('km s-1')
+                
+			# apply correction to wave vector, 
+            # del[Lambda] / Lambda = del[V] / c
+			spectrum.wave -= spectrum.wave * hcorr / c
+            
 			# show progress if desired
 			if verbose: display.progress(a, len(spectra))
 
@@ -209,11 +222,23 @@ def BaryCorrect( obs, *spectra, **kwargs ):
 				.format(len(spectra)))
 
 		for a, spectrum in enumerate(spectra):
-			# heliocentric velocity correction in km s^-1
-			hcorr = helcorr(obs.longitude, obs.latitude, obs.altitude,
-				spectrum.ra, spectrum.dec, spectrum.jd)[0]
-			# apply correction to wave vector
-			spectrum.wave -= spectrum.wave * 1000 * hcorr / c.value
+			
+            # heliocentric velocity correction in km s^-1,
+            # the `astrolibpy...helcorr` function doesn't work with units,
+            # so I convert to appropriate units and strip them.
+			hcorr = helcorr(
+                    obs.longitude.to(u.degree).value, 
+                    obs.latitude.to(u.degree).value, 
+                    obs.altitude.to(u.meter).value,
+                    spectrum.ra.to(u.hourangle).value, 
+                    spectrum.dec.to(u.degree).value, 
+                    spectrum.jd.to(u.second).value
+                )[0] * u.Unit('km s-1')
+                
+			# apply correction to wave vector, 
+            # del[Lambda] / Lambda = del[V] / c
+			spectrum.wave -= spectrum.wave * hcorr / c
+
 			# show progress if desired
 			if verbose: display.progress(a, len(spectra))
 
