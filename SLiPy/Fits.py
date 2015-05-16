@@ -116,9 +116,10 @@ def GetData( *files, **kwargs ):
 		print(' --> DataTypeError:', err)
 		raise FitsError('Failed to construct spectrum.')
 
-def Header( filename, keyword, **kwargs ):
+def Header( filename, keyword = None, **kwargs ):
 	"""
-	Retrieve `keyword` from FITS header in `filename`.
+	Retrieve `keyword` from FITS header in `filename`. If not provided a
+    keyword, the entire header object is returned.
 	"""
 	try:
 
@@ -130,13 +131,16 @@ def Header( filename, keyword, **kwargs ):
 		is_main = options('is_main')
 
 		with pyfits.open(filename) as hdulist:
-			element = hdulist[0].header[keyword]
+            header = hdulist[0].header
+            if keyword:
+                header = header[keyword]
 
 		if is_main:
-			print( element )
+			print( header )
 			return
 
-		else: return element
+		else: 
+            return header
 
 	except OptionsError as err:
 		print(' --> OptionsError:', err)
