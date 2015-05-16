@@ -1030,7 +1030,7 @@ Methods for data retrieval from the Elodie Archive.
 	# continuing from the previous example ...
 	
     # all files in the archive for Altair (file name is first element in pair)
-    files = [ x[0] for x in archive.data['HD187642'] ]
+    files = [ entry[0] for entry in archive.data['HD187642'] ]
 
     # download files to current directory, resample spectrum to wavelengths
     # between 5850 and 5950 with a resolution of 0.01 Angstroms per pixel
