@@ -169,10 +169,11 @@ of the data such as distance, spectral type, etc.
     |*yunits*    | 'ergs cm-2 s-1' | units of the data                        |
 
 <a name=HeaderLoc></a>
-- **Header** ( *filename*, *keyword*, \*\**kwargs*):
+- **Header** ( *filename*, *keyword* = None, \*\**kwargs*):
 
     Retrieve *keyword* from FITS header in file *filename*.
-    Return type depends on what is returned.
+    Return type depends on what is returned. If no keyword is
+	given, the entire header object is returned.
 
 <a name=SearchLoc></a>
 - **Search** ( \**files*, \*\**kwargs*):
