@@ -941,9 +941,9 @@ mosaic each *site* before combining them into a *master* mosaic.
 
     | Survey  | Bands                                                   |
     |---------|---------------------------------------------------------|
-    | 'DSS'   | 'J', 'H', 'K'                                           |
+    | '2MASS' | 'J', 'H', 'K'                                           |
     | 'SDSS'  | 'U', 'G', 'R', 'I', 'Z'                                 |
-    | '2MASS' | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
+    | 'DSS'   | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
 
     <br>
     The user should execute the following available methods in this order:
@@ -1024,9 +1024,9 @@ mosaic each *site* before combining them into a *master* mosaic.
 
     | Survey  | Bands                                                   |
     |---------|---------------------------------------------------------|
-    | 'DSS'   | 'J', 'H', 'K'                                           |
+    | '2MASS' | 'J', 'H', 'K'                                           |
     | 'SDSS'  | 'U', 'G', 'R', 'I', 'Z'                                 |
-    | '2MASS' | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
+    | 'DSS'   | 'DSS1B', 'DSS1R', 'DSS2B', 'DSS2R', 'DSS2IR', 'Quick-V' |
 
     <br>
     All the member functions are the same name as in *SubField*, but now with
