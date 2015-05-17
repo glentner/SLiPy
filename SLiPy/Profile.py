@@ -261,3 +261,10 @@ def Extract(splot, kernel = Gaussian, **kwargs):
     line_rms = cont_rms * np.sqrt(cont_inside / yl.value)
     
     return line, continuum, line_rms
+
+def Remove(spectrum, line, continuum, **kwargs):
+    """
+    Given a continuum normalized `spectrum`, that contains a `line` profile
+    that has been modelled with it's surrounding `continuum`, remove the
+    line from the spectrum by division.
+    """
