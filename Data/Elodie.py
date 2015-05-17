@@ -108,11 +108,11 @@ def Download( *files, **kwargs ):
         # function parameter defaults
         options = Options( kwargs,
             {
-                'verbose'  : True   , # display messages, progress
-                'resample' : (0,0,0), # no default
-                'normalize': True   , # continuum normalization
-                'outpath'  : './'   , # directory for downloaded files
-                'names'    : []       # alternative output names for `files`
+                'verbose'  : True      , # display messages, progress
+                'resample' : (-1,-1,-1), # handled by Elodie
+                'normalize': True      , # continuum normalization
+                'outpath'  : './'      , # directory for downloaded files
+                'names'    : []          # alternative output names for `files`
             })
 
         # function parameter assignments

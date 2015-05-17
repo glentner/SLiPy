@@ -80,9 +80,12 @@ And your ready to go!
 
 SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
-for every module derived from *Exception*. The naming convention is for a
-module's exception to be named after the module with the addition of the word
-*Error*. So the *Fits* module will throw a *FitsError*.
+for every module, all derived from a common *SlipyError*. The naming convention 
+is for a module's exception to be named after the module with the addition of 
+the word *Error*. So the *Fits* module will throw a *FitsError*. These are meant
+to handle erros internally. The user need not worry about these in an 
+interactive session; however, inside of scipts you might catch *SlipyError*.
+For finer control, catch the individual exceptions (e.g., *Fits.FitsError*).
 
 ## Contribute
 

@@ -111,7 +111,8 @@ class KernelFit1D():
             if hasattr(x, 'unit'):
                 weights = weights.decompose()
             
-            y[a] = np.sum(weights * self.y) / np.sum(weights)
+            args = np.where(np.isfinite(self.y))
+            y[a] = np.sum(weights[args] * self.y[args]) / np.sum(weights[args])
         
         return y
         
