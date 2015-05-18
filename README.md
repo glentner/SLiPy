@@ -410,13 +410,6 @@ Objects for representing astronomical data. Currently, this includes the
 	[  1.           7.33333333  13.66666667  20.        ] pix
 	
 	```
-	
-	Either access a 
-	single pixel or a range (e.g., Spectrum[3], Spectrum[4:-5]).
-	Alternatively, given a Quantity, return an estimate of the value of 
-	the spectrum at that location (e.g., Spectrum[588.89 * u.nm]) will 
-	return a linear approximation at that wavelength location.
-
 
     | Options   | Defaults       | Descriptions                   |
     |-----------|----------------|--------------------------------|
