@@ -317,6 +317,18 @@ class Spectrum:
         elif len(args) == 3:
 
             low, high, npix = args
+            
+            if not hasattr(low, 'unit'):
+                low *= self.wave.unit
+            
+            if not hasattr(high, 'unit'):
+                high *= self.wave.unit
+            
+            if hasattr(npix, 'unit'):
+                if npix.unit != u.pixel:
+                    raise SpectrumError('`npix` can only have units of `pixels` '
+                    'if given units!')
+                npix = npix.value
 
             # check function arguments
             if low < self.wave[0] or high > self.wave[-1]:
@@ -410,6 +422,12 @@ class Spectrum:
         Printing a Spectrum displays the two arrays.
         """
         return str(self.data) + '\n' + str(self.wave)
+    
+    def __repr__(self):
+        """
+        Same as __str__.
+        """
+        return str(self)
     
     def __len__(self):
         """
@@ -722,7 +740,7 @@ class Spectrum:
             
             if len(self) != len(other):
                 raise SpectrumError('The left shift operator requires the '
-                'length of both spectrum object be the same!')
+                'length of both spectrum objects be the same!')
             
             result = self.copy()
             result.wave = result.wave - other.wave
@@ -781,7 +799,7 @@ class Spectrum:
             
             if len(self) != len(other):
                 raise SpectrumError('The right shift operator requires the '
-                'length of both spectrum object be the same!')
+                'length of both spectrum objects be the same!')
             
             result = self.copy()
             result.wave = result.wave + other.wave
@@ -1229,3 +1247,96 @@ class Spectrum:
             result.data.value) * u.dimensionless_unscaled
         
         return result
+    
+    def __getitem__(self, key):
+        """
+        Indexing and Slicing. 
+        
+        If the `key` is a slice object, extract
+        the segment of the spectrum that falls within that wavelength
+        regime (units assumed to be that of the `wave` array!)
+        
+        Otherwise, return a linear approximation of the spectrum at that
+        wavelength. If the spectrum has pixel units, and given an integer,
+        the exact value is returned. If a decimal is given, return an 
+        approximation between the two pixels. If the wavelength array is
+        in units of length, assume the units of the array if none are given.
+        """
+        
+        if isinstance(key, slice):
+            
+            start, stop, step = key.start, key.stop, key.step
+            
+            if not start:
+                start = self.wave[0].value
+            
+            if not stop:
+                stop = self.wave[-1].value
+            
+            if start < self.wave[0].value:
+                raise SpectrumError('{} is outside the domain of the '
+                'spectrum: {} -> {}'.format(start * self.wave.unit,
+                self.wave[0], self.wave[-1]))
+            
+            if stop > self.wave[-1].value:
+                raise SpectrumError('{} is outside the domain of the '
+                'spectrum: {} -> {}'.format(stop * self.wave.unit,
+                self.wave[0], self.wave[-1]))
+            
+            if step and (step > self.wave[-1].value - self.wave[0].value):
+                raise SpectrumError('The specified `step` in the slice '
+                '({}) is greater than the domain of the spectrum: '
+                '{} -> {}'.format(step * self.wave.unit, self.wave[0],
+                self.wave[-1]))
+            
+            if not step:
+                
+                # we are just going to return a segment of the spectrum
+                # on its own pixel space
+                
+                return Spectrum(
+                    
+                    self.data.value[np.where(np.logical_and(
+                            
+                            self.wave >= start * self.wave.unit,
+                            self.wave <= stop  * self.wave.unit
+                        
+                        ))] * self.data.unit,
+                    
+                    self.wave.value[np.where(np.logical_and(
+                        
+                            self.wave >= start * self.wave.unit,
+                            self.wave <= stop  * self.wave.unit
+                        
+                        ))] * self.wave.unit
+                    )
+            
+            else:
+                
+                # we are going to resample the spectrum on the following
+                # wavelength domain
+                
+                result = self.copy()
+                result.resample(start, stop, int(1 + (stop - start) / step))
+                
+                return result
+            
+        else:
+            
+            # return the exact value, or a linear approximation of the 
+            # spectrum at the location of `key`
+            
+            if hasattr(key, 'unit'):
+                key = key.to(self.wave.unit).value
+            
+            if key < self.wave[0].value:
+                raise SpectrumError('{} is outside the domain of the '
+                'spectrum: {} -> {}'.format(key * self.wave.unit,
+                self.wave[0], self.wave[-1]))
+            
+            if key > self.wave[-1].value:
+                raise SpectrumError('{} is outside the domain of the '
+                'spectrum: {} -> {}'.format(key * self.wave.unit,
+                self.wave[0], self.wave[-1]))
+            
+            return interp1d(self.wave, self.data)(key) * self.data.unit

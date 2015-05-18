@@ -265,25 +265,26 @@ Objects for representing astronomical data. Currently, this includes the
 	arrays will the units be properly applied. Otherwise, the RHS units will
 	be ignored. Considering the physical context within which it makes sense
 	to apply these operations to spectra this is justified; the data will have
-	`dimensionless` units in all likelihood. For scalar operations, units are
-	implied to be the same as the data for addition/subtraction.
+	`dimensionless` units in all likelihood. For scalar addition and 
+	subtraction, if no units are given the units are implied to be the same as
+	that of the data.
 
 	The comparison operations ( >, <, >=, <=, ==, !=, &, ^, | ) are defined
-	to return a binary Spectrum of True and False values. The same convention
-	applies as above. Either the LHS or RHS must be contained within the other,
-	and the LHS is compared on the overlapping regions. Data outside this 
-	overlapping region is returned as False.
+	to return a binary Spectrum of dimensionless 1's and 0's. The same 
+	convention applies as above. Either the LHS or RHS must be contained within 
+	the other, and the LHS is compared on the overlapping regions. Data outside 
+	this overlapping region is returned as False.
 
-	The shift operations (>> and <<) are defined to mean a shift in the
-	spectrum. The addition and subtraction operate on the `data`. These
-	operations apply to the `wave` array. `Spectrum << 2 * u.Angstrom` say
+	The shift operations ('>>' and '<<') are defined to mean a shift in the
+	spectrum. The addition and subtraction operate on the *data*. These
+	operations apply to the *wave* array. `Spectrum << 2 * u.Angstrom` says
 	to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
 	number, the wavelength units are implied. Also, one can shift a spectrum
-	by another spectrum (e.g., `spectrumA >> spectrumB`), where the `wave` 
+	by another spectrum (e.g., `spectrumA >> spectrumB`), where the *wave* 
 	arrays would be operated on only. In these cases, they should
 	have the same number of pixels! Finally, to get a variable shift across
 	the spectrum without creating a whole spectrum with junk data, you can
-	shift using a numpy array (also of equal length). I no units are detected,
+	shift using a numpy array (also of equal length). If no units are detected,
 	the wavelength units will be implied.
 
 	Other operations:
@@ -301,7 +302,47 @@ Objects for representing astronomical data. Currently, this includes the
 	str(Spectrum) 
 	``` 
 
-	Also, you can access the spectrum data via indexing. Either access a 
+	Also, you can access the spectrum data via indexing. There are multiple
+	ways this can work. In the following examples `s` is a spectrum object.
+
+	```python
+	>>> from slipy import Spectrum
+	>>> from astropy import units as u
+	>>> import numpy as np
+	>>>
+	>>> x = np.linspace(-2*np.pi, 2*np.pi, 25) # -2pi < x < 2pi
+	>>> y = np.sin( np.pi * x ) / (np.pi * x)   # sinc(pi x)
+	>>> s = Spectrum(y)
+	
+	>>> # display spectrum
+	>>> s
+	[ 0.03935584 -0.05252603  0.00796074  0.0597675  -0.07945138  0.0079739
+	  0.11489588 -0.17056501  0.00798048  0.82957457  0.82957457  0.00798048
+	 -0.17056501  0.11489588  0.0079739  -0.07945138  0.0597675   0.00796074
+	 -0.05252603  0.03935584]
+	[  1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.  13.  14.  15.
+	  16.  17.  18.  19.  20.] pix
+	
+	>>> # where no units are given, they are implied to be that of the
+	>>> # wavelength array.
+	>>> s[2]
+	<Quantity -0.05252602557386098>
+	
+	>>> # that was not the second element of the spectrum, but the signal at
+	>>> # the location `2 pix`. Accessing the spectrum where it is not defined
+	>>> # returns a linear approximation to it between the two pixels that
+	>>> # surround it.
+	>>> s[2.5]
+	<Quantity -0.02228264076183217>
+	
+	>>> # units are an acceptable access method, so long as they can be
+	>>> # converted (e.g., u.nm -> u.Angstrom)
+	>>> s[2.5 * u.pixel]
+	<Quantity -0.02228264076183217>
+	
+	```
+	
+	Either access a 
 	single pixel or a range (e.g., Spectrum[3], Spectrum[4:-5]).
 	Alternatively, given a Quantity, return an estimate of the value of 
 	the spectrum at that location (e.g., Spectrum[588.89 * u.nm]) will 
