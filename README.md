@@ -412,6 +412,7 @@ Objects for representing astronomical data. Currently, this includes the
 	```
 	
 	<br>
+	
     | Options   | Defaults       | Descriptions                   |
     |-----------|----------------|--------------------------------|
     | *wavecal* | True           | fit wavelength vector to data  |
