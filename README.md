@@ -366,10 +366,10 @@ Objects for representing astronomical data. Currently, this includes the
 	[ 15.  16.  17.  18.  19.  20.] pix
 	
 	In [16]: # With a `step` size the behavior is entirely different. \
-	   ....: # We are asking instead to `resample` the spectrum. The \
+	   ....: # We are asking instead to `resample` the spectrum. The  \
 	   ....: # `step` value acts as a desired resolution. As with the \
-	   ....: # accessor methods, the gaps are filled with linear \
-	   ....: # approximations
+	   ....: # accessor methods, the gaps are filled with linear      \
+	   ....: # approximations \
 	   ....: s[1:3:0.5]
 	Out[16]: 
 	[ 0.03935584 -0.00658509 -0.05252603 -0.02228264  0.00796074]
@@ -399,8 +399,8 @@ Objects for representing astronomical data. Currently, this includes the
 	  16.  17.  18.  19.  20.] pix
 	
 	In [20]: # The boundaries take precident however, and not every resolution \
-	   ....: # makes physical sense with the requested resolution. When        \
-	   ....: # no edges are specified, they default to the current boundaries. \
+	   ....: # makes physical sense with the requested bondaries. When no      \
+	   ....: # edges are specified, they default to the current boundaries.    \
 	   ....: # There are only 19 pixels, so we won't get what you might think  \
 	   ....: # the expected behavior is. Here, 5 doesn't go evenly into the    \
 	   ....: # existing domain, so we simply choose the closest thing.
