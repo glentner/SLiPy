@@ -305,7 +305,7 @@ Objects for representing astronomical data. Currently, this includes the
 	Also, you can access the spectrum data via indexing. There are multiple
 	ways this can work. In the following examples `s` is a spectrum object.
 
-	```ipython
+	```python
 	In [1]: from slipy import Spectrum \
 	   ...: from astropy import units as u \
 	   ...: import numpy as np
@@ -342,6 +342,51 @@ Objects for representing astronomical data. Currently, this includes the
 	   ....: s[2.5 * u.pixel]
 	Out[11]: <Quantity -0.02228264076183217>
 	
+	In [12]: # Slicing the spectrum works in two ways. If no `step` is given \
+	   ....: # than the `start` and `stop` act as a domain for which we \
+	   ....: # want to truncate the spectrum outside of. \
+	   ....: s[2:4]
+	Out[12]: 
+	[-0.05252603  0.00796074  0.0597675 ]
+	[ 2.  3.  4.] pix
+	
+	In [13]: s[2.5:4.5]
+	Out[13]: 
+	[ 0.00796074  0.0597675 ]
+	[ 3.  4.] pix
+	
+	In [14]: s[:4]
+	Out[14]: 
+	[ 0.03935584 -0.05252603  0.00796074  0.0597675 ]
+	[ 1.  2.  3.  4.] pix
+	
+	In [15]: s[15:]
+	Out[15]: 
+	[ 0.0079739  -0.07945138  0.0597675   0.00796074 -0.05252603  0.03935584]
+	[ 15.  16.  17.  18.  19.  20.] pix
+	
+	In [16]: # With a `step` size the behavior is entirely different. \
+	   ....: # We are asking instead to `resample` the spectrum. The \
+	   ....: # `step` value acts as a desired resolution. As with the \
+	   ....: # accessor methods, the gaps are filled with linear \
+	   ....: # approximations
+	   ....: s[1:3:0.5]
+	Out[16]: 
+	[ 0.03935584 -0.00658509 -0.05252603 -0.02228264  0.00796074]
+	[ 1.   1.5  2.   2.5  3. ] pix
+	
+	In [17]: s = s[:4] \
+	   ....: s
+	Out[17]: 
+	[ 0.03935584 -0.05252603  0.00796074  0.0597675 ]
+	[ 1.  2.  3.  4.] pix
+
+	In [18]: # Without a `start` and a `stop` we just resample. \
+	   ....: s[::0.5]
+	Out[18]: 
+	[ 0.03935584 -0.00658509 -0.05252603 -0.02228264  0.00796074  0.03386412
+	  0.0597675 ]
+	[ 1.   1.5  2.   2.5  3.   3.5  4. ] pix
 	```
 	
 	Either access a 
