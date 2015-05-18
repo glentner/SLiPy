@@ -433,6 +433,12 @@ Objects for representing astronomical data. Currently, this includes the
         respectively. The third argument should be the number of elements
         (pixels) for the new domain. Think numpy.linspace(). *kind* is passed
 		to scipy...interp1d.
+		
+		```python
+		spectrumA.resample(spectrumB)
+		
+		spectrumA.resample( 585 * u.nm, 5950 * u.Angstrom, 1e4 + 1 )
+		```
 
 	- *insert* ( *other*, *kind* = 'linear'):
 
