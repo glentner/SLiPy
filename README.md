@@ -244,12 +244,12 @@ Objects for representing astronomical data. Currently, this includes the
 	however.
 
 	Units will be imposed for these arrays. When initialized from a file,
-	the default units are `Angstrom` and `dimensionless_unscaled` for the
+	the default units are *Angstrom* and *dimensionless_unscaled* for the
 	wavelength and data arrays respectively. Alternatives can be applied
-	by providing the keyword arguments `xunits` and `yunits`. If 
-	initialized via an array-like object, `dimensionless` will
+	by providing the keyword arguments *xunits* and *yunits*. If 
+	initialized via an array-like object, *dimensionless_unscaled* will
 	only be applied if no units are detected. If no wavelength array is
-	provided, the generated wavelength array will have `pixel` units.
+	provided, the generated wavelength array will have *pixel* units.
 	Units are again only applied if none are detected for the given array.
 
 	Addition, subtraction, multiplication, and division (including in-place 
