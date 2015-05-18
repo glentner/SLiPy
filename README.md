@@ -40,8 +40,8 @@ to import:
 
 | SLiPy/ | Functions/Classes |
 |---------|-------------------|
-|[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**Spectrum**](#SpectrumLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
+|[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
 |[**Simbad**](#SimbadLoc)|[Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
 |[**Correlate**](#CorrelateLoc)|[XCorr](#XCorrLoc), |
 |[**Telluric**](#TelluricLoc)|[Correct](#CorrectLoc), |
