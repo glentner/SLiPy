@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
-from . import Fits, DataType
+from . import Fits, Spectrum
 
 mpl.rcParams['figure.facecolor'] = 'w'
 plt.ion()
@@ -54,7 +54,7 @@ class SPlot:
             self.txargs   = []
             self.txkwargs = []
 
-            if type(spectrum) is not DataType.Spectrum:
+            if type(spectrum) is not Spectrum.Spectrum:
                 raise PlotError('Splot expects type Fits.Spectra!')
 
             # data in `list` allows for overplotting

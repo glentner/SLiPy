@@ -13,7 +13,7 @@ from .. import SlipyError
 from ..Framework.Command import Parse, CommandError
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
-from .DataType import Spectrum, DataTypeError
+from .Spectrum import Spectrum, SpectrumError
 from .Simbad import Position, Distance, Sptype, IDList, SimbadError
 
 class FitsError(SlipyError):
@@ -112,8 +112,8 @@ def GetData( *files, **kwargs ):
 		print(' --> OptionsError:', err)
 		raise FitsError('Data retrieval failure.')
 
-	except DataTypeError as err:
-		print(' --> DataTypeError:', err)
+	except SpectrumError as err:
+		print(' --> SpectrumError:', err)
 		raise FitsError('Failed to construct spectrum.')
 
 def Header( filename, keyword = None, **kwargs ):

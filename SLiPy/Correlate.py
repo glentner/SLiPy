@@ -7,7 +7,7 @@ Correlate - Module of correlation functions for astronomical data.
 import numpy as np
 
 from .. import SlipyError
-from .DataType import Spectrum, DataTypeError
+from .Spectrum import Spectrum, SpectrumError
 from ..Framework.Options import Options, OptionsError
 
 class CorrelateError(SlipyError):

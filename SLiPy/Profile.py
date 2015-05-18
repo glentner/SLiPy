@@ -15,7 +15,7 @@ from matplotlib.lines import Line2D
 from astropy import units as u
 
 from .. import SlipyError
-from .DataType import Spectrum, DataTypeError
+from .Spectrum import Spectrum, SpectrumError
 from .Plot import SPlot, PlotError
 from ..Framework.Options import Options, OptionsError
 
@@ -265,6 +265,7 @@ def Extract(splot, kernel = Gaussian, **kwargs):
 def Remove(spectrum, line, continuum, **kwargs):
     """
     Given a continuum normalized `spectrum`, that contains a `line` profile
-    that has been modelled with it's surrounding `continuum`, remove the
+    that has been modeled with it's surrounding `continuum`, remove the
     line from the spectrum by division.
     """
+    

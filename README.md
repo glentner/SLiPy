@@ -41,7 +41,7 @@ to import:
 | SLiPy/ | Functions/Classes |
 |---------|-------------------|
 |[**Fits**](#FitsLoc)|[Find](#FindLoc), [RFind](#RFindLoc), [GetData](#GetDataLoc), [Header](#HeaderLoc), [Search](#SearchLoc), [PositionSort](#PositionSortLoc), |
-|[**DataType**](#DataTypeLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
+|[**Spectrum**](#SpectrumLoc)|[WaveVector](#WaveVectorLoc), [Spectrum](#SpectrumLoc), |
 |[**Simbad**](#SimbadLoc)|[Position](#PositionLoc), [Distance](#DistanceLoc), [Sptype](#SptypeLoc), [IDList](#IDListLoc), |
 |[**Correlate**](#CorrelateLoc)|[XCorr](#XCorrLoc), |
 |[**Telluric**](#TelluricLoc)|[Correct](#CorrectLoc), |
@@ -213,7 +213,7 @@ of the data such as distance, spectral type, etc.
 
 
 <br>
-##<a name=DataTypeLoc></a>[DataType](SLiPy/DataType.py)
+##<a name=SpectrumLoc></a>[Spectrum](SLiPy/Spectrum.py)
 
 Objects for representing astronomical data. Currently, this includes the
 *Spectrum* class and it's helper function *WaveVector*.

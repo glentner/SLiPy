@@ -10,7 +10,7 @@ from astropy import units as u
 from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 from .Correlate import Xcorr, CorrelateError
-from .DataType import Spectrum, DataTypeError
+from .Spectrum import Spectrum, SpectrumError
 
 class TelluricError(SlipyError):
 	"""

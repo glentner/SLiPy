@@ -17,10 +17,10 @@ class SlipyError(Exception):
 
 # exposed modules
 from .SLiPy import Fits, Simbad, Correlate, Telluric, Velocity, \
-		Observatory, Montage, Plot, DataType, Measure, Profile
+		Observatory, Montage, Plot, Spectrum, Measure, Profile
 
 # elevate `Spectrum` to the package level
-from .SLiPy.DataType import Spectrum
+from .SLiPy.Spectrum import Spectrum
 
 # roll in astropy.units to SLiPy
 from astropy import units as Units

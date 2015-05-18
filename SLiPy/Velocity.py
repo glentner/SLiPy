@@ -13,7 +13,7 @@ from .. import SlipyError
 from ..astrolibpy.astrolib.helcorr import helcorr
 from .Fits import Find, RFind
 from .Observatory import Observatory
-from .DataType import Spectrum
+from .Spectrum import Spectrum
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Display import Monitor, DisplayError
 

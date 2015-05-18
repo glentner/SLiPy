@@ -11,7 +11,7 @@ from matplotlib.widgets import  RectangleSelector
 from pylab import *
 
 from .Plot import SPlot, PlotError
-from .DataType import Spectrum, DataTypeError
+from .Spectrum import Spectrum, SpectrumError
 
 class MeasureError(Exception):
     '''
@@ -83,7 +83,7 @@ def Deblend(spectrum, **kwargs):
     regions in the `spectrum` and a `line` is fit to and subtracted. The
     original `spectrum` object is modified.
 
-    If `spectrum` is actually a Spectrum object (DataType.Spectrum), a `SPlot`
+    If `spectrum` is actually a Spectrum object (Spectrum.Spectrum), a `SPlot`
     figure is created for it (without a label). Alternatively, a SPlot object
     can be directly given.
     '''
