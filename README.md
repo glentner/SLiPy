@@ -306,13 +306,17 @@ Objects for representing astronomical data. Currently, this includes the
 	ways this can work. In the following examples `s` is a spectrum object.
 
 	```python
-	In [0]: from slipy import Spectrum
-	>>> from astropy import units as u
-	>>> import numpy as np
-	>>>
-	>>> x = np.linspace(-2*np.pi, 2*np.pi, 25) # -2pi < x < 2pi
-	>>> y = np.sin( np.pi * x ) / (np.pi * x)   # sinc(pi x)
-	>>> s = Spectrum(y)
+	In [1]: from slipy import Spectrum
+	
+	In [2]: from astropy import units as u
+	
+	In [3]: import numpy as np
+	
+	In [4]: x = np.linspace(-2*np.pi, 2*np.pi, 25) # -2pi < x < 2pi
+	
+	In [5]: y = np.sin( np.pi * x ) / (np.pi * x)   # sinc(pi x)
+	
+	In [6]: s = Spectrum(y)
 	
 	>>> # display spectrum
 	>>> s
