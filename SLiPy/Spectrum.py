@@ -285,7 +285,8 @@ class Spectrum:
         Otherwise, three arguments are expected. The first and second argument
         should define the lower and upper wavelength value of a domain,
         respectively. The third argument should be the number of elements
-        (pixels) for the new domain. Think numpy.linspace().
+        (pixels) for the new domain. Think numpy.linspace(). `kind` is passed
+        to scipy...interp1d.
         """
 
         # build interpolation function
@@ -389,7 +390,7 @@ class Spectrum:
         """
         Given a Spectrum, `other`, contained within the wavelength domain
         of `self`, replace all pixels in the overlapping region with that
-        of an interpolation built on `other`. `kind` is passed interp1d.
+        of an interpolation built on `other`. `kind` is passed to interp1d.
         """
         if type(other) is not Spectrum:
             raise SpectrumError('Spectrum.insert() expects an argument of '

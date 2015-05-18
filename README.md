@@ -424,18 +424,15 @@ Objects for representing astronomical data. Currently, this includes the
     <br>
     Member functions:
 
-    - *resample* ( \**args*, \*\**kwargs* ):
+    - *resample* ( \**args*, *kind* = 'linear' ):
 
         If given a single argument, it is taken to be a *Spectrum* object,
         and *self* is resampled onto the pixel space of the other spectrum.
         Otherwise, three arguments are expected. The first and second argument
         should define the lower and upper wavelength value of a domain,
         respectively. The third argument should be the number of elements
-        (pixels) for the new domain. Think numpy.linspace().
-
-        | Options | Defaults | Descriptions                         |
-        |---------|----------|--------------------------------------|
-        | *kind*  | 'linear' | passed to scipy.interpolate.interp1d |
+        (pixels) for the new domain. Think numpy.linspace(). *kind* is passed
+		to scipy...interp1d.
 
 	- *insert* ( *other*, *kind* = 'linear'):
 
