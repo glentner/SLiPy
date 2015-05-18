@@ -132,87 +132,6 @@ The above badge is generated using the following snippet
 # Documentation
 
 <br>
-##<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
-
-Manipulate FITS files. Import data into *Spectrum* objects. Filter results
-by right ascension and declination. Grab header elements. Search for attributes
-of the data such as distance, spectral type, etc.
-
-<a name=FindLoc></a>
-- **Find** (*toplevel* = './', *pattern* = '\*.fits'):
-
-    Search for file paths below *toplevel* fitting *pattern*. Returns a list
-    of string values.
-
-<a name=RFindLoc></a>
-- **RFind** (*toplevel* = './', *pattern* = '\*.fits'):
-
-    Recursively search for file paths below *toplevel* fitting *pattern*.
-    Returns a list of string values.
-
-<a name=GetDataLoc></a>
-- **GetData** ( \**files*, \*\**kwargs*):
-
-	Import data from FITS *files*. Returns a list of *Spectrum* objects.
-
-    |Options     | Defaults        | Descriptions
-    |------------|-----------------|------------------------------------------|
-    |*verbose*   | True            | display messages, progress               |
-    |*toplevel*  | ''              | request import from directory *toplevel* |  
-    |*pattern*   | '\*.fits'       | pattern matching with *toplevel*         |
-    |*recursive* | False           | search recursively below *toplevel*      |
-    |*wavecal*   | True            | fit wavelength vector to data            |
-    |*crpix1*    | 'crpix1'        | reference pixel header keyword           |
-    |*crval1*    | 'crval1'        | value at reference pixel                 |
-    |*cdelt1*    | 'cdelt1'        | resolution (delta lambda)                |
-    |*xunits*    | 'Angstrom'      | wavelength units (astropy.units)         |
-    |*yunits*    | 'ergs cm-2 s-1' | units of the data                        |
-
-<a name=HeaderLoc></a>
-- **Header** ( *filename*, *keyword* = None, \*\**kwargs*):
-
-    Retrieve *keyword* from FITS header in file *filename*.
-    Return type depends on what is returned. If no keyword is
-	given, the entire header object is returned.
-
-<a name=SearchLoc></a>
-- **Search** ( \**files*, \*\**kwargs*):
-
-    Extract object names from Fits *files* and use Simbad module
-    to resolve the *attribute* (a required keyword argument)
-    from the SIMBAD astronomical database. Currently available attributes
-    are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
-    results (type depends on the values).
-
-    | Options     | Defaults  | Descriptions                         |
-    |-------------|-----------|--------------------------------------|
-    | *verbose*   | True      | display messages, progress           |
-    | *toplevel*  | None      | search under *toplevel* directory    |
-    | *pattern*   | '\*.fits' | for files under *toplevel*           |
-    | *recursive* | False     | search recusively under *toplevel*   |
-    | *attribute* | None      | attribute to search for (no default) |
-
-<a name=PositionSortLoc></a>
-- **PositionSort** ( *center*, *radius*, \**files*, \*\**kwargs* ):
-
-    Return a list of files from *files* that lie in a *radius* (in
-    decimal degrees) from *center*, based on the *ra* (right ascension) and
-    *dec* (declination).
-
-    | Options   | Defaults | Descriptions                             |
-    |-----------|----------|------------------------------------------|
-    *ra*        | 'pos1'   | header element for right ascension       |
-    *dec*       | 'pos2'   | header element for declination           |
-    *obj*       | 'object' | header element for object id             |
-    *raconvert* | True     | convert decimal hours to decimal degrees |
-    *verbose*   | True     | display messages, progress               |
-    *toplevel*  | None     | *toplevel* directory to look for files   |
-    *recursive* | False    | search below *toplevel* recursively      |
-    *pattern*   |'\*.fits' | glob *pattern* for file search           |
-    *useSimbad* | False    | use *Simbad* instead of header elements  |
-
-
-<br>
 ##<a name=SpectrumLoc></a>[Spectrum](SLiPy/Spectrum.py)
 
 Objects for representing astronomical data. Currently, this includes the
@@ -455,6 +374,87 @@ Objects for representing astronomical data. Currently, this includes the
         Essentially a wrapper to *deepcopy()*. To say SpectrumA = SpectrumB
         implies that SpectrumA *is* SpectrumB. If you want to create a new
         spectrum *equal* to another, say SpectrumA = SpectrumB.copy()
+		
+
+<br>
+##<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
+
+Manipulate FITS files. Import data into *Spectrum* objects. Filter results
+by right ascension and declination. Grab header elements. Search for attributes
+of the data such as distance, spectral type, etc.
+
+<a name=FindLoc></a>
+- **Find** (*toplevel* = './', *pattern* = '\*.fits'):
+
+    Search for file paths below *toplevel* fitting *pattern*. Returns a list
+    of string values.
+
+<a name=RFindLoc></a>
+- **RFind** (*toplevel* = './', *pattern* = '\*.fits'):
+
+    Recursively search for file paths below *toplevel* fitting *pattern*.
+    Returns a list of string values.
+
+<a name=GetDataLoc></a>
+- **GetData** ( \**files*, \*\**kwargs*):
+
+	Import data from FITS *files*. Returns a list of *Spectrum* objects.
+
+    |Options     | Defaults        | Descriptions
+    |------------|-----------------|------------------------------------------|
+    |*verbose*   | True            | display messages, progress               |
+    |*toplevel*  | ''              | request import from directory *toplevel* |  
+    |*pattern*   | '\*.fits'       | pattern matching with *toplevel*         |
+    |*recursive* | False           | search recursively below *toplevel*      |
+    |*wavecal*   | True            | fit wavelength vector to data            |
+    |*crpix1*    | 'crpix1'        | reference pixel header keyword           |
+    |*crval1*    | 'crval1'        | value at reference pixel                 |
+    |*cdelt1*    | 'cdelt1'        | resolution (delta lambda)                |
+    |*xunits*    | 'Angstrom'      | wavelength units (astropy.units)         |
+    |*yunits*    | 'ergs cm-2 s-1' | units of the data                        |
+
+<a name=HeaderLoc></a>
+- **Header** ( *filename*, *keyword* = None, \*\**kwargs*):
+
+    Retrieve *keyword* from FITS header in file *filename*.
+    Return type depends on what is returned. If no keyword is
+	given, the entire header object is returned.
+
+<a name=SearchLoc></a>
+- **Search** ( \**files*, \*\**kwargs*):
+
+    Extract object names from Fits *files* and use Simbad module
+    to resolve the *attribute* (a required keyword argument)
+    from the SIMBAD astronomical database. Currently available attributes
+    are 'Position', 'Distance', 'Sptype', and 'IDList'. Returns a list of
+    results (type depends on the values).
+
+    | Options     | Defaults  | Descriptions                         |
+    |-------------|-----------|--------------------------------------|
+    | *verbose*   | True      | display messages, progress           |
+    | *toplevel*  | None      | search under *toplevel* directory    |
+    | *pattern*   | '\*.fits' | for files under *toplevel*           |
+    | *recursive* | False     | search recusively under *toplevel*   |
+    | *attribute* | None      | attribute to search for (no default) |
+
+<a name=PositionSortLoc></a>
+- **PositionSort** ( *center*, *radius*, \**files*, \*\**kwargs* ):
+
+    Return a list of files from *files* that lie in a *radius* (in
+    decimal degrees) from *center*, based on the *ra* (right ascension) and
+    *dec* (declination).
+
+    | Options   | Defaults | Descriptions                             |
+    |-----------|----------|------------------------------------------|
+    *ra*        | 'pos1'   | header element for right ascension       |
+    *dec*       | 'pos2'   | header element for declination           |
+    *obj*       | 'object' | header element for object id             |
+    *raconvert* | True     | convert decimal hours to decimal degrees |
+    *verbose*   | True     | display messages, progress               |
+    *toplevel*  | None     | *toplevel* directory to look for files   |
+    *recursive* | False    | search below *toplevel* recursively      |
+    *pattern*   |'\*.fits' | glob *pattern* for file search           |
+    *useSimbad* | False    | use *Simbad* instead of header elements  |
 
 
 <br>
