@@ -233,10 +233,20 @@ Objects for representing astronomical data. Currently, this includes the
 
 	There are a few ways to create a Spectrum. If a single string 
 	argument is given, it is taken as a file name and used to read in
-	data from a FITS file. With the keyword argument `wavecal` set as
+	data from a FITS file. With the keyword argument *wavecal* set as
 	True (the default case), elements are read from the header to create
 	a corresponding wavelength array to go with the data.
 
+    | Options   | Defaults       | Descriptions                   |
+    |-----------|----------------|--------------------------------|
+    | *wavecal* | True           | fit wavelength vector to data  |
+    | *crpix1*  | 'crpix1'       | reference pixel header keyword |
+    | *crval1*  | 'crval1'       | value at reference pixel       |
+    | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)      |
+    | *xunits*  | 'Angstrom'     | units for wavelength array     |
+    | *yunits*  | ''             | units for data array           |
+	
+	<br>
 	If an array-like object is given, it is converted to a numpy array and
 	taken as the spectrum data. A wavelength array will be generated that 
 	is simply an index (pixel) count. But if a second argument is provided, 
@@ -410,17 +420,6 @@ Objects for representing astronomical data. Currently, this includes the
 	[  1.           7.33333333  13.66666667  20.        ] pix
 	
 	```
-	
-	<br>
-	
-    | Options   | Defaults       | Descriptions                   |
-    |-----------|----------------|--------------------------------|
-    | *wavecal* | True           | fit wavelength vector to data  |
-    | *crpix1*  | 'crpix1'       | reference pixel header keyword |
-    | *crval1*  | 'crval1'       | value at reference pixel       |
-    | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)      |
-    | *xunits*  | 'Angstrom'     | units for wavelength array     |
-    | *yunits*  | ''             | units for data array           |
 
     <br>
     Member functions:
