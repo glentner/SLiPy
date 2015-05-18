@@ -306,20 +306,19 @@ Objects for representing astronomical data. Currently, this includes the
 	ways this can work. In the following examples `s` is a spectrum object.
 
 	```python
-	In [1]: from slipy import Spectrum
+	In [1]: from slipy import Spectrum \
+	   ...: from astropy import units as u \
+	   ...: import numpy as np
 	
-	In [2]: from astropy import units as u
+	In [2]: x = np.linspace(-2*np.pi, 2*np.pi, 25) # -2pi < x < 2pi
 	
-	In [3]: import numpy as np
+	In [3]: y = np.sin( np.pi * x ) / (np.pi * x)   # sinc(pi x)
 	
-	In [4]: x = np.linspace(-2*np.pi, 2*np.pi, 25) # -2pi < x < 2pi
+	In [4]: s = Spectrum(y)
 	
-	In [5]: y = np.sin( np.pi * x ) / (np.pi * x)   # sinc(pi x)
-	
-	In [6]: s = Spectrum(y)
-	
-	>>> # display spectrum
-	>>> s
+	In [5]: # display spectrum \
+	   ...: s
+	Out[5]:
 	[ 0.03935584 -0.05252603  0.00796074  0.0597675  -0.07945138  0.0079739
 	  0.11489588 -0.17056501  0.00798048  0.82957457  0.82957457  0.00798048
 	 -0.17056501  0.11489588  0.0079739  -0.07945138  0.0597675   0.00796074
@@ -327,22 +326,21 @@ Objects for representing astronomical data. Currently, this includes the
 	[  1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.  13.  14.  15.
 	  16.  17.  18.  19.  20.] pix
 	
-	>>> # where no units are given, they are implied to be that of the
-	>>> # wavelength array.
-	>>> s[2]
-	<Quantity -0.05252602557386098>
+	In [9]: # where no units are given, they are implied. \
+	   ...: s[2]
+	Out[9]: <Quantity -0.05252602557386098>
 	
-	>>> # that was not the second element of the spectrum, but the signal at
-	>>> # the location `2 pix`. Accessing the spectrum where it is not defined
-	>>> # returns a linear approximation to it between the two pixels that
-	>>> # surround it.
-	>>> s[2.5]
-	<Quantity -0.02228264076183217>
+	In [10]: # that was not the second element of the spectrum, but the signal \
+	   ....: # at the location `2 pix`. Accessing the spectrum where it is not \
+	   ....: # defined returns a linear approximation to it between the two \
+	   ....: # pixels that surround it. \
+	   ....: s[2.5]
+	Out[10]: <Quantity -0.02228264076183217>
 	
-	>>> # units are an acceptable access method, so long as they can be
-	>>> # converted (e.g., u.nm -> u.Angstrom)
-	>>> s[2.5 * u.pixel]
-	<Quantity -0.02228264076183217>
+	In [11]: # units are an acceptable access method, so long as they can be \
+	   ....: # converted (e.g., u.nm -> u.Angstrom) \
+	   ....: s[2.5 * u.pixel]
+	Out[11]: <Quantity -0.02228264076183217>
 	
 	```
 	
