@@ -387,6 +387,28 @@ Objects for representing astronomical data. Currently, this includes the
 	[ 0.03935584 -0.00658509 -0.05252603 -0.02228264  0.00796074  0.03386412
 	  0.0597675 ]
 	[ 1.   1.5  2.   2.5  3.   3.5  4. ] pix
+	
+	In [19]: s = Spectrum(y) \
+	   ....: s
+	Out[19]: 
+	[ 0.03935584 -0.05252603  0.00796074  0.0597675  -0.07945138  0.0079739
+	  0.11489588 -0.17056501  0.00798048  0.82957457  0.82957457  0.00798048
+	 -0.17056501  0.11489588  0.0079739  -0.07945138  0.0597675   0.00796074
+	 -0.05252603  0.03935584]
+	[  1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.  13.  14.  15.
+	  16.  17.  18.  19.  20.] pix
+	
+	In [20]: # The boundaries take precident however, and not every resolution \
+	   ....: # makes physical sense with the requested resolution. When        \
+	   ....: # no edges are specified, they default to the current boundaries. \
+	   ....: # There are only 19 pixels, so we won't get what you might think  \
+	   ....: # the expected behavior is. Here, 5 doesn't go evenly into the    \
+	   ....: # existing domain, so we simply choose the closest thing.
+	   ....: s[::5]
+	Out[20]: 
+	[ 0.03935584  0.01974225  0.01974225  0.03935584]
+	[  1.           7.33333333  13.66666667  20.        ] pix
+	
 	```
 	
 	Either access a 
