@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
@@ -74,14 +72,14 @@ to import:</p>
 </thead>
 <tbody>
 <tr>
+<td><a href="#SpectrumLoc"><strong>Spectrum</strong></a></td>
+<td>
+<a href="#WaveVectorLoc">WaveVector</a>, <a href="#SpectrumLoc">Spectrum</a>,</td>
+</tr>
+<tr>
 <td><a href="#FitsLoc"><strong>Fits</strong></a></td>
 <td>
 <a href="#FindLoc">Find</a>, <a href="#RFindLoc">RFind</a>, <a href="#GetDataLoc">GetData</a>, <a href="#HeaderLoc">Header</a>, <a href="#SearchLoc">Search</a>, <a href="#PositionSortLoc">PositionSort</a>,</td>
-</tr>
-<tr>
-<td><a href="#DataTypeLoc"><strong>DataType</strong></a></td>
-<td>
-<a href="#WaveVectorLoc">WaveVector</a>, <a href="#SpectrumLoc">Spectrum</a>,</td>
 </tr>
 <tr>
 <td><a href="#SimbadLoc"><strong>Simbad</strong></a></td>
@@ -221,6 +219,294 @@ this is with a <a href="http://shields.io">shield</a> in your README file.</p>
 
 <h1>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h1>
+
+<p><br></p>
+
+<h2>
+<a id="spectrum" class="anchor" href="#spectrum" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="SpectrumLoc"></a><a href="SLiPy/Spectrum.py">Spectrum</a>
+</h2>
+
+<p>Objects for representing astronomical data. Currently, this includes the
+<em>Spectrum</em> class and it's helper function <em>WaveVector</em>.</p>
+
+<p><a name="WaveVectorLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>WaveVector</strong> ( <em>rpix</em>, <em>rval</em>, <em>delt</em>, <em>npix</em> ):</p>
+
+<p>Construct numpy array of wavelength values where <em>rpix</em> is the reference
+pixel index, <em>rval</em> is the wavelength at reference pixel, <em>delt</em> is the
+resolutions (delta lambda), and <em>npix</em> is the length of desired array.</p>
+</li>
+</ul>
+
+<p><a name="SpectrumLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>Spectrum</strong> ( *<em>args</em>, **<em>kwargs</em> ):</p>
+
+<p>The Spectrum object is a container class for a data array and its
+corresponding wavelength array.</p>
+
+<p>There are a few ways to create a Spectrum. If a single string 
+argument is given, it is taken as a file name and used to read in
+data from a FITS file. With the keyword argument <em>wavecal</em> set as
+True (the default case), elements are read from the header to create
+a corresponding wavelength array to go with the data.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>wavecal</em></td>
+<td>True</td>
+<td>fit wavelength vector to data</td>
+</tr>
+<tr>
+<td><em>crpix1</em></td>
+<td>'crpix1'</td>
+<td>reference pixel header keyword</td>
+</tr>
+<tr>
+<td><em>crval1</em></td>
+<td>'crval1'</td>
+<td>value at reference pixel</td>
+</tr>
+<tr>
+<td><em>cdelt1</em></td>
+<td>'cdelt1'</td>
+<td>resolution (delta lambda)</td>
+</tr>
+<tr>
+<td><em>xunits</em></td>
+<td>'Angstrom'</td>
+<td>units for wavelength array</td>
+</tr>
+<tr>
+<td><em>yunits</em></td>
+<td>''</td>
+<td>units for data array</td>
+</tr>
+</tbody>
+</table>
+
+<p><br>
+If an array-like object is given, it is converted to a numpy array and
+taken as the spectrum data. A wavelength array will be generated that 
+is simply an index (pixel) count. But if a second argument is provided, 
+it will serve as the wavelength array. These must be equal in length 
+however.</p>
+
+<p>Units will be imposed for these arrays. When initialized from a file,
+the default units are <em>Angstrom</em> and <em>dimensionless_unscaled</em> for the
+wavelength and data arrays respectively. Alternatives can be applied
+by providing the keyword arguments <em>xunits</em> and <em>yunits</em>. If 
+initialized via an array-like object, <em>dimensionless_unscaled</em> will
+only be applied if no units are detected. If no wavelength array is
+provided, the generated wavelength array will have <em>pixel</em> units.
+Units are again only applied if none are detected for the given array.</p>
+
+<p>Addition, subtraction, multiplication, and division (including in-place 
+operations, e.g., '+=') are defined for both spectrum on spectrum 
+operations as well as scalar operations. When two spectra are operated on, 
+the LHS spectrum takes precedent. One of the spectra must be contained 
+within the other (i.e., their wavelength domain is either equal to or 
+entirely interior to the other). The outer spectrum is resampled onto the 
+inner spectrum's pixel space and the operation is applied element-wise. 
+To state it briefly, only the affected region of the LHS spectrum is 
+operated on. This makes units dangerous for multiplication and division.
+Only in the case of multiplying/dividing spectra of equivilent wavelength
+arrays will the units be properly applied. Otherwise, the RHS units will
+be ignored. Considering the physical context within which it makes sense
+to apply these operations to spectra this is justified; the data will have
+<code>dimensionless</code> units in all likelihood. For scalar addition and 
+subtraction, if no units are given the units are implied to be the same as
+that of the data.</p>
+
+<p>The comparison operations ( &gt;, &lt;, &gt;=, &lt;=, ==, !=, &amp;, ^, | ) are defined
+to return a binary Spectrum of dimensionless 1's and 0's. The same 
+convention applies as above. Either the LHS or RHS must be contained within 
+the other, and the LHS is compared on the overlapping regions. Data outside 
+this overlapping region is returned as False.</p>
+
+<p>The shift operations ('&gt;&gt;' and '&lt;&lt;') are defined to mean a shift in the
+spectrum. The addition and subtraction operate on the <em>data</em>. These
+operations apply to the <em>wave</em> array. <code>Spectrum &lt;&lt; 2 * u.Angstrom</code> says
+to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
+number, the wavelength units are implied. Also, one can shift a spectrum
+by another spectrum (e.g., <code>spectrumA &gt;&gt; spectrumB</code>), where the <em>wave</em> 
+arrays would be operated on only. In these cases, they should
+have the same number of pixels! Finally, to get a variable shift across
+the spectrum without creating a whole spectrum with junk data, you can
+shift using a numpy array (also of equal length). If no units are detected,
+the wavelength units will be implied.</p>
+
+<p>Other operations:</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># The wavelength domain of A is either equal to or contained by B. </span>
+<span class="pl-c"># Returns True or False</span>
+SpectrumA <span class="pl-k">in</span> SpectrumB </pre></div>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># Returns number of pixels</span>
+<span class="pl-c1">len</span>(Spectrum) </pre></div>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># Calls str() on member arrays, (e.g., print(Spectrum))</span>
+<span class="pl-c1">str</span>(Spectrum) </pre></div>
+
+<p>Also, you can access the spectrum data via "index" notation. The behavior
+is not the same though. See the below interactive demonstration.</p>
+
+<div class="highlight highlight-python"><pre>In [<span class="pl-c1">1</span>]: <span class="pl-k">from</span> slipy <span class="pl-k">import</span> Spectrum \
+   ...: <span class="pl-k">from</span> astropy <span class="pl-k">import</span> units <span class="pl-k">as</span> u \
+   ...: <span class="pl-k">import</span> numpy <span class="pl-k">as</span> np
+
+In [<span class="pl-c1">2</span>]: x <span class="pl-k">=</span> np.linspace(<span class="pl-k">-</span><span class="pl-c1">2</span><span class="pl-k">*</span>np.pi, <span class="pl-c1">2</span><span class="pl-k">*</span>np.pi, <span class="pl-c1">25</span>) <span class="pl-c"># -2pi &lt; x &lt; 2pi</span>
+
+In [<span class="pl-c1">3</span>]: y <span class="pl-k">=</span> np.sin( np.pi <span class="pl-k">*</span> x ) <span class="pl-k">/</span> (np.pi <span class="pl-k">*</span> x)   <span class="pl-c"># sinc(pi x)</span>
+
+In [<span class="pl-c1">4</span>]: s <span class="pl-k">=</span> Spectrum(y)
+
+In [<span class="pl-c1">5</span>]: <span class="pl-c"># display spectrum \</span>
+   ...: s
+Out[<span class="pl-c1">5</span>]:
+[ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0079739</span>
+  <span class="pl-c1">0.11489588</span> <span class="pl-k">-</span><span class="pl-c1">0.17056501</span>  <span class="pl-c1">0.00798048</span>  <span class="pl-c1">0.82957457</span>  <span class="pl-c1">0.82957457</span>  <span class="pl-c1">0.00798048</span>
+ <span class="pl-k">-</span><span class="pl-c1">0.17056501</span>  <span class="pl-c1">0.11489588</span>  <span class="pl-c1">0.0079739</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0597675</span>   <span class="pl-c1">0.00796074</span>
+ <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.03935584</span>]
+[  <span class="pl-c1">1.</span>   <span class="pl-c1">2.</span>   <span class="pl-c1">3.</span>   <span class="pl-c1">4.</span>   <span class="pl-c1">5.</span>   <span class="pl-c1">6.</span>   <span class="pl-c1">7.</span>   <span class="pl-c1">8.</span>   <span class="pl-c1">9.</span>  <span class="pl-c1">10.</span>  <span class="pl-c1">11.</span>  <span class="pl-c1">12.</span>  <span class="pl-c1">13.</span>  <span class="pl-c1">14.</span>  <span class="pl-c1">15.</span>
+  <span class="pl-c1">16.</span>  <span class="pl-c1">17.</span>  <span class="pl-c1">18.</span>  <span class="pl-c1">19.</span>  <span class="pl-c1">20.</span>] pix
+
+In [<span class="pl-c1">9</span>]: <span class="pl-c"># where no units are given, they are implied. \</span>
+   ...: s[<span class="pl-c1">2</span>]
+Out[<span class="pl-c1">9</span>]: <span class="pl-k">&lt;</span>Quantity <span class="pl-k">-</span><span class="pl-c1">0.05252602557386098</span><span class="pl-k">&gt;</span>
+
+In [<span class="pl-c1">10</span>]: <span class="pl-c"># that was not the second element of the spectrum, but the signal \</span>
+   ....: <span class="pl-c"># at the location `2 pix`. Accessing the spectrum where it is not \</span>
+   ....: <span class="pl-c"># defined returns a linear approximation to it between the two \</span>
+   ....: <span class="pl-c"># pixels that surround it. \</span>
+   ....: s[<span class="pl-c1">2.5</span>]
+Out[<span class="pl-c1">10</span>]: <span class="pl-k">&lt;</span>Quantity <span class="pl-k">-</span><span class="pl-c1">0.02228264076183217</span><span class="pl-k">&gt;</span>
+
+In [<span class="pl-c1">11</span>]: <span class="pl-c"># units are an acceptable access method, so long as they can be \</span>
+   ....: <span class="pl-c"># converted (e.g., u.nm -&gt; u.Angstrom) \</span>
+   ....: s[<span class="pl-c1">2.5</span> <span class="pl-k">*</span> u.pixel]
+Out[<span class="pl-c1">11</span>]: <span class="pl-k">&lt;</span>Quantity <span class="pl-k">-</span><span class="pl-c1">0.02228264076183217</span><span class="pl-k">&gt;</span>
+
+In [<span class="pl-c1">12</span>]: <span class="pl-c"># Slicing the spectrum works in two ways. If no `step` is given \</span>
+   ....: <span class="pl-c"># than the `start` and `stop` act as a domain for which we \</span>
+   ....: <span class="pl-c"># want to truncate the spectrum outside of. \</span>
+   ....: s[<span class="pl-c1">2</span>:<span class="pl-c1">4</span>]
+Out[<span class="pl-c1">12</span>]: 
+[<span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
+[ <span class="pl-c1">2.</span>  <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
+
+In [<span class="pl-c1">13</span>]: s[<span class="pl-c1">2.5</span>:<span class="pl-c1">4.5</span>]
+Out[<span class="pl-c1">13</span>]: 
+[ <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
+[ <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
+
+In [<span class="pl-c1">14</span>]: s[:<span class="pl-c1">4</span>]
+Out[<span class="pl-c1">14</span>]: 
+[ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
+[ <span class="pl-c1">1.</span>  <span class="pl-c1">2.</span>  <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
+
+In [<span class="pl-c1">15</span>]: s[<span class="pl-c1">15</span>:]
+Out[<span class="pl-c1">15</span>]: 
+[ <span class="pl-c1">0.0079739</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0597675</span>   <span class="pl-c1">0.00796074</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.03935584</span>]
+[ <span class="pl-c1">15.</span>  <span class="pl-c1">16.</span>  <span class="pl-c1">17.</span>  <span class="pl-c1">18.</span>  <span class="pl-c1">19.</span>  <span class="pl-c1">20.</span>] pix
+
+In [<span class="pl-c1">16</span>]: <span class="pl-c"># With a `step` size the behavior is entirely different. \</span>
+   ....: <span class="pl-c"># We are asking instead to `resample` the spectrum. The  \</span>
+   ....: <span class="pl-c"># `step` value acts as a desired resolution. As with the \</span>
+   ....: <span class="pl-c"># accessor methods, the gaps are filled with linear      \</span>
+   ....: <span class="pl-c"># approximations \</span>
+   ....: s[<span class="pl-c1">1</span>:<span class="pl-c1">3</span>:<span class="pl-c1">0.5</span>]
+Out[<span class="pl-c1">16</span>]: 
+[ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.00658509</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span> <span class="pl-k">-</span><span class="pl-c1">0.02228264</span>  <span class="pl-c1">0.00796074</span>]
+[ <span class="pl-c1">1.</span>   <span class="pl-c1">1.5</span>  <span class="pl-c1">2.</span>   <span class="pl-c1">2.5</span>  <span class="pl-c1">3.</span> ] pix
+
+In [<span class="pl-c1">17</span>]: s <span class="pl-k">=</span> s[:<span class="pl-c1">4</span>] \
+   ....: s
+Out[<span class="pl-c1">17</span>]: 
+[ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
+[ <span class="pl-c1">1.</span>  <span class="pl-c1">2.</span>  <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
+
+In [<span class="pl-c1">18</span>]: <span class="pl-c"># Without a `start` and a `stop` we just resample. \</span>
+   ....: s[::<span class="pl-c1">0.5</span>]
+Out[<span class="pl-c1">18</span>]: 
+[ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.00658509</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span> <span class="pl-k">-</span><span class="pl-c1">0.02228264</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.03386412</span>
+  <span class="pl-c1">0.0597675</span> ]
+[ <span class="pl-c1">1.</span>   <span class="pl-c1">1.5</span>  <span class="pl-c1">2.</span>   <span class="pl-c1">2.5</span>  <span class="pl-c1">3.</span>   <span class="pl-c1">3.5</span>  <span class="pl-c1">4.</span> ] pix
+
+In [<span class="pl-c1">19</span>]: s <span class="pl-k">=</span> Spectrum(y) \
+   ....: s
+Out[<span class="pl-c1">19</span>]: 
+[ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0079739</span>
+  <span class="pl-c1">0.11489588</span> <span class="pl-k">-</span><span class="pl-c1">0.17056501</span>  <span class="pl-c1">0.00798048</span>  <span class="pl-c1">0.82957457</span>  <span class="pl-c1">0.82957457</span>  <span class="pl-c1">0.00798048</span>
+ <span class="pl-k">-</span><span class="pl-c1">0.17056501</span>  <span class="pl-c1">0.11489588</span>  <span class="pl-c1">0.0079739</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0597675</span>   <span class="pl-c1">0.00796074</span>
+ <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.03935584</span>]
+[  <span class="pl-c1">1.</span>   <span class="pl-c1">2.</span>   <span class="pl-c1">3.</span>   <span class="pl-c1">4.</span>   <span class="pl-c1">5.</span>   <span class="pl-c1">6.</span>   <span class="pl-c1">7.</span>   <span class="pl-c1">8.</span>   <span class="pl-c1">9.</span>  <span class="pl-c1">10.</span>  <span class="pl-c1">11.</span>  <span class="pl-c1">12.</span>  <span class="pl-c1">13.</span>  <span class="pl-c1">14.</span>  <span class="pl-c1">15.</span>
+  <span class="pl-c1">16.</span>  <span class="pl-c1">17.</span>  <span class="pl-c1">18.</span>  <span class="pl-c1">19.</span>  <span class="pl-c1">20.</span>] pix
+
+In [<span class="pl-c1">20</span>]: <span class="pl-c"># The boundaries take precident however, and not every resolution \</span>
+   ....: <span class="pl-c"># makes physical sense with the requested boundaries. When no     \</span>
+   ....: <span class="pl-c"># edges are specified, they default to the current boundaries.    \</span>
+   ....: <span class="pl-c"># There are only 19 pixels, so we won't get what you might think  \</span>
+   ....: <span class="pl-c"># the expected behavior is. Here, 5 doesn't go evenly into the    \</span>
+   ....: <span class="pl-c"># existing domain, so we simply choose the closest thing.</span>
+   ....: s[::<span class="pl-c1">5</span>]
+Out[<span class="pl-c1">20</span>]: 
+[ <span class="pl-c1">0.03935584</span>  <span class="pl-c1">0.01974225</span>  <span class="pl-c1">0.01974225</span>  <span class="pl-c1">0.03935584</span>]
+[  <span class="pl-c1">1.</span>           <span class="pl-c1">7.33333333</span>  <span class="pl-c1">13.66666667</span>  <span class="pl-c1">20.</span>        ] pix
+</pre></div>
+
+<p><br>
+Member functions:</p>
+
+<ul>
+<li>
+<p><em>resample</em> ( *<em>args</em>, <em>kind</em> = 'linear' ):</p>
+
+<p>If given a single argument, it is taken to be a <em>Spectrum</em> object,
+and <em>self</em> is resampled onto the pixel space of the other spectrum.
+Otherwise, three arguments are expected. The first and second argument
+should define the lower and upper wavelength value of a domain,
+respectively. The third argument should be the number of elements
+(pixels) for the new domain. Think numpy.linspace(). <em>kind</em> is passed
+to scipy...interp1d.</p>
+
+<div class="highlight highlight-python"><pre>spectrumA.resample(spectrumB, <span class="pl-smi">kind</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>cubic<span class="pl-pds">'</span></span>)
+
+spectrumA.resample( <span class="pl-c1">585</span> <span class="pl-k">*</span> u.nm, <span class="pl-c1">5950</span> <span class="pl-k">*</span> u.Angstrom, <span class="pl-c1">1e4</span> <span class="pl-k">+</span> <span class="pl-c1">1</span> )</pre></div>
+</li>
+<li>
+<p><em>insert</em> ( <em>other</em>, <em>kind</em> = 'linear'):</p>
+
+<p>Given a Spectrum, <em>other</em>, contained within the wavelength domain
+of <em>self</em>, replace all pixels in the overlapping region with that
+of an interpolation built on <em>other</em>. <em>kind</em> is passed to interp1d.</p>
+
+<div class="highlight highlight-python"><pre>spectrumA.insert(spectrumB, <span class="pl-smi">kind</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>quadratic<span class="pl-pds">'</span></span>)</pre></div>
+</li>
+<li>
+<p><em>copy</em> ():</p>
+
+<p>Essentially a wrapper to <em>deepcopy()</em>. To say SpectrumA = SpectrumB
+implies that SpectrumA <em>is</em> SpectrumB. If you want to create a new
+spectrum <em>equal</em> to another, say SpectrumA = SpectrumB.copy()</p>
+</li>
+</ul>
+</li>
+</ul>
 
 <p><br></p>
 
@@ -462,138 +748,6 @@ decimal degrees) from <em>center</em>, based on the <em>ra</em> (right ascension
 </tr>
 </tbody>
 </table>
-</li>
-</ul>
-
-<p><br></p>
-
-<h2>
-<a id="datatype" class="anchor" href="#datatype" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-<a name="DataTypeLoc"></a><a href="SLiPy/DataType.py">DataType</a>
-</h2>
-
-<p>Objects for representing astronomical data. Currently, this includes the
-<em>Spectrum</em> class and it's helper function <em>WaveVector</em>.</p>
-
-<p><a name="WaveVectorLoc"></a></p>
-
-<ul>
-<li>
-<p><strong>WaveVector</strong> ( <em>rpix</em>, <em>rval</em>, <em>delt</em>, <em>npix</em> ):</p>
-
-<p>Construct numpy array of wavelength values where <em>rpix</em> is the reference
-pixel index, <em>rval</em> is the wavelength at reference pixel, <em>delt</em> is the
-resolutions (delta lambda), and <em>npix</em> is the length of desired array.</p>
-</li>
-</ul>
-
-<p><a name="SpectrumLoc"></a></p>
-
-<ul>
-<li>
-<p>class <strong>Spectrum</strong> ( <em>filename</em>, <em>wavelengths</em> = None, **<em>kwargs</em> ):</p>
-
-<p>The <em>Spectrum</em> class is a container for a <em>data</em> array and it's
-corresponding wavelength calibration, <em>wave</em>. These are accessed with
-.data and .wave, respectively. The data is read in from the file,
-<em>filename</em>. Alternatively, it can be initialized by a set of numpy
-arrays. To do this, <em>filename</em> can actually be the <em>data</em> array and
-if this is the case, <em>wavelengths</em> must be assigned an array of equal
-length containing the corresponding wavelength values.</p>
-
-<p>The following operations are defined:
-+, -, *, /, +=, -=, *=, /=. For each of these, if the second operand is
-a scalar, the operation is performed pixel-wise on the <em>data</em> array. If
-the other operand is also a <em>Spectrum</em> object, the RHS operand is
-<em>resampled</em> onto the same pixel space as the LHS. The domain of the RHS
-<em>wave</em> array must be entirely contained by or equivalent to the LHS
-<em>wave</em> domain.</p>
-
-<p>The <em>wave</em> and <em>data</em> arrays are given units 'a la <em>astropy.units</em>;
-if the spectrum is initialized via numpy arrays, the units are only
-applied if there are none currently.</p>
-
-<table>
-<thead>
-<tr>
-<th>Options</th>
-<th>Defaults</th>
-<th>Descriptions</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>wavecal</em></td>
-<td>True</td>
-<td>fit wavelength vector to data</td>
-</tr>
-<tr>
-<td><em>crpix1</em></td>
-<td>'crpix1'</td>
-<td>reference pixel header keyword</td>
-</tr>
-<tr>
-<td><em>crval1</em></td>
-<td>'crval1'</td>
-<td>value at reference pixel</td>
-</tr>
-<tr>
-<td><em>cdelt1</em></td>
-<td>'cdelt1'</td>
-<td>resolution (delta lambda)</td>
-</tr>
-<tr>
-<td><em>xunits</em></td>
-<td>'Angstrom'</td>
-<td>units for wavelength array</td>
-</tr>
-<tr>
-<td><em>yunits</em></td>
-<td>'erg cm-2 s-1'</td>
-<td>units for data array</td>
-</tr>
-</tbody>
-</table>
-
-<p><br>
-Member functions:</p>
-
-<ul>
-<li>
-<p><em>resample</em> ( *<em>args</em>, **<em>kwargs</em> ):</p>
-
-<p>If given a single argument, it is taken to be a <em>Spectrum</em> object,
-and <em>self</em> is resampled onto the pixel space of the other spectrum.
-Otherwise, three arguments are expected. The first and second argument
-should define the lower and upper wavelength value of a domain,
-respectively. The third argument should be the number of elements
-(pixels) for the new domain. Think numpy.linspace().</p>
-
-<table>
-<thead>
-<tr>
-<th>Options</th>
-<th>Defaults</th>
-<th>Descriptions</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>kind</em></td>
-<td>'linear'</td>
-<td>passed to scipy.interpolate.interp1d</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>
-<p><em>copy</em> ():</p>
-
-<p>Essentially a wrapper to <em>deepcopy()</em>. To say SpectrumA = SpectrumB
-implies that SpectrumA <em>is</em> SpectrumB. If you want to create a new
-spectrum <em>equal</em> to another, say SpectrumA = SpectrumB.copy()</p>
-</li>
-</ul>
 </li>
 </ul>
 
@@ -2142,9 +2296,7 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
         <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">SLiPy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-        <span class="site-footer-credits"><br><br><b>Notice: </b> The source for this page has been modified by Geoffrey Lentner.</span>
-     
-	  </footer>
+      </footer>
 
     </section>
 
