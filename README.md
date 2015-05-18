@@ -305,7 +305,7 @@ Objects for representing astronomical data. Currently, this includes the
 	Also, you can access the spectrum data via indexing. There are multiple
 	ways this can work. In the following examples `s` is a spectrum object.
 
-	```python
+	```ipython
 	In [1]: from slipy import Spectrum \
 	   ...: from astropy import units as u \
 	   ...: import numpy as np
