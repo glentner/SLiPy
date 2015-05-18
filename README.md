@@ -399,7 +399,7 @@ Objects for representing astronomical data. Currently, this includes the
 	  16.  17.  18.  19.  20.] pix
 	
 	In [20]: # The boundaries take precident however, and not every resolution \
-	   ....: # makes physical sense with the requested bondaries. When no      \
+	   ....: # makes physical sense with the requested boundaries. When no     \
 	   ....: # edges are specified, they default to the current boundaries.    \
 	   ....: # There are only 19 pixels, so we won't get what you might think  \
 	   ....: # the expected behavior is. Here, 5 doesn't go evenly into the    \
