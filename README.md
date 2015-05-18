@@ -410,7 +410,8 @@ Objects for representing astronomical data. Currently, this includes the
 	[  1.           7.33333333  13.66666667  20.        ] pix
 	
 	```
-
+	
+	<br>
     | Options   | Defaults       | Descriptions                   |
     |-----------|----------------|--------------------------------|
     | *wavecal* | True           | fit wavelength vector to data  |
