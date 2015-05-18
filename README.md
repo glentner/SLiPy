@@ -312,8 +312,8 @@ Objects for representing astronomical data. Currently, this includes the
 	str(Spectrum) 
 	``` 
 
-	Also, you can access the spectrum data via indexing. There are multiple
-	ways this can work. In the following examples `s` is a spectrum object.
+	Also, you can access the spectrum data via "index" notation. The behavior
+	is not the same though. See the below interactive demonstration.
 
 	```python
 	In [1]: from slipy import Spectrum \
