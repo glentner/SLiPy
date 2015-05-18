@@ -425,7 +425,7 @@ Objects for representing astronomical data. Currently, this includes the
     | *crval1*  | 'crval1'       | value at reference pixel       |
     | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)      |
     | *xunits*  | 'Angstrom'     | units for wavelength array     |
-    | *yunits*  | 'erg cm-2 s-1' | units for data array           |
+    | *yunits*  | ''             | units for data array           |
 
     <br>
     Member functions:
@@ -442,6 +442,12 @@ Objects for representing astronomical data. Currently, this includes the
         | Options | Defaults | Descriptions                         |
         |---------|----------|--------------------------------------|
         | *kind*  | 'linear' | passed to scipy.interpolate.interp1d |
+
+	- *insert* ( *other*, *kind* = 'linear'):
+
+		Given a Spectrum, *other*, contained within the wavelength domain
+		of *self*, replace all pixels in the overlapping region with that
+		of an interpolation built on *other*. *kind* is passed to interp1d.
 
     - *copy* ():
 
