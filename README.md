@@ -228,25 +228,68 @@ Objects for representing astronomical data. Currently, this includes the
 <a name=SpectrumLoc></a>
 - class **Spectrum** ( *filename*, *wavelengths* = None, \*\**kwargs* ):
 
-    The *Spectrum* class is a container for a *data* array and it's
-    corresponding wavelength calibration, *wave*. These are accessed with
-    .data and .wave, respectively. The data is read in from the file,
-    *filename*. Alternatively, it can be initialized by a set of numpy
-    arrays. To do this, *filename* can actually be the *data* array and
-    if this is the case, *wavelengths* must be assigned an array of equal
-    length containing the corresponding wavelength values.
-
-    The following operations are defined:
-    +, -, \*, /, +=, -=, \*=, /=. For each of these, if the second operand is
-    a scalar, the operation is performed pixel-wise on the *data* array. If
-    the other operand is also a *Spectrum* object, the RHS operand is
-    *resampled* onto the same pixel space as the LHS. The domain of the RHS
-    *wave* array must be entirely contained by or equivalent to the LHS
-    *wave* domain.
-
-    The *wave* and *data* arrays are given units 'a la *astropy.units*;
-    if the spectrum is initialized via numpy arrays, the units are only
-    applied if there are none currently.
+    The Spectrum object is a container class for a data array and its
+    corresponding wavelength array. See the __init__ documentation for
+    more information on constructing spectrum objects. 
+    
+    Addition, subtraction, multiplication, and division (including in-place 
+    operations, e.g., '+=') are defined for both spectrum on spectrum 
+    operations as well as scalar operations. When two spectra are operated on, 
+    the LHS spectrum takes precedent. One of the spectra must be contained 
+    within the other (i.e., their wavelength domain is either equal to or 
+    entirely interior to the other). The outer spectrum is resampled onto the 
+    inner spectrum's pixel space and the operation is applied element-wise. 
+    To state it briefly, only the affected region of the LHS spectrum is 
+    operated on. This makes units dangerous for multiplication and division.
+    Only in the case of multiplying/dividing spectra of equivilent wavelength
+    arrays will the units be properly applied. Otherwise, the RHS units will
+    be ignored. Considering the physical context within which it makes sense
+    to apply these operations to spectra this is justified; the data will have
+    `dimensionless` units in all likelihood. For scalar operations, units are
+    implied to be the same as the data for addition/subtraction.
+    
+    The comparison operations ( >, <, >=, <=, ==, !=, &, ^, | ) are defined
+    to return a binary Spectrum of True and False values. The same convention
+    applies as above. Either the LHS or RHS must be contained within the other,
+    and the LHS is compared on the overlapping regions. Data outside this 
+    overlapping region is returned as False.
+    
+    The shift operations (>> and <<) are defined to mean a shift in the
+    spectrum. The addition and subtraction operate on the `data`. These
+    operations apply to the `wave` array. `Spectrum << 2 * u.Angstrom` say
+    to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
+    number, the wavelength units are implied. Also, one can shift a spectrum
+    by another spectrum (e.g., `spectrumA >> spectrumB`), where the `wave` 
+    arrays would be operated on only. In these cases, they should
+    have the same number of pixels! Finally, to get a variable shift across
+    the spectrum without creating a whole spectrum with junk data, you can
+    shift using a numpy array (also of equal length). I no units are detected,
+    the wavelength units will be implied.
+    
+    Other operations:
+    
+        SpectrumA in SpectrumB 
+        
+            --> The wavelength domain of A is either equal to or contained 
+                by B. True/False
+        
+        len(Spectrum)
+        
+            --> Number of pixels.
+        
+        str(Spectrum)
+        
+            --> Calls str() on member arrays
+        
+        []
+        
+            --> Access the data via indexing. Either access a single
+                pixel or a range (e.g., Spectrum[3], Spectrum[4:-5]).
+                Alternatively, given a Quantity, return an estimate of
+                the value of the spectrum at that location (e.g., 
+                Spectrum[588.89 * u.nm]) will return a linear 
+                approximation at that wavelength location.
+				
 
     | Options   | Defaults       | Descriptions                   |
     |-----------|----------------|--------------------------------|
