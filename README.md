@@ -435,7 +435,7 @@ Objects for representing astronomical data. Currently, this includes the
 		to scipy...interp1d.
 		
 		```python
-		spectrumA.resample(spectrumB)
+		spectrumA.resample(spectrumB, kind = 'cubic')
 		
 		spectrumA.resample( 585 * u.nm, 5950 * u.Angstrom, 1e4 + 1 )
 		```
@@ -445,6 +445,10 @@ Objects for representing astronomical data. Currently, this includes the
 		Given a Spectrum, *other*, contained within the wavelength domain
 		of *self*, replace all pixels in the overlapping region with that
 		of an interpolation built on *other*. *kind* is passed to interp1d.
+		
+		```python
+		spectrumA.insert(spectrumB, kind = 'quadratic')
+		```
 
     - *copy* ():
 
