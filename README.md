@@ -306,7 +306,7 @@ Objects for representing astronomical data. Currently, this includes the
 	ways this can work. In the following examples `s` is a spectrum object.
 
 	```python
-	>>> from slipy import Spectrum
+	In [0]: from slipy import Spectrum
 	>>> from astropy import units as u
 	>>> import numpy as np
 	>>>
