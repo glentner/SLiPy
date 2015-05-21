@@ -448,7 +448,7 @@ class FittingGUI:
 
 		# create the radio button widget
 		self.Radio = widgets.RadioButtons(self.RadioAxis,
-			tuple(self.Params.keys()), active = 0 )
+			tuple(['L' + str(i+1) for i in range(self.numlines)]), active = 0)
 
 		# connect the radio button to it's update function
 		self.Radio.on_clicked(self.ToggleComponent)
@@ -512,18 +512,18 @@ class FittingGUI:
 		Convolution of the Gaussian LSP on a Gaussian line feature.
 		The convolution of two gaussians is also a gaussian.
 		"""
-		return params['Depth'] * NormalizedGaussian(
+		return Gaussian(
 
 				x,
 
-				# center at x - (mu_1 + mu_2)
-				2 * params['Peak'],
+				# Amplitude of the Gaussian
+				params['Depth'],
 
-				# LSP-sigma -> FWHM  = lambda / R
-				# Guassian  -> sigma = FWHM / 2 sqrt[2 Ln(2)]
-				# Convolution -> sigma_LSP**2 + sigma_Profile**2
-				((params['Peak'] / self.res)**2 + params['FWHM']**2 ) / (
-					8 * np.log(2) )
+				# center
+				params['Peak'],
+
+				# sigma = FWHM / 2 sqrt{2 log 2}
+				params['FWHM'] / 2.3548200450309493
 			)
 
 
@@ -587,7 +587,7 @@ class FittingGUI:
 
 		elif param == 'Depth':
 
-			return 100 * self.continuum.max()
+			return 1.5 * self.continuum.max()
 
 		else:
 			raise ProfileError('From FittingGUI.Maximum(), `{}` is not '
@@ -599,13 +599,16 @@ class FittingGUI:
 		Cycle thru Sliders and update Parameter dictionary. Re-draw graphs.
 		"""
 
-		# update the appropriate parameters in the dictionary
-		for slider in self.Slider.keys():
-			self.Params[self.current_component][slider] = self.Slider[slider].val
+		# the currently selected line component
+		line = self.current_component
 
-		# update the appropriate graph data
-		self.Component[self.current_component].set_ydata(self.continuum -
-			self.Convolution(self.x, **self.Params[self.current_component]))
+		# update the appropriate parameters in the dictionary
+		for parameter, slider in self.Slider.items():
+			self.Params[line][parameter] = slider.val
+
+		# update the appropriate graph data, based on new parameters
+		self.Component[line].set_ydata(self.continuum -
+			self.Convolution(self.x, **self.Params[line]))
 
 		# update the super-imposed graphs
 		self.Combination.set_ydata(self.continuum - self.SuperPosition())
@@ -624,14 +627,14 @@ class FittingGUI:
 
 		# make current feature bold and the rest regular
 		for line in self.Component.keys():
-			if line == self.current_component:
+			if line == label:
 				self.Component[line].set_linewidth(2)
 			else:
 				self.Component[line].set_linewidth(1)
 
 		# update the sliders to reflect the current component
-		for slider in self.Slider.keys():
-			self.Slider[slider].set_val(self.Params[label][slider])
+		for parameter, slider in self.Slider.items():
+			slider.set_val(self.Params[label][parameter])
 
 		# push updates to graph
 		self.fig.canvas.draw_idle()
