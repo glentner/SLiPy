@@ -80,10 +80,10 @@ And your ready to go!
 
 SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
-for every module, all derived from a common *SlipyError*. The naming convention 
-is for a module's exception to be named after the module with the addition of 
+for every module, all derived from a common *SlipyError*. The naming convention
+is for a module's exception to be named after the module with the addition of
 the word *Error*. So the *Fits* module will throw a *FitsError*. These are meant
-to handle erros internally. The user need not worry about these in an 
+to handle erros internally. The user need not worry about these in an
 interactive session; however, inside of scipts you might catch *SlipyError*.
 For finer control, catch the individual exceptions (e.g., *Fits.FitsError*).
 
@@ -150,7 +150,7 @@ Objects for representing astronomical data. Currently, this includes the
 	The Spectrum object is a container class for a data array and its
 	corresponding wavelength array.
 
-	There are a few ways to create a Spectrum. If a single string 
+	There are a few ways to create a Spectrum. If a single string
 	argument is given, it is taken as a file name and used to read in
 	data from a FITS file. With the keyword argument *wavecal* set as
 	True (the default case), elements are read from the header to create
@@ -164,44 +164,44 @@ Objects for representing astronomical data. Currently, this includes the
     | *cdelt1*  | 'cdelt1'       | resolution (delta lambda)      |
     | *xunits*  | 'Angstrom'     | units for wavelength array     |
     | *yunits*  | ''             | units for data array           |
-	
+
 	<br>
 	If an array-like object is given, it is converted to a numpy array and
-	taken as the spectrum data. A wavelength array will be generated that 
-	is simply an index (pixel) count. But if a second argument is provided, 
-	it will serve as the wavelength array. These must be equal in length 
+	taken as the spectrum data. A wavelength array will be generated that
+	is simply an index (pixel) count. But if a second argument is provided,
+	it will serve as the wavelength array. These must be equal in length
 	however.
 
 	Units will be imposed for these arrays. When initialized from a file,
 	the default units are *Angstrom* and *dimensionless_unscaled* for the
 	wavelength and data arrays respectively. Alternatives can be applied
-	by providing the keyword arguments *xunits* and *yunits*. If 
+	by providing the keyword arguments *xunits* and *yunits*. If
 	initialized via an array-like object, *dimensionless_unscaled* will
 	only be applied if no units are detected. If no wavelength array is
 	provided, the generated wavelength array will have *pixel* units.
 	Units are again only applied if none are detected for the given array.
 
-	Addition, subtraction, multiplication, and division (including in-place 
-	operations, e.g., '+=') are defined for both spectrum on spectrum 
-	operations as well as scalar operations. When two spectra are operated on, 
-	the LHS spectrum takes precedent. One of the spectra must be contained 
-	within the other (i.e., their wavelength domain is either equal to or 
-	entirely interior to the other). The outer spectrum is resampled onto the 
-	inner spectrum's pixel space and the operation is applied element-wise. 
-	To state it briefly, only the affected region of the LHS spectrum is 
+	Addition, subtraction, multiplication, and division (including in-place
+	operations, e.g., '+=') are defined for both spectrum on spectrum
+	operations as well as scalar operations. When two spectra are operated on,
+	the LHS spectrum takes precedent. One of the spectra must be contained
+	within the other (i.e., their wavelength domain is either equal to or
+	entirely interior to the other). The outer spectrum is resampled onto the
+	inner spectrum's pixel space and the operation is applied element-wise.
+	To state it briefly, only the affected region of the LHS spectrum is
 	operated on. This makes units dangerous for multiplication and division.
 	Only in the case of multiplying/dividing spectra of equivilent wavelength
 	arrays will the units be properly applied. Otherwise, the RHS units will
 	be ignored. Considering the physical context within which it makes sense
 	to apply these operations to spectra this is justified; the data will have
-	`dimensionless` units in all likelihood. For scalar addition and 
+	`dimensionless` units in all likelihood. For scalar addition and
 	subtraction, if no units are given the units are implied to be the same as
 	that of the data.
 
 	The comparison operations ( >, <, >=, <=, ==, !=, &, ^, | ) are defined
-	to return a binary Spectrum of dimensionless 1's and 0's. The same 
-	convention applies as above. Either the LHS or RHS must be contained within 
-	the other, and the LHS is compared on the overlapping regions. Data outside 
+	to return a binary Spectrum of dimensionless 1's and 0's. The same
+	convention applies as above. Either the LHS or RHS must be contained within
+	the other, and the LHS is compared on the overlapping regions. Data outside
 	this overlapping region is returned as False.
 
 	The shift operations ('>>' and '<<') are defined to mean a shift in the
@@ -209,7 +209,7 @@ Objects for representing astronomical data. Currently, this includes the
 	operations apply to the *wave* array. `Spectrum << 2 * u.Angstrom` says
 	to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
 	number, the wavelength units are implied. Also, one can shift a spectrum
-	by another spectrum (e.g., `spectrumA >> spectrumB`), where the *wave* 
+	by another spectrum (e.g., `spectrumA >> spectrumB`), where the *wave*
 	arrays would be operated on only. In these cases, they should
 	have the same number of pixels! Finally, to get a variable shift across
 	the spectrum without creating a whole spectrum with junk data, you can
@@ -218,18 +218,18 @@ Objects for representing astronomical data. Currently, this includes the
 
 	Other operations:
 	```python
-	# The wavelength domain of A is either equal to or contained by B. 
+	# The wavelength domain of A is either equal to or contained by B.
 	# Returns True or False
-	SpectrumA in SpectrumB 
+	SpectrumA in SpectrumB
 	```
 	```python
 	# Returns number of pixels
-	len(Spectrum) 
-	``` 
+	len(Spectrum)
+	```
 	```python
 	# Calls str() on member arrays, (e.g., print(Spectrum))
-	str(Spectrum) 
-	``` 
+	str(Spectrum)
+	```
 
 	Also, you can access the spectrum data via "index" notation. The behavior
 	is not the same though. See the below interactive demonstration.
@@ -238,13 +238,13 @@ Objects for representing astronomical data. Currently, this includes the
 	In [1]: from slipy import Spectrum \
 	   ...: from astropy import units as u \
 	   ...: import numpy as np
-	
+
 	In [2]: x = np.linspace(-2*np.pi, 2*np.pi, 25) # -2pi < x < 2pi
-	
+
 	In [3]: y = np.sin( np.pi * x ) / (np.pi * x)   # sinc(pi x)
-	
+
 	In [4]: s = Spectrum(y)
-	
+
 	In [5]: # display spectrum \
 	   ...: s
 	Out[5]:
@@ -254,79 +254,79 @@ Objects for representing astronomical data. Currently, this includes the
 	 -0.05252603  0.03935584]
 	[  1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.  13.  14.  15.
 	  16.  17.  18.  19.  20.] pix
-	
+
 	In [9]: # where no units are given, they are implied. \
 	   ...: s[2]
 	Out[9]: <Quantity -0.05252602557386098>
-	
+
 	In [10]: # that was not the second element of the spectrum, but the signal \
 	   ....: # at the location `2 pix`. Accessing the spectrum where it is not \
 	   ....: # defined returns a linear approximation to it between the two \
 	   ....: # pixels that surround it. \
 	   ....: s[2.5]
 	Out[10]: <Quantity -0.02228264076183217>
-	
+
 	In [11]: # units are an acceptable access method, so long as they can be \
 	   ....: # converted (e.g., u.nm -> u.Angstrom) \
 	   ....: s[2.5 * u.pixel]
 	Out[11]: <Quantity -0.02228264076183217>
-	
+
 	In [12]: # Slicing the spectrum works in two ways. If no `step` is given \
 	   ....: # than the `start` and `stop` act as a domain for which we \
 	   ....: # want to truncate the spectrum outside of. \
 	   ....: s[2:4]
-	Out[12]: 
+	Out[12]:
 	[-0.05252603  0.00796074  0.0597675 ]
 	[ 2.  3.  4.] pix
-	
+
 	In [13]: s[2.5:4.5]
-	Out[13]: 
+	Out[13]:
 	[ 0.00796074  0.0597675 ]
 	[ 3.  4.] pix
-	
+
 	In [14]: s[:4]
-	Out[14]: 
+	Out[14]:
 	[ 0.03935584 -0.05252603  0.00796074  0.0597675 ]
 	[ 1.  2.  3.  4.] pix
-	
+
 	In [15]: s[15:]
-	Out[15]: 
+	Out[15]:
 	[ 0.0079739  -0.07945138  0.0597675   0.00796074 -0.05252603  0.03935584]
 	[ 15.  16.  17.  18.  19.  20.] pix
-	
+
 	In [16]: # With a `step` size the behavior is entirely different. \
 	   ....: # We are asking instead to `resample` the spectrum. The  \
 	   ....: # `step` value acts as a desired resolution. As with the \
 	   ....: # accessor methods, the gaps are filled with linear      \
 	   ....: # approximations \
 	   ....: s[1:3:0.5]
-	Out[16]: 
+	Out[16]:
 	[ 0.03935584 -0.00658509 -0.05252603 -0.02228264  0.00796074]
 	[ 1.   1.5  2.   2.5  3. ] pix
-	
+
 	In [17]: s = s[:4] \
 	   ....: s
-	Out[17]: 
+	Out[17]:
 	[ 0.03935584 -0.05252603  0.00796074  0.0597675 ]
 	[ 1.  2.  3.  4.] pix
 
 	In [18]: # Without a `start` and a `stop` we just resample. \
 	   ....: s[::0.5]
-	Out[18]: 
+	Out[18]:
 	[ 0.03935584 -0.00658509 -0.05252603 -0.02228264  0.00796074  0.03386412
 	  0.0597675 ]
 	[ 1.   1.5  2.   2.5  3.   3.5  4. ] pix
-	
+
 	In [19]: s = Spectrum(y) \
 	   ....: s
-	Out[19]: 
+	Out[19]:
 	[ 0.03935584 -0.05252603  0.00796074  0.0597675  -0.07945138  0.0079739
 	  0.11489588 -0.17056501  0.00798048  0.82957457  0.82957457  0.00798048
 	 -0.17056501  0.11489588  0.0079739  -0.07945138  0.0597675   0.00796074
 	 -0.05252603  0.03935584]
 	[  1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.  13.  14.  15.
 	  16.  17.  18.  19.  20.] pix
-	
+
 	In [20]: # The boundaries take precident however, and not every resolution \
 	   ....: # makes physical sense with the requested boundaries. When no     \
 	   ....: # edges are specified, they default to the current boundaries.    \
@@ -334,10 +334,10 @@ Objects for representing astronomical data. Currently, this includes the
 	   ....: # the expected behavior is. Here, 5 doesn't go evenly into the    \
 	   ....: # existing domain, so we simply choose the closest thing.
 	   ....: s[::5]
-	Out[20]: 
+	Out[20]:
 	[ 0.03935584  0.01974225  0.01974225  0.03935584]
 	[  1.           7.33333333  13.66666667  20.        ] pix
-	
+
 	```
 
     <br>
@@ -352,10 +352,10 @@ Objects for representing astronomical data. Currently, this includes the
         respectively. The third argument should be the number of elements
         (pixels) for the new domain. Think numpy.linspace(). *kind* is passed
 		to scipy...interp1d.
-		
+
 		```python
 		spectrumA.resample(spectrumB, kind = 'cubic')
-		
+
 		spectrumA.resample( 585 * u.nm, 5950 * u.Angstrom, 1e4 + 1 )
 		```
 
@@ -364,7 +364,7 @@ Objects for representing astronomical data. Currently, this includes the
 		Given a Spectrum, *other*, contained within the wavelength domain
 		of *self*, replace all pixels in the overlapping region with that
 		of an interpolation built on *other*. *kind* is passed to interp1d.
-		
+
 		```python
 		spectrumA.insert(spectrumB, kind = 'quadratic')
 		```
@@ -374,7 +374,7 @@ Objects for representing astronomical data. Currently, this includes the
         Essentially a wrapper to *deepcopy()*. To say SpectrumA = SpectrumB
         implies that SpectrumA *is* SpectrumB. If you want to create a new
         spectrum *equal* to another, say SpectrumA = SpectrumB.copy()
-		
+
 
 <br>
 ##<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
@@ -659,11 +659,12 @@ class OHP(Observatory):
     The Observatoire de Haute-Provence, France.
     """
     def __init__(self):
-        self.name      = 'Observatoire de Haute-Provence'
-        self.longitude = 356.28667  * u.degree # West
-        self.latitude  = 43.9308334 * u.degree # North
-        self.altitude  = 650        * u.meter
-        self.timezone  = 1          * u.hourangle
+        self.name       = 'Observatoire de Haute-Provence'
+        self.longitude  = 356.28667  * u.degree # West
+        self.latitude   = 43.9308334 * u.degree # North
+        self.altitude   = 650        * u.meter
+        self.timezone   = 1          * u.hourangle
+        self.resolution = 42000
 ```
 
 There are currently 69 defined observatories:
@@ -791,9 +792,9 @@ at one spectra to another. One can also *overlay* spectra.
     - *overlay*( \**splots* ):
 
         Given one or more *splots*, *overlay* the figures.
-		
+
 	- *markers*( \**args* ):
-	
+
 		Reassign the values for the `marker`s in the figure. The number
 		of arguments must equal the number of spectra in the figure. This
 		starts out as one, but will increase for ever call to SPlot.overlay().
@@ -846,145 +847,145 @@ Profile fitting tasks for spectra.
 <a name=SelectLoc></a>
 - **Select** ( *splot* ):
 
-    Select points from the *splot*. This should be of type SPlot 
+    Select points from the *splot*. This should be of type SPlot
     (or it can optionally be a Spectrum type, for which a SPlot will be
-    created). The splot will be rendered and the user clicks on the 
+    created). The splot will be rendered and the user clicks on the
     figure. When finished, return to the terminal prompt. A dictionary is
     returned with two entries, *wave* and *data*, representing the x-y
     locations selected by the user. This can always be retrieved later by
     accessing the module member *Profile.selected*.
-	
+
 	While the user makes selections, temporary markers appear on the figure
-	indicating the data point that was just selected. If a mark does not 
+	indicating the data point that was just selected. If a mark does not
 	appear, try moving the curser slightly and trying again. Even if the line
 	goes through that point, there might not actually be data there.
 
 <a name=FitLoc></a>
 - **Fit** ( *splot*, *function* = InvertedLorentzian, *params* = None)
 
-    Given a *splot* of type Plot.SPlot, the user selects four points on the 
+    Given a *splot* of type Plot.SPlot, the user selects four points on the
     spectrum and a parameterized function is fit (an inverted Lorentzian by
     default). Optionally, *splot* can be of type spectrum and a basic SPlot
-    will be created for you. If the user gives an alternative *function*, 
-    *params* (parameters) must be provided. *params* is to be the first guess, 
-    *p0* given to scipy...curve_fit; the user can provide them expicitely, 
+    will be created for you. If the user gives an alternative *function*,
+    *params* (parameters) must be provided. *params* is to be the first guess,
+    *p0* given to scipy...curve_fit; the user can provide them expicitely,
     or in the form of functions with the templates `f(x, y)`
     where *x* and *y* are the *wave* and *data* arrays (respectively) extracted
     between the two inner points selected by the user.
-	
+
 	*InvertedLorentian* is defined in SLiPy.Algorithms.Functions. The user does
 	not need to provide *params* for the default behavior.
-	
+
 	**Example:**
 	```python
 	# In this example I use an alternative function simply as an illustration.
 	# I show the download, calibration, and fitting procedure involved ...
-	
+
 	from slipy import Fits, Simbad, Plot, Velocity, Telluric, Profile
 	from slipy import Spectrum, Observatory, SlipyError, Units as u
 	from slipy.Data import Elodie
-	
+
 	# See the Data package for more information about this section
 	archive = Elodie.Archive()
-	
+
 	# the one with highest S/N
 	sci_file = archive.files['HD332329']
-	
-	# all files are in `data` member, first column is the file name 
+
+	# all files are in `data` member, first column is the file name
 	cal_files = [ entry[0] for entry in archive.data['HD087901A'] ]
-	
+
 	Elodie.Download(
 			sci_file,                      # file name to download
 			resample = (5850, 5950, 0.01), # pipeline command
 			outpath = 'Science-Files'      # put under this directory
 		)
-		
+
 	Elodie.Download(
 			*cal_files,                    # HD087901A is Regulus
 			resample = (5850, 5950, 0.01), # pipeline command
 			outpath = 'Calibration-Files'  # put under this directory
 		)
-	
+
 	sci_file  = Fits.Find('Science-Files')[0]  # one file
 	cal_files = Fits.Find('Calibration-Files') # six files (list)
-	
+
 	spectrum = Spectrum(sci_file)       # create spectrum object
 	regulus  = Fits.GetData(*cal_files) # return list of spectrum objects
-	
+
 	# remove absorption due to Earth's atmosphere
 	Telluric.Correct(spectrum, *regulus)
-	
+
 	# attach `ra`, `dec` and `jd` to spectrum for HelioCorrect()
 	# Simbad returns values in units of decimal degrees
 	ra, dec = Simbad.Position('HD332329')
-	
+
 	# elements returned from Fits.Header() are unitless. Here we take
 	# the MJD at beginning of exposure and solve for JD at middle of exposure
 	MJD     = Fits.Header(sci_file, 'MJD-OBS')
 	EXPTIME = Fits.Header(sci_file, 'EXPTIME')
 	JD      = MJD + 2400000.5 + 0.5 * EXPTIME / 86400
- 
+
 	# attach to spectrum object as members
 	spectrum.ra  = ra
 	spectrum.dec = dec
 	spectrum.jd  = JD * u.day
- 
+
 	# Elodie is at the Observatoire de Haute-Provence, France (OHP).
 	Velocity.HelioCorrect( Observatory.OHP(), spectrum )
- 
+
 	# create figure
 	fig = Plot.SPlot(spectrum, label='HD332329', marker='k-')
 	fig.xlabel('Wavelength (Angstrom)', labelpad=20)
 	fig.ylabel('Normalized Flux', labelpad=20)
 	fig.xlim(5885, 5905)
 	fig.legend(frameon=False)
-	
+
 	# Now we need to define some parameter functions to pass to Profile.Fit()
 	# with our user function
 	from slipy.Algorithms.Functions import InvertedGaussian
- 
+
 	# best guess for amplitude of gaussian
 	def A(x, y):
 		return 1 - y.min().value
-	
+
 	# best guess for mean of gaussian
 	def mu(x, y):
 		return x[ y.argmin() ].value
-		
+
 	# best guess for standard deviation of gaussian
 	def sigma(x, y):
 		return y.std().value
-	
+
 	# call the Profile.Fit() function with our user defined parameterization
 	line = Profile.Fit(fig, function=InvertedGaussian, params=[A, mu, sigma])
-	
+
 	# Please select four points identifying the spectral line.
 	# Outer points mark the domain of the line.
 	# Inner points mark the sample of the line to fit.
 	# Press <Return> after making your selections ...
-	
-	# now `line` is a Spectrum object generated by evaluating the 
+
+	# now `line` is a Spectrum object generated by evaluating the
 	# `InvertedGaussian` function on the larger domain selected by the
 	# user with coefficients optimized using Profile.Fit().
 	# You might use it to deblend this inner line with the overlapping ones.
-	
+
 	# save the figure ...
 	fig.tight_layout()
 	fig.xoffset(False)
 	fig.refresh()
 	fig.save('HD332329.png')
 	```
-	
+
     ![example](Figures/Profile-Fit.png)
 
-    **Figure 2:** The above figure was generated by running the above code 
+    **Figure 2:** The above figure was generated by running the above code
 	snippet.
-	
+
 <a name=ExtractLoc></a>
 - **Extract** ( *splot*, *kernel* = Gaussian, \*\**kwargs*):
 
     Select locations in the *splot* figure, expected to be of type SPlot.
-    Exactly four points should be selected. These are used to extract a 
+    Exactly four points should be selected. These are used to extract a
     line profile from the spectrum plotted in the splot figure. The inner
     section is used for the line, and the outer intervals are used to model
     the continuum; these, respectively, are both returned as Spectrum objects.
@@ -1002,46 +1003,46 @@ Profile fitting tasks for spectra.
 	at the average of the data points). As the bandwidth decreases to smaller
 	than the resolution of the data, you will essentially being performing
 	linear interpolation (no smoothing). You want to choose a length that is
-	larger than the small scale variation in the noise, but smaller than the 
+	larger than the small scale variation in the noise, but smaller than the
 	larger scale variation in the overall continuum level.
-	
-	The *rms* can optionally be computed between the continuum data and the 
-	curve fit to it. This rms value is used to scale the error profile 
+
+	The *rms* can optionally be computed between the continuum data and the
+	curve fit to it. This rms value is used to scale the error profile
 	that is returned for the line extracted. Explicitely, the error for a
 	line extraction is `error_spectrum = continuum_rms * I_0 / I` where
-	*I* is the line data and *I_0* is the interpolated continuum over the 
+	*I* is the line data and *I_0* is the interpolated continuum over the
 	gap.
-	
-	From the documentation of scipy.interpolate...interp1d: *kind* specifies the 
-	kind of interpolation as a string ('linear', 'nearest', 'zero', 'slinear', 
-	'quadratic', 'cubic') where 'slinear', 'quadratic' and 'cubic' refer to a 
-	spline interpolation of first, second,  or third order respectively;  or as 
+
+	From the documentation of scipy.interpolate...interp1d: *kind* specifies the
+	kind of interpolation as a string ('linear', 'nearest', 'zero', 'slinear',
+	'quadratic', 'cubic') where 'slinear', 'quadratic' and 'cubic' refer to a
+	spline interpolation of first, second,  or third order respectively;  or as
 	an integer specifying the order of the spline interpolator to use.
-	
+
     | Options      | Defaults   | Descriptions                            |
     |--------------|------------|-----------------------------------------|
     | *kind*       | 'cubic'    | given to scipy...interp1d for continuum |
 	| *bandwidth*  | 0.1 * u.nm | for kernel, user should provide this!   |
 	| *rms*        | False      | return an error estimate for the line   |
-	
+
 	<br>
 	**Example:**
 	```python
 	# drawing from the previous example, but using HD200723 instead.
-	
+
 	line, continuum, rms = Profile.Extract(fig, bandwidth=u.Angstrom/15, rms=True)
-	
+
     # Please select four points identifying the spectral line.
     # Outer intervals sample the continuum.
     # Center interval contains the line.
 	# Press <Return> after making your selections ...
 	```
-	
+
     ![example](Figures/Profile-Extract.png)
 
-    **Figure 3:** The above figure was generated by running the above code 
+    **Figure 3:** The above figure was generated by running the above code
 	snippet.
-	
+
 <br>
 ##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
 
@@ -1049,6 +1050,12 @@ Profile fitting tasks for spectra.
 for creating image mosaics. This module is a wrapper to automate not only the
 process for small projects, but to segment large fields into a grid and
 mosaic each *site* before combining them into a *master* mosaic.
+
+At the outset of the development of this module, the author was unaware of the
+currently available *montage_wrapper*. This module will no longer be developed.
+Nevertheless, it remains a high level manager for creating mosaics.
+
+See the example in Figure 4.
 
 <a name=MSolveGridLoc></a>
 - **SolveGrid** ( *sides*, *grid* ):
@@ -1155,26 +1162,52 @@ mosaic each *site* before combining them into a *master* mosaic.
     ```python
     from slipy import Montage, Simbad
 
+    # initialize the mosaic with a location, size, grid
     mosaic = Montage.SubField(
 
         Simbad.Position('Pleiades'), # center of the Pleiades
         (4, 4),                      # side lengths of mosaic
-        (2, 2)                       # grid pattern creates 2x2 degree `sites`
+        (2, 2),                      # grid pattern creates 2x2 degree `sites`
+        band = 'DSS2B'               # Blue filter
     )
 
+    # run mArchiveList to get the raw image tables
     mosaic.ArchiveList()
+
+    # download the images at all `sites`
     mosaic.ArchiveExec()
-    mosaic.Build()
+
+    # run Montage.Mosaic() at each site, create a 4MP image,
+    # Notice: this creates > 12 GB on disk!
+    mosaic.Build(3/2000, bkmodel=False)
+
+    # copy `site` mosaics to master image directory
     mosaic.Collect()
-    mosaic.Merge()
+
+    # run Montage.Mosaic() on `site` mosaics
+    mosaic.Merge(3/2000, bkmodel=False)
 
     # If you have APLpy
     import aplpy
-
     fig = aplpy.FITSFigure('master/final/mosaic.fits')
     fig.show_grayscale()
+    fig.set_frame_color('gray')
+    fig.set_frame_linewidth(0.5)
+    fig.set_nan_color('black')
+    fig.set_tick_labels_xformat('hh:mm')
+    fig.set_tick_labels_yformat('dd:mm')
 
+    from matplotlib import pyplot as plt
+    plt.rc('text', usetex=True)
+    plt.rc('font', family='serif')
+    plt.draw()
+
+    fig.save('Pleiades.png')
     ```
+
+    ![example](Figures/Pleiades.png)
+
+    **Figure 4:** Pleiades.png from the above code snippet.
 
 <a name=MFieldLoc></a>
 - class **Field** (*center*, *sides*, *grid*, *subgrid*, \*\**kwargs* ):
@@ -1271,7 +1304,7 @@ Methods for data retrieval from the Elodie Archive.
     **Example:**
     ```python
 	# continuing from the previous example ...
-	
+
     # all files in the archive for Altair (file name is first element in pair)
     files = [ entry[0] for entry in archive.data['HD187642'] ]
 
