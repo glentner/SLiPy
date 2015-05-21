@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
@@ -123,9 +121,19 @@ to import:</p>
 <td>
 <a href="#MSolveGridLoc">SolveGrid</a>, <a href="#MMosaicLoc">Mosaic</a>, <a href="#MSubFieldLoc">SubField</a>, <a href="#MFieldLoc">Field</a>,</td>
 </tr>
+</tbody>
+</table>
+
+<p><br></p>
+
+<table>
+<thead>
 <tr>
 <th>SLiPy/Data</th>
+<th>Functions/Classes</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
@@ -133,8 +141,6 @@ to import:</p>
 </tr>
 </tbody>
 </table>
-
-<p><br></p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -160,10 +166,10 @@ $ echo "export PYTHONPATH=$PYTHONPATH:~" &gt;&gt; ~/.bashrc
 
 <p>SLiPy attempts to catch all foreseeable exceptions and re-throw them under a
 common handle with a human readable message. There is a unique exception class
-for every module, all derived from a common <em>SlipyError</em>. The naming convention 
-is for a module's exception to be named after the module with the addition of 
+for every module, all derived from a common <em>SlipyError</em>. The naming convention
+is for a module's exception to be named after the module with the addition of
 the word <em>Error</em>. So the <em>Fits</em> module will throw a <em>FitsError</em>. These are meant
-to handle erros internally. The user need not worry about these in an 
+to handle erros internally. The user need not worry about these in an
 interactive session; however, inside of scipts you might catch <em>SlipyError</em>.
 For finer control, catch the individual exceptions (e.g., <em>Fits.FitsError</em>).</p>
 
@@ -245,7 +251,7 @@ resolutions (delta lambda), and <em>npix</em> is the length of desired array.</p
 <p>The Spectrum object is a container class for a data array and its
 corresponding wavelength array.</p>
 
-<p>There are a few ways to create a Spectrum. If a single string 
+<p>There are a few ways to create a Spectrum. If a single string
 argument is given, it is taken as a file name and used to read in
 data from a FITS file. With the keyword argument <em>wavecal</em> set as
 True (the default case), elements are read from the header to create
@@ -295,41 +301,41 @@ a corresponding wavelength array to go with the data.</p>
 
 <p><br>
 If an array-like object is given, it is converted to a numpy array and
-taken as the spectrum data. A wavelength array will be generated that 
-is simply an index (pixel) count. But if a second argument is provided, 
-it will serve as the wavelength array. These must be equal in length 
+taken as the spectrum data. A wavelength array will be generated that
+is simply an index (pixel) count. But if a second argument is provided,
+it will serve as the wavelength array. These must be equal in length
 however.</p>
 
 <p>Units will be imposed for these arrays. When initialized from a file,
 the default units are <em>Angstrom</em> and <em>dimensionless_unscaled</em> for the
 wavelength and data arrays respectively. Alternatives can be applied
-by providing the keyword arguments <em>xunits</em> and <em>yunits</em>. If 
+by providing the keyword arguments <em>xunits</em> and <em>yunits</em>. If
 initialized via an array-like object, <em>dimensionless_unscaled</em> will
 only be applied if no units are detected. If no wavelength array is
 provided, the generated wavelength array will have <em>pixel</em> units.
 Units are again only applied if none are detected for the given array.</p>
 
-<p>Addition, subtraction, multiplication, and division (including in-place 
-operations, e.g., '+=') are defined for both spectrum on spectrum 
-operations as well as scalar operations. When two spectra are operated on, 
-the LHS spectrum takes precedent. One of the spectra must be contained 
-within the other (i.e., their wavelength domain is either equal to or 
-entirely interior to the other). The outer spectrum is resampled onto the 
-inner spectrum's pixel space and the operation is applied element-wise. 
-To state it briefly, only the affected region of the LHS spectrum is 
+<p>Addition, subtraction, multiplication, and division (including in-place
+operations, e.g., '+=') are defined for both spectrum on spectrum
+operations as well as scalar operations. When two spectra are operated on,
+the LHS spectrum takes precedent. One of the spectra must be contained
+within the other (i.e., their wavelength domain is either equal to or
+entirely interior to the other). The outer spectrum is resampled onto the
+inner spectrum's pixel space and the operation is applied element-wise.
+To state it briefly, only the affected region of the LHS spectrum is
 operated on. This makes units dangerous for multiplication and division.
 Only in the case of multiplying/dividing spectra of equivilent wavelength
 arrays will the units be properly applied. Otherwise, the RHS units will
 be ignored. Considering the physical context within which it makes sense
 to apply these operations to spectra this is justified; the data will have
-<code>dimensionless</code> units in all likelihood. For scalar addition and 
+<code>dimensionless</code> units in all likelihood. For scalar addition and
 subtraction, if no units are given the units are implied to be the same as
 that of the data.</p>
 
 <p>The comparison operations ( &gt;, &lt;, &gt;=, &lt;=, ==, !=, &amp;, ^, | ) are defined
-to return a binary Spectrum of dimensionless 1's and 0's. The same 
-convention applies as above. Either the LHS or RHS must be contained within 
-the other, and the LHS is compared on the overlapping regions. Data outside 
+to return a binary Spectrum of dimensionless 1's and 0's. The same
+convention applies as above. Either the LHS or RHS must be contained within
+the other, and the LHS is compared on the overlapping regions. Data outside
 this overlapping region is returned as False.</p>
 
 <p>The shift operations ('&gt;&gt;' and '&lt;&lt;') are defined to mean a shift in the
@@ -337,7 +343,7 @@ spectrum. The addition and subtraction operate on the <em>data</em>. These
 operations apply to the <em>wave</em> array. <code>Spectrum &lt;&lt; 2 * u.Angstrom</code> says
 to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
 number, the wavelength units are implied. Also, one can shift a spectrum
-by another spectrum (e.g., <code>spectrumA &gt;&gt; spectrumB</code>), where the <em>wave</em> 
+by another spectrum (e.g., <code>spectrumA &gt;&gt; spectrumB</code>), where the <em>wave</em>
 arrays would be operated on only. In these cases, they should
 have the same number of pixels! Finally, to get a variable shift across
 the spectrum without creating a whole spectrum with junk data, you can
@@ -346,15 +352,15 @@ the wavelength units will be implied.</p>
 
 <p>Other operations:</p>
 
-<div class="highlight highlight-python"><pre><span class="pl-c"># The wavelength domain of A is either equal to or contained by B. </span>
+<div class="highlight highlight-python"><pre><span class="pl-c"># The wavelength domain of A is either equal to or contained by B.</span>
 <span class="pl-c"># Returns True or False</span>
-SpectrumA <span class="pl-k">in</span> SpectrumB </pre></div>
+SpectrumA <span class="pl-k">in</span> SpectrumB</pre></div>
 
 <div class="highlight highlight-python"><pre><span class="pl-c"># Returns number of pixels</span>
-<span class="pl-c1">len</span>(Spectrum) </pre></div>
+<span class="pl-c1">len</span>(Spectrum)</pre></div>
 
 <div class="highlight highlight-python"><pre><span class="pl-c"># Calls str() on member arrays, (e.g., print(Spectrum))</span>
-<span class="pl-c1">str</span>(Spectrum) </pre></div>
+<span class="pl-c1">str</span>(Spectrum)</pre></div>
 
 <p>Also, you can access the spectrum data via "index" notation. The behavior
 is not the same though. See the below interactive demonstration.</p>
@@ -399,22 +405,22 @@ In [<span class="pl-c1">12</span>]: <span class="pl-c"># Slicing the spectrum wo
    ....: <span class="pl-c"># than the `start` and `stop` act as a domain for which we \</span>
    ....: <span class="pl-c"># want to truncate the spectrum outside of. \</span>
    ....: s[<span class="pl-c1">2</span>:<span class="pl-c1">4</span>]
-Out[<span class="pl-c1">12</span>]: 
+Out[<span class="pl-c1">12</span>]:
 [<span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
 [ <span class="pl-c1">2.</span>  <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
 
 In [<span class="pl-c1">13</span>]: s[<span class="pl-c1">2.5</span>:<span class="pl-c1">4.5</span>]
-Out[<span class="pl-c1">13</span>]: 
+Out[<span class="pl-c1">13</span>]:
 [ <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
 [ <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
 
 In [<span class="pl-c1">14</span>]: s[:<span class="pl-c1">4</span>]
-Out[<span class="pl-c1">14</span>]: 
+Out[<span class="pl-c1">14</span>]:
 [ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
 [ <span class="pl-c1">1.</span>  <span class="pl-c1">2.</span>  <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
 
 In [<span class="pl-c1">15</span>]: s[<span class="pl-c1">15</span>:]
-Out[<span class="pl-c1">15</span>]: 
+Out[<span class="pl-c1">15</span>]:
 [ <span class="pl-c1">0.0079739</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0597675</span>   <span class="pl-c1">0.00796074</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.03935584</span>]
 [ <span class="pl-c1">15.</span>  <span class="pl-c1">16.</span>  <span class="pl-c1">17.</span>  <span class="pl-c1">18.</span>  <span class="pl-c1">19.</span>  <span class="pl-c1">20.</span>] pix
 
@@ -424,26 +430,26 @@ In [<span class="pl-c1">16</span>]: <span class="pl-c"># With a `step` size the 
    ....: <span class="pl-c"># accessor methods, the gaps are filled with linear      \</span>
    ....: <span class="pl-c"># approximations \</span>
    ....: s[<span class="pl-c1">1</span>:<span class="pl-c1">3</span>:<span class="pl-c1">0.5</span>]
-Out[<span class="pl-c1">16</span>]: 
+Out[<span class="pl-c1">16</span>]:
 [ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.00658509</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span> <span class="pl-k">-</span><span class="pl-c1">0.02228264</span>  <span class="pl-c1">0.00796074</span>]
 [ <span class="pl-c1">1.</span>   <span class="pl-c1">1.5</span>  <span class="pl-c1">2.</span>   <span class="pl-c1">2.5</span>  <span class="pl-c1">3.</span> ] pix
 
 In [<span class="pl-c1">17</span>]: s <span class="pl-k">=</span> s[:<span class="pl-c1">4</span>] \
    ....: s
-Out[<span class="pl-c1">17</span>]: 
+Out[<span class="pl-c1">17</span>]:
 [ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span> ]
 [ <span class="pl-c1">1.</span>  <span class="pl-c1">2.</span>  <span class="pl-c1">3.</span>  <span class="pl-c1">4.</span>] pix
 
 In [<span class="pl-c1">18</span>]: <span class="pl-c"># Without a `start` and a `stop` we just resample. \</span>
    ....: s[::<span class="pl-c1">0.5</span>]
-Out[<span class="pl-c1">18</span>]: 
+Out[<span class="pl-c1">18</span>]:
 [ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.00658509</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span> <span class="pl-k">-</span><span class="pl-c1">0.02228264</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.03386412</span>
   <span class="pl-c1">0.0597675</span> ]
 [ <span class="pl-c1">1.</span>   <span class="pl-c1">1.5</span>  <span class="pl-c1">2.</span>   <span class="pl-c1">2.5</span>  <span class="pl-c1">3.</span>   <span class="pl-c1">3.5</span>  <span class="pl-c1">4.</span> ] pix
 
 In [<span class="pl-c1">19</span>]: s <span class="pl-k">=</span> Spectrum(y) \
    ....: s
-Out[<span class="pl-c1">19</span>]: 
+Out[<span class="pl-c1">19</span>]:
 [ <span class="pl-c1">0.03935584</span> <span class="pl-k">-</span><span class="pl-c1">0.05252603</span>  <span class="pl-c1">0.00796074</span>  <span class="pl-c1">0.0597675</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0079739</span>
   <span class="pl-c1">0.11489588</span> <span class="pl-k">-</span><span class="pl-c1">0.17056501</span>  <span class="pl-c1">0.00798048</span>  <span class="pl-c1">0.82957457</span>  <span class="pl-c1">0.82957457</span>  <span class="pl-c1">0.00798048</span>
  <span class="pl-k">-</span><span class="pl-c1">0.17056501</span>  <span class="pl-c1">0.11489588</span>  <span class="pl-c1">0.0079739</span>  <span class="pl-k">-</span><span class="pl-c1">0.07945138</span>  <span class="pl-c1">0.0597675</span>   <span class="pl-c1">0.00796074</span>
@@ -458,7 +464,7 @@ In [<span class="pl-c1">20</span>]: <span class="pl-c"># The boundaries take pre
    ....: <span class="pl-c"># the expected behavior is. Here, 5 doesn't go evenly into the    \</span>
    ....: <span class="pl-c"># existing domain, so we simply choose the closest thing.</span>
    ....: s[::<span class="pl-c1">5</span>]
-Out[<span class="pl-c1">20</span>]: 
+Out[<span class="pl-c1">20</span>]:
 [ <span class="pl-c1">0.03935584</span>  <span class="pl-c1">0.01974225</span>  <span class="pl-c1">0.01974225</span>  <span class="pl-c1">0.03935584</span>]
 [  <span class="pl-c1">1.</span>           <span class="pl-c1">7.33333333</span>  <span class="pl-c1">13.66666667</span>  <span class="pl-c1">20.</span>        ] pix
 </pre></div>
@@ -1155,11 +1161,12 @@ to this module. I welcome suggestions.</p>
 <span class="pl-s">    The Observatoire de Haute-Provence, France.</span>
 <span class="pl-s">    <span class="pl-pds">"""</span></span>
     <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>):
-        <span class="pl-v">self</span>.name      <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Observatoire de Haute-Provence<span class="pl-pds">'</span></span>
-        <span class="pl-v">self</span>.longitude <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-k">*</span> u.degree <span class="pl-c"># West</span>
-        <span class="pl-v">self</span>.latitude  <span class="pl-k">=</span> <span class="pl-c1">43.9308334</span> <span class="pl-k">*</span> u.degree <span class="pl-c"># North</span>
-        <span class="pl-v">self</span>.altitude  <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-k">*</span> u.meter
-        <span class="pl-v">self</span>.timezone  <span class="pl-k">=</span> <span class="pl-c1">1</span>          <span class="pl-k">*</span> u.hourangle</pre></div>
+        <span class="pl-v">self</span>.name       <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Observatoire de Haute-Provence<span class="pl-pds">'</span></span>
+        <span class="pl-v">self</span>.longitude  <span class="pl-k">=</span> <span class="pl-c1">356.28667</span>  <span class="pl-k">*</span> u.degree <span class="pl-c"># West</span>
+        <span class="pl-v">self</span>.latitude   <span class="pl-k">=</span> <span class="pl-c1">43.9308334</span> <span class="pl-k">*</span> u.degree <span class="pl-c"># North</span>
+        <span class="pl-v">self</span>.altitude   <span class="pl-k">=</span> <span class="pl-c1">650</span>        <span class="pl-k">*</span> u.meter
+        <span class="pl-v">self</span>.timezone   <span class="pl-k">=</span> <span class="pl-c1">1</span>          <span class="pl-k">*</span> u.hourangle
+        <span class="pl-v">self</span>.resolution <span class="pl-k">=</span> <span class="pl-c1">42000</span></pre></div>
 
 <p>There are currently 69 defined observatories:</p>
 
@@ -1620,16 +1627,16 @@ keepers <span class="pl-k">=</span> Plot.Iterate( <span class="pl-k">*</span>fig
 <li>
 <p><strong>Select</strong> ( <em>splot</em> ):</p>
 
-<p>Select points from the <em>splot</em>. This should be of type SPlot 
+<p>Select points from the <em>splot</em>. This should be of type SPlot
 (or it can optionally be a Spectrum type, for which a SPlot will be
-created). The splot will be rendered and the user clicks on the 
+created). The splot will be rendered and the user clicks on the
 figure. When finished, return to the terminal prompt. A dictionary is
 returned with two entries, <em>wave</em> and <em>data</em>, representing the x-y
 locations selected by the user. This can always be retrieved later by
 accessing the module member <em>Profile.selected</em>.</p>
 
 <p>While the user makes selections, temporary markers appear on the figure
-indicating the data point that was just selected. If a mark does not 
+indicating the data point that was just selected. If a mark does not
 appear, try moving the curser slightly and trying again. Even if the line
 goes through that point, there might not actually be data there.</p>
 </li>
@@ -1641,12 +1648,12 @@ goes through that point, there might not actually be data there.</p>
 <li>
 <p><strong>Fit</strong> ( <em>splot</em>, <em>function</em> = InvertedLorentzian, <em>params</em> = None)</p>
 
-<p>Given a <em>splot</em> of type Plot.SPlot, the user selects four points on the 
+<p>Given a <em>splot</em> of type Plot.SPlot, the user selects four points on the
 spectrum and a parameterized function is fit (an inverted Lorentzian by
 default). Optionally, <em>splot</em> can be of type spectrum and a basic SPlot
-will be created for you. If the user gives an alternative <em>function</em>, 
-<em>params</em> (parameters) must be provided. <em>params</em> is to be the first guess, 
-<em>p0</em> given to scipy...curve_fit; the user can provide them expicitely, 
+will be created for you. If the user gives an alternative <em>function</em>,
+<em>params</em> (parameters) must be provided. <em>params</em> is to be the first guess,
+<em>p0</em> given to scipy...curve_fit; the user can provide them expicitely,
 or in the form of functions with the templates <code>f(x, y)</code>
 where <em>x</em> and <em>y</em> are the <em>wave</em> and <em>data</em> arrays (respectively) extracted
 between the two inner points selected by the user.</p>
@@ -1669,7 +1676,7 @@ archive <span class="pl-k">=</span> Elodie.Archive()
 <span class="pl-c"># the one with highest S/N</span>
 sci_file <span class="pl-k">=</span> archive.files[<span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>]
 
-<span class="pl-c"># all files are in `data` member, first column is the file name </span>
+<span class="pl-c"># all files are in `data` member, first column is the file name</span>
 cal_files <span class="pl-k">=</span> [ entry[<span class="pl-c1">0</span>] <span class="pl-k">for</span> entry <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD087901A<span class="pl-pds">'</span></span>] ]
 
 Elodie.Download(
@@ -1742,7 +1749,7 @@ line <span class="pl-k">=</span> Profile.Fit(fig, <span class="pl-smi">function<
 <span class="pl-c"># Inner points mark the sample of the line to fit.</span>
 <span class="pl-c"># Press &lt;Return&gt; after making your selections ...</span>
 
-<span class="pl-c"># now `line` is a Spectrum object generated by evaluating the </span>
+<span class="pl-c"># now `line` is a Spectrum object generated by evaluating the</span>
 <span class="pl-c"># `InvertedGaussian` function on the larger domain selected by the</span>
 <span class="pl-c"># user with coefficients optimized using Profile.Fit().</span>
 <span class="pl-c"># You might use it to deblend this inner line with the overlapping ones.</span>
@@ -1755,7 +1762,7 @@ fig.save(<span class="pl-s"><span class="pl-pds">'</span>HD332329.png<span class
 
 <p><img src="Figures/Profile-Fit.png" alt="example"></p>
 
-<p><strong>Figure 2:</strong> The above figure was generated by running the above code 
+<p><strong>Figure 2:</strong> The above figure was generated by running the above code
 snippet.</p>
 </li>
 </ul>
@@ -1767,7 +1774,7 @@ snippet.</p>
 <p><strong>Extract</strong> ( <em>splot</em>, <em>kernel</em> = Gaussian, **<em>kwargs</em>):</p>
 
 <p>Select locations in the <em>splot</em> figure, expected to be of type SPlot.
-Exactly four points should be selected. These are used to extract a 
+Exactly four points should be selected. These are used to extract a
 line profile from the spectrum plotted in the splot figure. The inner
 section is used for the line, and the outer intervals are used to model
 the continuum; these, respectively, are both returned as Spectrum objects.
@@ -1785,20 +1792,20 @@ will almost definitely be too large (resulting in a largely flat result
 at the average of the data points). As the bandwidth decreases to smaller
 than the resolution of the data, you will essentially being performing
 linear interpolation (no smoothing). You want to choose a length that is
-larger than the small scale variation in the noise, but smaller than the 
+larger than the small scale variation in the noise, but smaller than the
 larger scale variation in the overall continuum level.</p>
 
-<p>The <em>rms</em> can optionally be computed between the continuum data and the 
-curve fit to it. This rms value is used to scale the error profile 
+<p>The <em>rms</em> can optionally be computed between the continuum data and the
+curve fit to it. This rms value is used to scale the error profile
 that is returned for the line extracted. Explicitely, the error for a
 line extraction is <code>error_spectrum = continuum_rms * I_0 / I</code> where
-<em>I</em> is the line data and <em>I_0</em> is the interpolated continuum over the 
+<em>I</em> is the line data and <em>I_0</em> is the interpolated continuum over the
 gap.</p>
 
-<p>From the documentation of scipy.interpolate...interp1d: <em>kind</em> specifies the 
-kind of interpolation as a string ('linear', 'nearest', 'zero', 'slinear', 
-'quadratic', 'cubic') where 'slinear', 'quadratic' and 'cubic' refer to a 
-spline interpolation of first, second,  or third order respectively;  or as 
+<p>From the documentation of scipy.interpolate...interp1d: <em>kind</em> specifies the
+kind of interpolation as a string ('linear', 'nearest', 'zero', 'slinear',
+'quadratic', 'cubic') where 'slinear', 'quadratic' and 'cubic' refer to a
+spline interpolation of first, second,  or third order respectively;  or as
 an integer specifying the order of the spline interpolator to use.</p>
 
 <table>
@@ -1842,7 +1849,7 @@ line, continuum, rms <span class="pl-k">=</span> Profile.Extract(fig, <span clas
 
 <p><img src="Figures/Profile-Extract.png" alt="example"></p>
 
-<p><strong>Figure 3:</strong> The above figure was generated by running the above code 
+<p><strong>Figure 3:</strong> The above figure was generated by running the above code
 snippet.</p>
 </li>
 </ul>
@@ -1858,6 +1865,12 @@ snippet.</p>
 for creating image mosaics. This module is a wrapper to automate not only the
 process for small projects, but to segment large fields into a grid and
 mosaic each <em>site</em> before combining them into a <em>master</em> mosaic.</p>
+
+<p>At the outset of the development of this module, the author was unaware of the
+currently available <em>montage_wrapper</em>. This module will no longer be developed.
+Nevertheless, it remains a high level manager for creating mosaics.</p>
+
+<p>See the example in Figure 4.</p>
 
 <p><a name="MSolveGridLoc"></a></p>
 
@@ -2044,25 +2057,51 @@ now calling Montage.Mosaic() on each <em>site</em>.</p>
 
 <div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy <span class="pl-k">import</span> Montage, Simbad
 
+<span class="pl-c"># initialize the mosaic with a location, size, grid</span>
 mosaic <span class="pl-k">=</span> Montage.SubField(
 
     Simbad.Position(<span class="pl-s"><span class="pl-pds">'</span>Pleiades<span class="pl-pds">'</span></span>), <span class="pl-c"># center of the Pleiades</span>
     (<span class="pl-c1">4</span>, <span class="pl-c1">4</span>),                      <span class="pl-c"># side lengths of mosaic</span>
-    (<span class="pl-c1">2</span>, <span class="pl-c1">2</span>)                       <span class="pl-c"># grid pattern creates 2x2 degree `sites`</span>
+    (<span class="pl-c1">2</span>, <span class="pl-c1">2</span>),                      <span class="pl-c"># grid pattern creates 2x2 degree `sites`</span>
+    <span class="pl-smi">band</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>DSS2B<span class="pl-pds">'</span></span>               <span class="pl-c"># Blue filter</span>
 )
 
+<span class="pl-c"># run mArchiveList to get the raw image tables</span>
 mosaic.ArchiveList()
+
+<span class="pl-c"># download the images at all `sites`</span>
 mosaic.ArchiveExec()
-mosaic.Build()
+
+<span class="pl-c"># run Montage.Mosaic() at each site, create a 4MP image,</span>
+<span class="pl-c"># Notice: this creates &gt; 12 GB on disk!</span>
+mosaic.Build(<span class="pl-c1">3</span><span class="pl-k">/</span><span class="pl-c1">2000</span>, <span class="pl-smi">bkmodel</span><span class="pl-k">=</span><span class="pl-c1">False</span>)
+
+<span class="pl-c"># copy `site` mosaics to master image directory</span>
 mosaic.Collect()
-mosaic.Merge()
+
+<span class="pl-c"># run Montage.Mosaic() on `site` mosaics</span>
+mosaic.Merge(<span class="pl-c1">3</span><span class="pl-k">/</span><span class="pl-c1">2000</span>, <span class="pl-smi">bkmodel</span><span class="pl-k">=</span><span class="pl-c1">False</span>)
 
 <span class="pl-c"># If you have APLpy</span>
 <span class="pl-k">import</span> aplpy
-
 fig <span class="pl-k">=</span> aplpy.FITSFigure(<span class="pl-s"><span class="pl-pds">'</span>master/final/mosaic.fits<span class="pl-pds">'</span></span>)
 fig.show_grayscale()
-</pre></div>
+fig.set_frame_color(<span class="pl-s"><span class="pl-pds">'</span>gray<span class="pl-pds">'</span></span>)
+fig.set_frame_linewidth(<span class="pl-c1">0.5</span>)
+fig.set_nan_color(<span class="pl-s"><span class="pl-pds">'</span>black<span class="pl-pds">'</span></span>)
+fig.set_tick_labels_xformat(<span class="pl-s"><span class="pl-pds">'</span>hh:mm<span class="pl-pds">'</span></span>)
+fig.set_tick_labels_yformat(<span class="pl-s"><span class="pl-pds">'</span>dd:mm<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">from</span> matplotlib <span class="pl-k">import</span> pyplot <span class="pl-k">as</span> plt
+plt.rc(<span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span>, <span class="pl-smi">usetex</span><span class="pl-k">=</span><span class="pl-c1">True</span>)
+plt.rc(<span class="pl-s"><span class="pl-pds">'</span>font<span class="pl-pds">'</span></span>, <span class="pl-smi">family</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>serif<span class="pl-pds">'</span></span>)
+plt.draw()
+
+fig.save(<span class="pl-s"><span class="pl-pds">'</span>Pleiades.png<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><img src="Figures/Pleiades.png" alt="example"></p>
+
+<p><strong>Figure 4:</strong> Pleiades.png from the above code snippet.</p>
 </li>
 </ul>
 
@@ -2290,8 +2329,6 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
         <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">SLiPy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-        <span class="site-footer-credits"><br><br><b>Notice: </b> The source for this page has been modified by Geoffrey Lentner.</span>
-		
       </footer>
 
     </section>
