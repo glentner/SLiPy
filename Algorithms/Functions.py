@@ -17,7 +17,7 @@ def Gaussian(x, *params):
     A, mu, sigma = params
     return A * np.exp( -0.5 * (x - mu)**2 / sigma**2 )
 
-def NormalizedGaussian(x *params):
+def NormalizedGaussian(x, *params):
     """
     The normalized Gaussian function.
     """
