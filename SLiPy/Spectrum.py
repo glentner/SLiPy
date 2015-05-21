@@ -186,7 +186,7 @@ class Spectrum:
                     # assume we are importing from a file
                     filename = args[0]
                     
-                    self.data = pyfits.getdata(filename)
+                    self.data = pyfits.getdata(filename) * u.Unit(self.yunits)
 
                     if self.wavecal:
 
@@ -302,8 +302,8 @@ class Spectrum:
 
             # check domain limits
             if spectrum not in self:
-                raise SpectrumError('Spectrum.resample() cannot interplate outside '
-                'the original domain of the flux data.')
+                raise SpectrumError('Spectrum.resample() cannot interpolate '
+                'outside the original domain of the flux data.')
 
             # build new wave-array from spectrum
             self.wave = spectrum.wave.to(self.wave.unit)
@@ -312,8 +312,8 @@ class Spectrum:
             self.data = f(self.wave) * self.data.unit
 
             # convert to units of the given spectrum
-            self.wave = self.wave.to(u.Unit(spectrum.wave.unit))
-            self.data = self.data.to(u.Unit(spectrum.data.unit))
+            self.wave = self.wave.to(spectrum.wave.unit)
+            self.data = self.data.to(spectrum.data.unit)
 
         elif len(args) == 3:
 
