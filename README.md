@@ -1367,10 +1367,10 @@ The *IonManager* can be imported via the member instance *Ions*.
 
 **Examples:**
 
-import the data set
+Import the data set:
 ```python
 from slipy.Data.Atomic import Ions
-# equivalent to `import IonManager; Ions = IonManager()`
+# equivalent to `from slipy.Data.Atomic import IonManager; Ions = IonManager()`
 ```
 
 The member *.data* contains the entire table from Morton 2003. We can access information
