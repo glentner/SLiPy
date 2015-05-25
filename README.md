@@ -1333,25 +1333,25 @@ Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
 
     Managing class for the atomic data (Morton 2003). See SLiPy.Data.Archives.AtomicData.
 
-    - *__call__* ( *key*, \*\**kwargs* ):
+    - *\_\_call\_\_* ( *key*, \*\**kwargs* ):
 
-        Retrieve data from the Archives.AtomicData table. If the `key` is a string
-        type it is expected to be the name of an ion (e.g., 'C III'). If the `key` is
+        Retrieve data from the Archives.AtomicData table. If the *key* is a string
+        type it is expected to be the name of an ion (e.g., 'C III'). If the *key* is
         a number it is expected to be a wavelength value (if not with units Angstroms are
-        implied). The default is Vacuum wavelength, but Air can be specified with the
+        implied). The default is *Vacuum* wavelength, but *Air* can be specified with the
         keyword argument `wavelength='Air'`.
 
         If the key was the name of an ion, all the lines for that ion are returned. If the
         key was a wavelength, the closest line in the table to that wavelength is returned.
-        You can request a wavelength range by giving the `key` as a tuple of two wavelengths
+        You can request a wavelength range by giving the *key* as a tuple of two wavelengths
         specifying the range.
 
         The results default to the f-value (a.k.a. the oscillator strength) but can be
-        changed with the keyword argument `entry`. Options include, `Air`, `Vacuum`, `Ion`,
-        `ELow`, `LOGWF`, and `fvalue`.
+        changed with the keyword argument *entry*. Options include, *Air*, *Vacuum*, *Ion*,
+        *ELow*, *LOGWF*, and *fvalue*.
 
-        The if either a single pair or a list of pairs: the first element of each pair is
-        always a wavelength value (in Air if wavelength='Air' or in Vacuum otherwise), the
+        The return is either a single pair or a list of pairs: the first element of each pair
+        is always a wavelength value (in Air if wavelength='Air' or in Vacuum otherwise), the
         second being the entries requested. The wavelength type is always that used for
         the look-up. That is, Vacuum by default, but if `wavelength='Air'` is given, the
         returns will be in Air wavelengths. Be aware that `None` might be returned if
