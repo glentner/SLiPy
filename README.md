@@ -1378,5 +1378,7 @@ of interest directly however by calling the *Ions* object.
 ```python
 Ions('C III')
 ```
+```
 [(<Quantity 977.0201 Angstrom>, 0.7570010842747638),
  (<Quantity 1908.734 Angstrom>, 1.6875419997146983e-07)]
+```
