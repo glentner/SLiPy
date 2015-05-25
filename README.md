@@ -56,6 +56,7 @@ to import:
 | SLiPy/Data | Functions/Classes |
 |------------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#EArchiveLoc), [Script](#EScriptLoc), [Download](#EDownloadLoc), |
+|[**Atomic**](#AtomicLoc)|[Ions](#IonsLoc), |
 
 ## Installation
 
@@ -1316,3 +1317,25 @@ Methods for data retrieval from the Elodie Archive.
     # between 5850 and 5950 with a resolution of 0.01 Angstroms per pixel
     Elodie.Download( *files, resample=(5850, 5950, 0.01) )
     ```
+
+<br>
+##<a name=AtomicLoc></a>[Atomic](Data/Atomic.py)
+
+Convenient access to a large set of published atomic data for absorption lines:
+
+``Atomic data for resonance absorption lines. III. Wavelengths longward
+of the Lyman limit for the elements Hydrogen to Gallium''<br>
+Author: Donald C. Morton (2003)<br>
+Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
+
+The *IonManager* can be imported via the member instance *Ions*.
+
+**Examples:**
+```python
+from slipy.Data.Atomic import Ions
+
+Ions('Na I')
+```
+
+<a name=Loc></a>
+- class **Archive** ( \*\**kwargs* ):

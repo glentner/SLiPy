@@ -2,7 +2,7 @@
 # See LICENSE (GPLv3)
 # slipy/Data/Archives/AtomicData.py
 """
-Atomic data for resoncance absorption lines. III. Wavelengths longward
+Atomic data for resonance absorption lines. III. Wavelengths longward
 of the Lyman limit for the elements Hydrogen to Gallium
 
 This is a Python list created from Table 5 from Morton 2003
