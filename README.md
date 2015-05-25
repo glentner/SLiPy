@@ -998,8 +998,8 @@ Profile fitting tasks for spectra.
 - **MultiFit** ( *splot*, *function* = 'Lorentzian', *observatory* = None,
     *resolution* = None, \*\**kwargs*):
 
-    The MultiFit routine takes a `splot` figure (type SPlot) and allows the
-    user to interactively fit line profiles. `splot` may optionally be of type
+    The MultiFit routine takes a *splot* figure (type SPlot) and allows the
+    user to interactively fit line profiles. *splot* may optionally be of type
     Spectrum, in which case a SPlot figure will be created for you. This function
     creates a *FittingGUI* object (not documented here) which uses the *Profile.Extract()*
     routine first (*kwargs* as passed this function). As in the Extract routine, the user
@@ -1046,6 +1046,7 @@ Profile fitting tasks for spectra.
     ![example](Figures/MultiFit.png)
 
     **Figure 4:** Mid-session, annotated screen-shot of the above code-snippet/routine.
+
 <br>
 ##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
 
