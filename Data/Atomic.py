@@ -68,7 +68,8 @@ class IonManager:
         changed with the keyword argument `entry`. Options include, `Air`, `Vacuum`, `Ion`,
         `ELow`, `LOGWF`, and `fvalue`.
 
-        The result is always a set of two lists, the first being the wavelengths and the
+        The if either a single pair or a list of pairs: the first element of each pair is 
+        always a wavelength value (in Air if wavelength='Air' or in Vacuum otherwise), the
         second being the entries requested. The wavelength type is always that used for
         the look-up. That is, Vacuum by default, but if `wavelength='Air'` is given, the
         returns will be in Air wavelengths. Be aware that `None` might be returned if
