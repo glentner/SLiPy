@@ -1328,6 +1328,41 @@ of the Lyman limit for the elements Hydrogen to Gallium''<br>
 Author: Donald C. Morton (2003)<br>
 Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
 
+<a name=IonLoc></a>
+- class **IonManager** ():
+
+    Managing class for the atomic data (Morton 2003). See SLiPy.Data.Archives.AtomicData.
+
+    - *__call__* ( *key*, \*\**kwargs* ):
+
+        Retrieve data from the Archives.AtomicData table. If the `key` is a string
+        type it is expected to be the name of an ion (e.g., 'C III'). If the `key` is
+        a number it is expected to be a wavelength value (if not with units Angstroms are
+        implied). The default is Vacuum wavelength, but Air can be specified with the
+        keyword argument `wavelength='Air'`.
+
+        If the key was the name of an ion, all the lines for that ion are returned. If the
+        key was a wavelength, the closest line in the table to that wavelength is returned.
+        You can request a wavelength range by giving the `key` as a tuple of two wavelengths
+        specifying the range.
+
+        The results default to the f-value (a.k.a. the oscillator strength) but can be
+        changed with the keyword argument `entry`. Options include, `Air`, `Vacuum`, `Ion`,
+        `ELow`, `LOGWF`, and `fvalue`.
+
+        The if either a single pair or a list of pairs: the first element of each pair is
+        always a wavelength value (in Air if wavelength='Air' or in Vacuum otherwise), the
+        second being the entries requested. The wavelength type is always that used for
+        the look-up. That is, Vacuum by default, but if `wavelength='Air'` is given, the
+        returns will be in Air wavelengths. Be aware that `None` might be returned if
+        there is not Air wavelength for the line. Further, all results will be returned
+        as `None` where no data is available.
+
+        | Options      | Defaults  | Alternatives                            |
+        |--------------|-----------|-----------------------------------------|
+        | *wavelength* | 'Vacuum'  | 'Air'                                   |
+        | *entry*      | 'fvalue'  | 'Air', 'Vacuum', 'Ion', 'ELow', 'LOGWF' |
+
 The *IonManager* can be imported via the member instance *Ions*.
 
 **Examples:**
@@ -1336,6 +1371,3 @@ from slipy.Data.Atomic import Ions
 
 Ions('Na I')
 ```
-
-<a name=Loc></a>
-- class **Archive** ( \*\**kwargs* ):
