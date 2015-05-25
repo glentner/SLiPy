@@ -34,7 +34,7 @@ class Archive:
 
             # default input file
             default_infile = os.path.join( os.path.dirname(__file__),
-                'archives/elodie.csv')
+                'Archives/Elodie.csv')
 
             # parameter defaults
             options = Options( kwargs,
