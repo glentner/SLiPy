@@ -1382,3 +1382,36 @@ Ions('C III')
 [(<Quantity 977.0201 Angstrom>, 0.7570010842747638),
  (<Quantity 1908.734 Angstrom>, 1.6875419997146983e-07)]
 ```
+
+The second item in each of those pairs was the oscillator strength, or *fvalue*, for the
+lines. The wavelength given was in *vacuum*. We can request the same lines in *air*:
+```python
+Ions('C III', wavelength='air')
+```
+```
+[(None, 0.7570010842747638), (None, 1.6875419997146983e-07)]
+```
+
+The result is *None* because those values don't exist in the data set. But they are indeed
+the same lines.
+
+We can ask for a wavelength range, and change what we are looking up:
+```python
+Ions( (5885, 5900), wavelength='air', lookup='ion')
+```
+```
+[(<Quantity 5889.951 Angstrom>, 'Na I'),
+ (<Quantity 5894.092 Angstrom>, 'Ti I'),
+ (<Quantity 5895.924 Angstrom>, 'Na I')]
+```
+
+Units work as well:
+```python
+from astropy import units as u
+Ions( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
+```
+```
+[(<Quantity 5889.951 Angstrom>, 'Na I'),
+ (<Quantity 5894.092 Angstrom>, 'Ti I'),
+ (<Quantity 5895.924 Angstrom>, 'Na I')]
+```
