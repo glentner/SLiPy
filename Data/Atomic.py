@@ -68,7 +68,7 @@ class IonManager:
         changed with the keyword argument `entry`. Options include, `Air`, `Vacuum`, `Ion`,
         `ELow`, `LOGWF`, and `fvalue`.
 
-        The if either a single pair or a list of pairs: the first element of each pair is 
+        The if either a single pair or a list of pairs: the first element of each pair is
         always a wavelength value (in Air if wavelength='Air' or in Vacuum otherwise), the
         second being the entries requested. The wavelength type is always that used for
         the look-up. That is, Vacuum by default, but if `wavelength='Air'` is given, the
@@ -80,12 +80,12 @@ class IonManager:
 
             options = Options( kwargs, {
 
-                    'wavelength' : 'Vacuum', # alternative is `Air`
-                    'entry'      : 'fvalue'  # others: `Air`, `Vacuum`, `Ion`, `ELow`, `LOGWF`
+                    'wavelength' : 'vacuum', # alternative is `air`
+                    'lookup'     : 'fvalue'  # others: `air`, `vacuum`, `ion`, `elow`, `logwf`
                 })
 
             wavelength = options('wavelength')
-            entry      = options('entry')
+            lookup     = options('lookup')
 
         except OptionsError as err:
             print(' --> OptionsError:', err)
@@ -104,31 +104,31 @@ class IonManager:
             table = self.__getitem__(key)
 
         # map entries to index value
-        entry_options = { 'Air': 0, 'Vacuum': 1, 'Ion': 2, 'ELow': 3, 'LOGWF': 4,
+        lookup_options = { 'air': 0, 'vacuum': 1, 'ion': 2, 'elow': 3, 'logwf': 4,
             'fvalue' : 5 }
 
-        if entry not in entry_options:
-            raise IonManagerError('`{}` is not an available search option!'.format(entry))
+        if lookup not in lookup_options:
+            raise IonManagerError('`{}` is not an available search option!'.format(lookup))
 
-        if wavelength not in ['Air', 'Vacuum']:
-            raise IonManagerError('Only `Air` and `Vacuum` wavelengths are understood!')
+        if wavelength not in ['air', 'vacuum']:
+            raise IonManagerError('Only `air` and `vacuum` wavelengths are understood!')
 
         if isinstance(key, str):
 
             # alter the index dictionary for column changes
-            entry_options = { 'Air': 0, 'Vacuum': 1, 'ELow': 2, 'LOGWF': 3, 'fvalue' : 4 }
+            lookup_options = { 'air': 0, 'vacuum': 1, 'elow': 2, 'logwf': 3, 'fvalue' : 4 }
 
-            if entry == 'Ion':
+            if lookup == 'Ion':
                 # `Ion` column won't be present in the returned `table` !!!
                 raise IonManagerError('You provided the name of an ion but requested the names '
                 'of the ions as the return value!')
 
         if not isinstance(key, tuple) and not isinstance(key, str):
             # assume this was a single wavelength value, `table` is a single line
-            return tuple([ table[ entry_options[wavelength] ], table[ entry_options[entry] ] ])
+            return tuple([ table[ lookup_options[wavelength] ], table[ lookup_options[lookup] ] ])
 
-        return [# return pairs of wavelength and `entry` for each `line` found
-                tuple([ line[ entry_options[wavelength] ], line[ entry_options[entry] ] ])
+        return [# return pairs of wavelength and `lookup` for each `line` found
+                tuple([ line[ lookup_options[wavelength] ], line[ lookup_options[lookup] ] ])
                 for line in table
             ]
 

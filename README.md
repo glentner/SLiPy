@@ -1338,7 +1338,7 @@ Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
         Retrieve data from the Archives.AtomicData table. If the *key* is a string
         type it is expected to be the name of an ion (e.g., 'C III'). If the *key* is
         a number it is expected to be a wavelength value (if not with units Angstroms are
-        implied). The default is *Vacuum* wavelength, but *Air* can be specified with the
+        implied). The default is *vacuum* wavelength, but *air* can be specified with the
         keyword argument `wavelength='Air'`.
 
         If the key was the name of an ion, all the lines for that ion are returned. If the
@@ -1347,27 +1347,36 @@ Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
         specifying the range.
 
         The results default to the f-value (a.k.a. the oscillator strength) but can be
-        changed with the keyword argument *entry*. Options include, *Air*, *Vacuum*, *Ion*,
-        *ELow*, *LOGWF*, and *fvalue*.
+        changed with the keyword argument *entry*. Options include, *air*, *vacuum*, *ion*,
+        *elow*, *logwf*, and *fvalue*.
 
         The return is either a single pair or a list of pairs: the first element of each pair
-        is always a wavelength value (in Air if wavelength='Air' or in Vacuum otherwise), the
+        is always a wavelength value (in air if wavelength='air' or in vacuum otherwise), the
         second being the entries requested. The wavelength type is always that used for
         the look-up. That is, Vacuum by default, but if `wavelength='Air'` is given, the
-        returns will be in Air wavelengths. Be aware that `None` might be returned if
+        returns will be in air wavelengths. Be aware that *None* might be returned if
         there is not Air wavelength for the line. Further, all results will be returned
-        as `None` where no data is available.
+        as *None* where no data is available.
 
         | Options      | Defaults  | Alternatives                            |
         |--------------|-----------|-----------------------------------------|
-        | *wavelength* | 'Vacuum'  | 'Air'                                   |
-        | *entry*      | 'fvalue'  | 'Air', 'Vacuum', 'Ion', 'ELow', 'LOGWF' |
+        | *wavelength* | 'vacuum'  | 'air'                                   |
+        | *lookup*     | 'fvalue'  | 'air', 'vacuum', 'ion', 'elow', 'logwf' |
 
 The *IonManager* can be imported via the member instance *Ions*.
 
 **Examples:**
+
+import the data set
 ```python
 from slipy.Data.Atomic import Ions
-
-Ions('Na I')
+# equivalent to `import IonManager; Ions = IonManager()`
 ```
+
+The member *.data* contains the entire table from Morton 2003. We can access information
+of interest directly however by calling the *Ions* object.
+```python
+Ions('C III')
+```
+[(<Quantity 977.0201 Angstrom>, 0.7570010842747638),
+ (<Quantity 1908.734 Angstrom>, 1.6875419997146983e-07)]
