@@ -9,6 +9,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.interpolate.interpolate import interp1d
 from scipy.special import wofz as w
+from scipy.integrate import simps as Integrate
 
 from matplotlib import pyplot as plt
 from matplotlib.lines import Line2D
@@ -21,6 +22,7 @@ from .Observatory import Observatory
 from .Spectrum import Spectrum, SpectrumError
 from .Plot import SPlot, PlotError
 from ..Framework.Options import Options, OptionsError
+from ..Framework.Measurement import Measurement
 
 from ..Algorithms.Functions import Gaussian, Lorentzian, Voigt, InvertedLorentzian
 from ..Algorithms.KernelFit import KernelFit1D
@@ -87,7 +89,7 @@ def Select(splot):
 
 def AutoFit(splot, function = InvertedLorentzian, params = None):
     """
-    Given `splot` of type SPlot, the user selects two points on the
+    Given `splot` of type SPlot, the user selects four points on the
     spectrum and a parameterized function is fit (an inverted Lorentzian by
     default). Optionally, `splot` can be of type spectrum and a basic SPlot
     will be created for you. If the user gives an alternative `function`,
@@ -107,7 +109,7 @@ def AutoFit(splot, function = InvertedLorentzian, params = None):
 
     if len( selected['wave'] ) != 4:
         raise ProfileError('Exactly 4 locations should be selected for '
-        'the Profile.Fit() routine!')
+        'the Profile.AutoFit() routine!')
 
     # order the selected wavelength locations
     points = selected['wave']
@@ -125,9 +127,6 @@ def AutoFit(splot, function = InvertedLorentzian, params = None):
     y_inner = data[np.where(np.logical_and(points[1] < wave, wave < points[2]))]
     y_outer = data[np.where(np.logical_and(points[0] < wave, wave < points[3]))]
 
-    # y_inner = data[ wave[ wave < points[2] ] > points[1] ]
-    # x_inner = wave[ wave[ wave < points[2] ] > points[1] ]
-
     if function.__name__ == 'InvertedLorentzian':
         # First guess for default behavior
         params = [ y_inner.min().value, x_inner[ y_inner.argmin() ].value,
@@ -142,7 +141,7 @@ def AutoFit(splot, function = InvertedLorentzian, params = None):
 
         if not hasattr(params, '__iter__'):
             raise ProfileError('`params` must be an iterable type in '
-            'Profile.Fit()!')
+            'Profile.AutoFit()!')
 
         try:
             for a, parameter in enumerate(params):
@@ -152,7 +151,7 @@ def AutoFit(splot, function = InvertedLorentzian, params = None):
 
         except TypeError as err:
             print(' --> TypeError:', err)
-            raise ProfileError('Profile.Fit() failed to call user functions '
+            raise ProfileError('Profile.AutoFit() failed to call user functions '
             'correctly in `params`!')
 
     # fit a parameterized curve
@@ -261,9 +260,8 @@ def Extract(splot, kernel = Gaussian, **kwargs):
         return line, continuum
 
     cont_rms = np.sqrt( np.sum( (cont_outside * yc.unit - yc)**2 ) / len(yc) )
-    line_rms = cont_rms * np.sqrt(cont_inside / yl.value)
 
-    return line, continuum, line_rms
+    return line, continuum, cont_rms
 
 class FittingGUI:
 	"""
@@ -504,8 +502,8 @@ class FittingGUI:
 				}
 
 		else: raise ProfileError('From FittingGUI.Parameterize(), the only '
-			'currently implemented functions are the `Lorentzian` and '
-			'the `Gaussian`!')
+			'currently implemented functions are the `Gaussian`, `Lorentzian` and '
+			'the `Voigt` profile!')
 
 	def SetFunction(self, function):
 		"""
@@ -675,7 +673,7 @@ class FittingGUI:
 			for line, parameters in self.Params.items():
 				self.Component[line].set_ydata(self.y - self.Evaluate(self.x, **parameters))
 
-			# update the super-imposed graphs
+			# update the combined graph
 			self.Combination.set_ydata(self.y - self.SuperPosition())
 
 			# push updates to graph
@@ -719,12 +717,12 @@ class FittingGUI:
 
 				Spectrum(
 						# build a spectrum based on numpy arrays from plot
-						gui.Component[graph].get_ydata() * gui.line.data.unit,
-						gui.x * gui.line.wave.unit
+						self.Component[graph].get_ydata() * self.line.data.unit,
+						self.x * self.line.wave.unit
 					)
 
 				# for all `L1`, `L2`, etc...
-				for graph in sorted( gui.Component.keys() )
+				for graph in sorted( self.Component.keys() )
 			]
 
 	def GetContinuum(self):
@@ -738,7 +736,7 @@ class FittingGUI:
 				self.x * self.line.wave.unit
 			)
 
-def MultiFit(splot, measurements=True, resolution=1e5, function='Voigt', **kwargs):
+def MultiFit(splot, measurements=True, boost_resolution=1, function='Voigt', **kwargs):
 	"""
 	The MultiFit routine takes a `splot` figure (type SPlot) and allows the
 	user to interactively fit line profiles. `splot` may optionally be of type
@@ -770,7 +768,7 @@ def MultiFit(splot, measurements=True, resolution=1e5, function='Voigt', **kwarg
 	a single line fitting tool as well as a deblending tool. By default, the final
 	parameterizations are attached to each spectrum as a dictionary. Also by default, various
 	measurements from the fitted profiles are attached to each returned Spectrum object. These
-	include the equivelent width (attached as `.ew`) and column depth (attached as `N`). This
+	include the equivalent width (attached as `.ew`) and column depth (attached as `N`). This
 	behavior can be suppressed by giving the keyword argument `measurements = False`. The
 	measurements are of type `Measurement` (..Framework.Measurement.Measurement). This is
 	so the uncertainty for each measurement can be attached to its result.
@@ -779,7 +777,7 @@ def MultiFit(splot, measurements=True, resolution=1e5, function='Voigt', **kwarg
 	```
 	Lines = Profile.MultiFit(fig, bandwidth = u.Angstrom / 10)
 	Lines[1].N
-	`Equivelent Width`: (1.4567 ^+ 0.0123 _- 0.0213) x 10^-3 Angstrom
+	`Equivalent Width`: (1.4567 ^+ 0.0123 _- 0.0213) x 10^-3 Angstrom
 
 	```
 	"""
@@ -794,30 +792,68 @@ def MultiFit(splot, measurements=True, resolution=1e5, function='Voigt', **kwarg
 	for a, parameterization in enumerate( sorted(gui.Params.keys()) ):
 		lines[a].parameters = gui.Params[parameterization]
 
-	if measurements:
+	# attach the continuum to the line list
+	continuum = gui.GetContinuum()
 
-		print('\n Computing the Equivalent Widths ... ', end = '')
+	if not measurements:
+		return lines, continuum
 
-		continuum = lines[-1]
+	# if we want to ensure we don't get errors from low resolution (pixel-ation),
+	# during the integration process, we can artificially boost the resolution to
+	# avoid this kind of error, or even check to see how this affects the result
+	if boost_resolution:
 
-		# the ratio of the line to the continuum, percent absorption (inverted I guess)
-		I0_I = [ continuum / spectrum for spectrum in lines[:-1] ]
+		continuum.resample( continuum.wave[0], continuum.wave[-1],
+			len(continuum) * boost_resolution )
 
-		# RMS error from the continuum fit (i.e., KernelFit1D in Profile.Extract())
-		rms = gui.rms
+		for spectrum in lines:
+			spectrum.resample( spectrum.wave[0], spectrum.wave[-1],
+				len(spectrum) * boost_resolution )
 
-		# the error in each line is from both the continuum noise and the counts
-		line_errors = [
+	# the ratio of the line to the continuum, percent absorption (inverted I guess)
+	I0_I = [ continuum / spectrum for spectrum in lines ]
 
-				# the error is added in quadrature,
-				# error in the continuum is rms
-				# error in the line is rms * sqrt(I / I0)
-				Spectrum( rms * np.sqrt(1 + 1 / absorption.data) * continuum.data.unit,
-					continuum.wave)
+	# RMS error from the continuum fit (i.e., KernelFit1D in Profile.Extract())
+	rms = gui.rms
+
+	# the error in each line is from both the continuum noise and the counts
+	line_errors = [
+			# the error is added in quadrature,
+			# error in the continuum is rms
+			# error in the line is rms * sqrt(I / I0)
+			Spectrum(rms * np.sqrt(1 + absorption.data) * continuum.data.unit, continuum.wave)
+			for absorption in I0_I
+		]
+
+	I0_I_lower_bound = [
+				continuum / (spectrum + error)
+				for spectrum, error in zip(lines, line_errors)
 			]
 
-		# the Equivelent Width
-		EWs = [
-				simps(spectrum.wave, continuum - 1 / absorption) * spectrum.wave.unit
-				for spectrum, absorption in zip(lines, I0_I)
+	I0_I_upper_bound = [
+				continuum / (spectrum - error)
+				for spectrum, error in zip(lines, I0_I)
 			]
+
+	# dlambda in the integral is the same everywhere after resampling
+	d_lambda = continuum.wave[1] - continuum.wave[0]
+
+	# the Equivalent Width, integrate via simple Rieman sum
+	EWs = [ np.sum(1 - 1 / absorption.data) * d_lambda
+			for spectrum, absorption in zip(lines, I0_I) ]
+
+	# upper bound on EWs
+	EWs_upper_bound = [ np.sum(1 - 1 / absorption.data) * d_lambda
+		for spectrum, absorption in zip(lines, I0_I_upper_bound) ]
+
+	# lower bound on EWs
+	EWs_lower_bound = [ np.sum(1 - 1 / absorption.data) * d_lambda
+		for spectrum, absorption in zip(lines, I0_I_lower_bound) ]
+
+	# attach these calculations to each spectrum
+	for line, w_zero, w_plus, w_minus in zip(lines, EWs, EWs_upper_bound, EWs_lower_bound):
+		line.ew = Measurement(w_zero, np.array([abs(w_plus - w_zero).value,
+			-abs(w_minus - w_zero).value]) * w_zero.unit, "Equivalent Width",
+			"Measured using the Profile.MultiFit() tool from SLiPy")
+
+	return lines, continuum
