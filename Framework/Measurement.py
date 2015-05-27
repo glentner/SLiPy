@@ -19,12 +19,12 @@ class Measurement(Quantity):
     equivalent to the astropy.constant.Constant, without the instance checking (we can
     have many `Measurement`s). There are `notes` instead of `references`.
     """
-    def __new__(cls, name, value, error=None, notes=None):
+    def __new__(cls, value, error=None, name=None, notes=None):
 
         instance = super().__new__(cls, value)
 
-        instance.name  = name
         instance.error = error
+        instance.name  = name
         instance.notes = notes
 
         return instance
@@ -45,12 +45,12 @@ class Measurement(Quantity):
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def __repr__(self):
-        return str(self)
-
+        return '<' + ' '.join([ label + str(attr) for attr, label in zip(['Measurement',
+            self.value * self.unit, self.error, self.name, self.notes],
+            ['', '', '| error = ', '| name = ', '| notes = ']) if attr]) + '>'
 
     def __str__(self):
-        return ('  Name  = {}\n'
-                '  Value = {}\n'
-                '  Error = {}\n'
-                '  Notes = {}'.format(self.name, self.value*self.unit,
-                    self.error, self.notes))
+        attr = [ self.name, self.value*self.unit, self.error, self.notes ]
+        name = [' Name  = {}', ' Value = {}', ' Error = {}', ' Notes = {}']
+        show = [ a for a in attr if a ]
+        return '\n'.join([n for a, n in zip(attr, name) if a]).format(*show)
