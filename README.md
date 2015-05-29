@@ -1416,8 +1416,10 @@ IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
  (<Quantity 5895.924 Angstrom>, 'Na I')]
 ```
 
+<br>
 <a name=IonLoc></a>
 - class **Ion** ( *name* = None, *wavelength* = None, *fvalue* = None, *A* = None, \*\**kwargs*):
+
     An object for declaring atomic ions.
 
     An `Ion` should have a name, wavelength (air or vacuum), osciallator strength,
