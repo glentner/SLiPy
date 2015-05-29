@@ -1434,7 +1434,7 @@ IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
     http://physics.nist.gov/PhysRefData/ASD/lines_form.html
 
     If no arguments are given the state remains uninitialized.
-    The *name* (e.g., 'Ca III') is used to connect with the data in the
+    The *name* (e.g., 'C III') is used to connect with the data in the
     ..Data.Archives.AtomicData module via the IonManager class. The *wavelength* need
     not necessarily be the exact value of the line; the line closest to that given
     for the named ion is used. This is by default the wavelength in vacuum, but can
