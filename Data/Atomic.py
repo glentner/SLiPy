@@ -14,7 +14,7 @@ from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 from .Archives import AtomicData
 
-class IonManagerError(SlipyError):
+class AtomicError(SlipyError):
     """
     Exception specific for the IonManager class.
     """
@@ -89,12 +89,12 @@ class IonManager:
 
         except OptionsError as err:
             print(' --> OptionsError:', err)
-            raise IonManagerError('Failed keyword assignment from __call__ to IonManager!')
+            raise AtomicError('Failed keyword assignment from __call__ to IonManager!')
 
         if isinstance(key, tuple):
 
             if len(key) != 2:
-                raise IonManagerError('tuples expected to be length 2 on __call__ to '
+                raise AtomicError('tuples expected to be length 2 on __call__ to '
                 'IonManager!')
 
             table = self.Between(*key)
@@ -108,10 +108,10 @@ class IonManager:
             'fvalue' : 5 }
 
         if lookup not in lookup_options:
-            raise IonManagerError('`{}` is not an available search option!'.format(lookup))
+            raise AtomicError('`{}` is not an available search option!'.format(lookup))
 
         if wavelength not in ['air', 'vacuum']:
-            raise IonManagerError('Only `air` and `vacuum` wavelengths are understood!')
+            raise AtomicError('Only `air` and `vacuum` wavelengths are understood!')
 
         if isinstance(key, str):
 
@@ -120,7 +120,7 @@ class IonManager:
 
             if lookup == 'Ion':
                 # `Ion` column won't be present in the returned `table` !!!
-                raise IonManagerError('You provided the name of an ion but requested the names '
+                raise AtomicError('You provided the name of an ion but requested the names '
                 'of the ions as the return value!')
 
         if not isinstance(key, tuple) and not isinstance(key, str):
@@ -149,7 +149,7 @@ class IonManager:
 
             start, stop, step = index.start, index.stop, index.step
 
-            if step: raise IonManagerError('You cannot slice the table with a `step` size!')
+            if step: raise AtomicError('You cannot slice the table with a `step` size!')
 
             if not start:
                 # the first vacuum wavelength in the table
@@ -164,7 +164,7 @@ class IonManager:
         elif isinstance(index, str):
 
             if index not in self.ions:
-                raise IonManagerError('`{}` is not a recognized or available ion in the '
+                raise AtomicError('`{}` is not a recognized or available ion in the '
                 'data!'.format(index))
 
             return self.ions[index]
@@ -187,7 +187,7 @@ class IonManager:
             wavelength *= u.Angstrom
 
         if wavelength > self.data[-1][1] or wavelength < self.data[0][1]:
-            raise IonManagerError('Cannot access wavelengths outside the data available!')
+            raise AtomicError('Cannot access wavelengths outside the data available!')
 
         return [ entry for entry in self.data if entry[1] < wavelength ]
 
@@ -200,7 +200,7 @@ class IonManager:
             wavelength *= u.Angstrom
 
         if wavelength > self.data[-1][1] or wavelength < self.data[0][1]:
-            raise IonManagerError('Cannot access wavelengths outside the data available!')
+            raise AtomicError('Cannot access wavelengths outside the data available!')
 
         return [ entry for entry in self.data if entry[1] > wavelength ]
 
@@ -216,10 +216,10 @@ class IonManager:
             wavelengthB *= u.Angstrom
 
         if wavelengthA > self.data[-1][1] or wavelengthA < self.data[0][1]:
-            raise IonManagerError('Cannot access wavelengths outside the data available!')
+            raise AtomicError('Cannot access wavelengths outside the data available!')
 
         if wavelengthB > self.data[-1][1] or wavelengthB < self.data[0][1]:
-            raise IonManagerError('Cannot access wavelengths outside the data available!')
+            raise AtomicError('Cannot access wavelengths outside the data available!')
 
         if wavelengthA > wavelengthB:
             # that doesn't make sense, switch the order
@@ -228,5 +228,94 @@ class IonManager:
         return [ entry for entry in self.Below(wavelengthB) if entry[1] > wavelengthA ]
 
 
-# create static instance of the IonManager
-Ions = IonManager()
+# create a static instance of the IonManager class.
+IonSearch = IonManager()
+
+class Ion():
+    """
+    An object for declaring atomic ions.
+
+    An `Ion` should have a name, wavelength (air or vacuum), osciallator strength,
+    and a transition probability (Einstein coefficient).
+
+    Much of this data is available from the ..Data.Archives.AtomicData module searchable
+    with the ..Data.Atomic.IonManager class. In the future, we hope to impliment an
+    internal database of transition probabilities for each ion in the AtomicData module
+    from the Morton 2003 publication. Currently, the user must provide this data.
+
+    The NIST Atomic Spectra Database Lines Data is a good source for atomic data values:
+        http://physics.nist.gov/PhysRefData/ASD/lines_form.html
+    """
+    def __init__(self, name=None, wavelength=None, fvalue=None, A=None, **kwargs):
+        """
+        Create a new `Ion`. If no arguments are given the state remains uninitialized.
+        The `name` (e.g., 'Ca III') is used to connect with the data in the
+        ..Data.Archives.AtomicData module via the IonManager class. The `wavelength` need
+        not necessarily be the exact value of the line; the line closest to that given
+        for the `name`d ion is used. This is by default the wavelength in vacuum, but can
+        be the wavelength in air if the keyword argument `medium='air'` is given.
+        The created member attribute `wavelength` and `fvalue` are automatically assigned
+        based on this procedure, but can be explicitely assigned if the `fvalue` is
+        provided directly. The transition probability (Einstein coefficient) `A` simply
+        attached as `A`. If not units are given for `A`, `s-1` is assigned.
+        """
+        try:
+
+            options = Options( kwargs, {
+
+                    'medium' : 'vacuum' # alternative is 'air'
+                })
+
+            self.medium = options('medium')
+
+            if self.medium not in ['vacuum', 'air']:
+                raise AtomicError('From Ion.__init__(), the only allowed values for `medium` '
+                'are `vacuum` and `air`!')
+
+        except OptionsError as err:
+            print(' --> OptionsError:', err)
+            raise AtomicError('From Ion.__init__(), that was not an exceptable keyword assignment '
+            'for an `Ion`!')
+
+        if not name or not wavelength or fvalue:
+            # simply assign whatever is provided.
+            self.name       = name
+            self.wavelength = wavelength
+            self.fvalue     = fvalue
+            self.A          = A
+
+        else:
+
+            if not hasattr(wavelength, 'unit'):
+                wavelength *= u.Angstrom
+
+            # lookup the ion using IonManager (already created as IonSearch)
+            found_ions  = IonSearch(name, wavelength=self.medium)
+            wavelengths = np.array([(wavelength - entry[0]).value for entry in found_ions])**2
+            closest_ion = wavelengths.argmin()
+
+            # assign the closest wavelength to that avaiable
+            self.wavelength = found_ions[ closest_ion ][0]
+            self.fvalue     = found_ions[ closest_ion ][1] * u.dimensionless_unscaled
+
+            self.name = name
+
+            if A and not hasattr(A, 'unit'):
+                A /= u.s
+
+            self.A    = A
+
+    def __str__(self):
+        """
+        Show the available information for this Ion.
+        """
+        return ('Ion:        {}\n'
+                'Wavelength: {}\n'
+                'fvalue:     {}\n'
+                'A:          {}\n'.format(self.name, self.wavelength, self.fvalue, self.A))
+
+    def __repr__(self):
+        """
+        The same as the `str` representation.
+        """
+        return str(self)
