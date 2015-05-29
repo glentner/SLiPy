@@ -1422,11 +1422,11 @@ IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
 
     An object for declaring atomic ions.
 
-    An `Ion` should have a name, wavelength (air or vacuum), osciallator strength,
+    An *Ion* should have a name, wavelength (air or vacuum), osciallator strength,
     and a transition probability (Einstein coefficient).
 
     Much of this data is available from the ..Data.Archives.AtomicData module searchable
-    with the ..Data.Atomic.IonManager class. In the future, we hope to impliment an
+    with the ..Data.Atomic.IonManager class. In the future, we hope to implement an
     internal database of transition probabilities for each ion in the AtomicData module
     from the Morton 2003 publication. Currently, the user must provide this data.
 
@@ -1434,15 +1434,15 @@ IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
     http://physics.nist.gov/PhysRefData/ASD/lines_form.html
 
     If no arguments are given the state remains uninitialized.
-    The `name` (e.g., 'Ca III') is used to connect with the data in the
-    ..Data.Archives.AtomicData module via the IonManager class. The `wavelength` need
+    The *name* (e.g., 'Ca III') is used to connect with the data in the
+    ..Data.Archives.AtomicData module via the IonManager class. The *wavelength* need
     not necessarily be the exact value of the line; the line closest to that given
-    for the `name`d ion is used. This is by default the wavelength in vacuum, but can
+    for the named ion is used. This is by default the wavelength in vacuum, but can
     be the wavelength in air if the keyword argument `medium='air'` is given.
-    The created member attribute `wavelength` and `fvalue` are automatically assigned
-    based on this procedure, but can be explicitely assigned if the `fvalue` is
-    provided directly. The transition probability (Einstein coefficient) `A` simply
-    attached as `A`. If not units are given for `A`, `s-1` is assigned.
+    The created member attribute wavelength* and *fvalue* are automatically assigned
+    based on this procedure, but can be explicitly assigned if the *fvalue* is
+    provided directly. The transition probability (Einstein coefficient) *A* is simply
+    attached as *A*. If no units are given for *A*, *per second* is assigned.
 
 *Example:*
 ```python
