@@ -56,7 +56,7 @@ to import:
 | SLiPy/Data | Functions/Classes |
 |------------|-------------------|
 |[**Elodie**](#ElodieLoc)|[Archive](#EArchiveLoc), [Script](#EScriptLoc), [Download](#EDownloadLoc), |
-|[**Atomic**](#AtomicLoc)|[Ions](#IonsLoc), |
+|[**Atomic**](#AtomicLoc)|[Ion](#IonLoc), [IonManager](#IonManagerLoc), |
 
 ## Installation
 
@@ -1328,7 +1328,7 @@ of the Lyman limit for the elements Hydrogen to Gallium''<br>
 Author: Donald C. Morton (2003)<br>
 Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
 
-<a name=IonLoc></a>
+<a name=IonManagerLoc></a>
 - class **IonManager** ():
 
     Managing class for the atomic data (Morton 2003). See SLiPy.Data.Archives.AtomicData.
@@ -1363,20 +1363,20 @@ Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
         | *wavelength* | 'vacuum'  | 'air'                                   |
         | *lookup*     | 'fvalue'  | 'air', 'vacuum', 'ion', 'elow', 'logwf' |
 
-The *IonManager* can be imported via the member instance *Ions*.
+The *IonManager* can be imported via the member instance *IonSearch*.
 
 **Examples:**
 
 Import the data set:
 ```python
-from slipy.Data.Atomic import Ions
-# equivalent to `from slipy.Data.Atomic import IonManager; Ions = IonManager()`
+from slipy.Data.Atomic import IonSearch
+# equivalent to `from slipy.Data.Atomic import IonManager; IonSearch = IonManager()`
 ```
 
 The member *.data* contains the entire table from Morton 2003. We can access information
 of interest directly however by calling the *Ions* object.
 ```python
-Ions('C III')
+IonSearch('C III')
 ```
 ```
 [(<Quantity 977.0201 Angstrom>, 0.7570010842747638),
@@ -1386,7 +1386,7 @@ Ions('C III')
 The second item in each of those pairs was the oscillator strength, or *fvalue*, for the
 lines. The wavelength given was in *vacuum*. We can request the same lines in *air*:
 ```python
-Ions('C III', wavelength='air')
+IonSearch('C III', wavelength='air')
 ```
 ```
 [(None, 0.7570010842747638), (None, 1.6875419997146983e-07)]
@@ -1397,7 +1397,7 @@ the same lines.
 
 We can ask for a wavelength range, and change what we are looking up:
 ```python
-Ions( (5885, 5900), wavelength='air', lookup='ion')
+IonSearch( (5885, 5900), wavelength='air', lookup='ion')
 ```
 ```
 [(<Quantity 5889.951 Angstrom>, 'Na I'),
@@ -1408,10 +1408,42 @@ Ions( (5885, 5900), wavelength='air', lookup='ion')
 Units work as well:
 ```python
 from astropy import units as u
-Ions( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
+IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
 ```
 ```
 [(<Quantity 5889.951 Angstrom>, 'Na I'),
  (<Quantity 5894.092 Angstrom>, 'Ti I'),
  (<Quantity 5895.924 Angstrom>, 'Na I')]
+```
+
+<a name=IonLoc></a>
+- class **Ion** ( *name* = None, *wavelength* = None, *fvalue* = None, *A* = None, \*\**kwargs*):
+    An object for declaring atomic ions.
+
+    An `Ion` should have a name, wavelength (air or vacuum), osciallator strength,
+    and a transition probability (Einstein coefficient).
+
+    Much of this data is available from the ..Data.Archives.AtomicData module searchable
+    with the ..Data.Atomic.IonManager class. In the future, we hope to impliment an
+    internal database of transition probabilities for each ion in the AtomicData module
+    from the Morton 2003 publication. Currently, the user must provide this data.
+
+    The NIST Atomic Spectra Database Lines Data is a good source for atomic data values:
+    http://physics.nist.gov/PhysRefData/ASD/lines_form.html
+
+    If no arguments are given the state remains uninitialized.
+    The `name` (e.g., 'Ca III') is used to connect with the data in the
+    ..Data.Archives.AtomicData module via the IonManager class. The `wavelength` need
+    not necessarily be the exact value of the line; the line closest to that given
+    for the `name`d ion is used. This is by default the wavelength in vacuum, but can
+    be the wavelength in air if the keyword argument `medium='air'` is given.
+    The created member attribute `wavelength` and `fvalue` are automatically assigned
+    based on this procedure, but can be explicitely assigned if the `fvalue` is
+    provided directly. The transition probability (Einstein coefficient) `A` simply
+    attached as `A`. If not units are given for `A`, `s-1` is assigned.
+
+*Example:*
+```python
+from slipy.Data import Atomic
+D1, D2 = Atomic.Ion('Na I', 589.7 * u.nm), Atomic.Ion('Na I', 589.1 * u.nm)
 ```
