@@ -1347,7 +1347,7 @@ Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
         specifying the range.
 
         The results default to the f-value (a.k.a. the oscillator strength) but can be
-        changed with the keyword argument *entry*. Options include, *air*, *vacuum*, *ion*,
+        changed with the keyword argument *lookup*. Options include, *air*, *vacuum*, *ion*,
         *elow*, *logwf*, and *fvalue*.
 
         The return is either a single pair or a list of pairs: the first element of each pair
