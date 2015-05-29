@@ -1447,5 +1447,12 @@ IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
 *Example:*
 ```python
 from slipy.Data import Atomic
-D1, D2 = Atomic.Ion('Na I', 589.7 * u.nm), Atomic.Ion('Na I', 589.1 * u.nm)
+D2 = Atomic.Ion('Na I', 589.1 * u.nm, A = 6.16e7 / u.s)
+D2
+```
+```
+Ion:        Na I
+Wavelength: 589.1583300000001 nm
+fvalue:     0.6408671009122726
+A:          61600000.0 1 / s
 ```
