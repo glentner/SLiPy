@@ -295,7 +295,7 @@ class Ion():
             closest_ion = wavelengths.argmin()
 
             # assign the closest wavelength to that avaiable
-            self.wavelength = found_ions[ closest_ion ][0]
+            self.wavelength = found_ions[ closest_ion ][0].to(wavelength.unit)
             self.fvalue     = found_ions[ closest_ion ][1] * u.dimensionless_unscaled
 
             self.name = name
