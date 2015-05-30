@@ -746,8 +746,8 @@ There are currently 69 defined observatories:
 <br>
 ##<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
 
-Convenient wrappers to matplotlib for plotting spectra. A *SPlot* simply
-creates a handle to remember figure attributes, to quickly go from looking
+Convenient wrapper to matplotlib for plotting spectra. A *SPlot* simply a manager
+of figure attributes, to quickly go from looking
 at one spectra to another. One can also *overlay* spectra.
 
 <a name=SPlotLoc></a>
@@ -762,9 +762,9 @@ at one spectra to another. One can also *overlay* spectra.
     | *usetex* | False      | render with pdflatex |
 
     <br>
-    The following member functions call pyplot equivalent:  
+    The following member functions call matplotlib.pyplot equivalent:  
     **xlim**, **ylim**, **xlabel**, **ylabel**, **title**, **legend**,
-    **text**, **grid**, **close**.
+    **text**, **grid**, **close**, **tight_layout**.
 
     Here, when these function are called, the arguments are passed to
     matplotlib; however, these calls are remembered. So when you go to *draw*
@@ -797,8 +797,7 @@ at one spectra to another. One can also *overlay* spectra.
 	- *markers*( \**args* ):
 
 		Reassign the values for the `marker`s in the figure. The number
-		of arguments must equal the number of spectra in the figure. This
-		starts out as one, but will increase for ever call to SPlot.overlay().
+		of arguments must equal the number of spectra in the figure.
 
     - *restore*( ):
 
@@ -807,7 +806,7 @@ at one spectra to another. One can also *overlay* spectra.
     - *save*( *filename* ):
 
         Save the figure to a file called *filename*. The file format is derived
-        from the extention of *filename*.
+        from the extension of *filename*.
 
 <a name=IterateLoc></a>
 - **Iterate**( \**splots*, \*\**kwargs* ):
@@ -1363,58 +1362,58 @@ Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
         | *wavelength* | 'vacuum'  | 'air'                                   |
         | *lookup*     | 'fvalue'  | 'air', 'vacuum', 'ion', 'elow', 'logwf' |
 
-The *IonManager* can be imported via the member instance *IonSearch*.
+    The *IonManager* can be imported via the member instance *IonSearch*.
 
-**Examples:**
+    **Examples:**
 
-Import the data set:
-```python
-from slipy.Data.Atomic import IonSearch
-# equivalent to `from slipy.Data.Atomic import IonManager; IonSearch = IonManager()`
-```
+    Import the data set:
+    ```python
+    from slipy.Data.Atomic import IonSearch
+    # equivalent to `from slipy.Data.Atomic import IonManager; IonSearch = IonManager()`
+    ```
 
-The member *.data* contains the entire table from Morton 2003. We can access information
-of interest directly however by calling the *Ions* object.
-```python
-IonSearch('C III')
-```
-```
-[(<Quantity 977.0201 Angstrom>, 0.7570010842747638),
- (<Quantity 1908.734 Angstrom>, 1.6875419997146983e-07)]
-```
+    The member *.data* contains the entire table from Morton 2003. We can access information
+    of interest directly however by calling the *Ions* object.
+    ```python
+    IonSearch('C III')
+    ```
+    ```
+    [(<Quantity 977.0201 Angstrom>, 0.7570010842747638),
+     (<Quantity 1908.734 Angstrom>, 1.6875419997146983e-07)]
+    ```
 
-The second item in each of those pairs was the oscillator strength, or *fvalue*, for the
-lines. The wavelength given was in *vacuum*. We can request the same lines in *air*:
-```python
-IonSearch('C III', wavelength='air')
-```
-```
-[(None, 0.7570010842747638), (None, 1.6875419997146983e-07)]
-```
+    The second item in each of those pairs was the oscillator strength, or *fvalue*, for the
+    lines. The wavelength given was in *vacuum*. We can request the same lines in *air*:
+    ```python
+    IonSearch('C III', wavelength='air')
+    ```
+    ```
+    [(None, 0.7570010842747638), (None, 1.6875419997146983e-07)]
+    ```
 
-The result is *None* because those values don't exist in the data set. But they are indeed
-the same lines.
+    The result is *None* because those values don't exist in the data set. But they are indeed
+    the same lines.
 
-We can ask for a wavelength range, and change what we are looking up:
-```python
-IonSearch( (5885, 5900), wavelength='air', lookup='ion')
-```
-```
-[(<Quantity 5889.951 Angstrom>, 'Na I'),
- (<Quantity 5894.092 Angstrom>, 'Ti I'),
- (<Quantity 5895.924 Angstrom>, 'Na I')]
-```
+    We can ask for a wavelength range, and change what we are looking up:
+    ```python
+    IonSearch( (5885, 5900), wavelength='air', lookup='ion')
+    ```
+    ```
+    [(<Quantity 5889.951 Angstrom>, 'Na I'),
+     (<Quantity 5894.092 Angstrom>, 'Ti I'),
+     (<Quantity 5895.924 Angstrom>, 'Na I')]
+    ```
 
-Units work as well:
-```python
-from astropy import units as u
-IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
-```
-```
-[(<Quantity 5889.951 Angstrom>, 'Na I'),
- (<Quantity 5894.092 Angstrom>, 'Ti I'),
- (<Quantity 5895.924 Angstrom>, 'Na I')]
-```
+    Units work as well:
+    ```python
+    from astropy import units as u
+    IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
+    ```
+    ```
+    [(<Quantity 5889.951 Angstrom>, 'Na I'),
+     (<Quantity 5894.092 Angstrom>, 'Ti I'),
+     (<Quantity 5895.924 Angstrom>, 'Na I')]
+    ```
 
 <br>
 <a name=IonLoc></a>
@@ -1444,15 +1443,15 @@ IonSearch( (588.5 * u.nm, 590.0 * u.nm), wavelength='air', lookup='ion')
     provided directly. The transition probability (Einstein coefficient) *A* is simply
     attached as *A*. If no units are given for *A*, *per second* is assigned.
 
-*Example:*
-```python
-from slipy.Data import Atomic
-D2 = Atomic.Ion('Na I', 589.1 * u.nm, A = 6.16e7 / u.s)
-D2
-```
-```
-Ion:        Na I
-Wavelength: 589.1583300000001 nm
-fvalue:     0.6408671009122726
-A:          61600000.0 1 / s
-```
+    *Example:*
+    ```python
+    from slipy.Data import Atomic
+    D2 = Atomic.Ion('Na I', 589.1 * u.nm, A = 6.16e7 / u.s)
+    D2
+    ```
+    ```
+    Ion:        Na I
+    Wavelength: 589.1583300000001 nm
+    fvalue:     0.6408671009122726
+    A:          61600000.0 1 / s
+    ```
