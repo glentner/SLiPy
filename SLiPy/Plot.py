@@ -148,7 +148,7 @@ class SPlot:
         self.txargs = []
         self.txkwargs = []
         self.draw()
-        
+
     def markers(self, *args):
         """
         Reassign the values for the `marker`s in the figure. The number
@@ -158,12 +158,12 @@ class SPlot:
         if len(args) != len(self.data):
             raise PlotError('{} arguments were given but there are {} '
             'spectra plotted in this figure!'.format(len(args), len(self.data)))
-        
+
         for a, mark in enumerate(args):
             if type(mark) is not str:
                 raise PlotError('Arguments given to SPlot.markers() must be '
                 '{} but argument #{} was {}'.format(type(''), a+1, type(mark)))
-        
+
         self.marker = list(args)
 
     def __build(self, picker = False):
@@ -173,12 +173,11 @@ class SPlot:
 
         if picker:
             self.restore()
-            self.ax.plot(self.wave[0], self.data[0], self.marker[0], 
+            self.ax.plot(self.wave[0], self.data[0], self.marker[0],
                 label = self.label[0], picker = True)
 
         else:
-            for x, y, m, l in zip(self.wave, self.data, self.marker, 
-                self.label):
+            for x, y, m, l in zip(self.wave, self.data, self.marker, self.label):
             	self.ax.plot(x, y, m, label=l)
 
         if self.xargs or self.xkwargs:
@@ -209,7 +208,7 @@ class SPlot:
         if self.usetex:
             plt.rc('text', usetex=True)
             plt.rc('font', family='serif')
-    
+
     def refresh(self):
         """
         pyplot.draw()
@@ -259,7 +258,7 @@ class SPlot:
         Toggle the offset for the y axis
         """
         plt.gca().get_yaxis().get_major_formatter().set_useOffset(value)
-    
+
     def tight_layout(self):
         """
         pyplot.tight_layout()
