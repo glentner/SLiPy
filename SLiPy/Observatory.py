@@ -17,6 +17,15 @@ class Observatory:
         raise TypeError('The Observatory base class should not be '
         'instantiated on its own.')
 
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        res = '' if not hasattr(self, 'resolution') else 'resolution = ' + str(self.resolution)
+        return  ('name       = {}\nlongitude  = {}\nlatitude   = {}\naltitude   = {}\n'
+                'timezone   = {}\n'.format(self.name, self.longitude, self.latitude,
+                self.altitude, self.timezone)) + res + '\n'
+
 class OHP(Observatory):
     """
     The Observatoire de Haute-Provence, France.
@@ -27,8 +36,7 @@ class OHP(Observatory):
         self.latitude   = 43.9308334 * u.degree # North
         self.altitude   = 650 * u.meter
         self.timezone   = 1 * u.hourangle
-        self.resolution = 42000
-
+        self.resolution = 42000 * u.dimensionless_unscaled
 
 #
 # All of the below observatory parameters have been taken directly from IRAF!
