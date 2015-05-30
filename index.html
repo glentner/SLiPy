@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -123,21 +121,31 @@ to import:</p>
 <td>
 <a href="#MSolveGridLoc">SolveGrid</a>, <a href="#MMosaicLoc">Mosaic</a>, <a href="#MSubFieldLoc">SubField</a>, <a href="#MFieldLoc">Field</a>,</td>
 </tr>
-<tr>
-<th>&nbsp;</th>
-</tr>
+</tbody>
+</table>
+
+<p><br></p>
+
+<table>
+<thead>
 <tr>
 <th>SLiPy/Data</th>
+<th>Functions/Classes</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td><a href="#ElodieLoc"><strong>Elodie</strong></a></td>
 <td>
 <a href="#EArchiveLoc">Archive</a>, <a href="#EScriptLoc">Script</a>, <a href="#EDownloadLoc">Download</a>,</td>
 </tr>
+<tr>
+<td><a href="#AtomicLoc"><strong>Atomic</strong></a></td>
+<td>
+<a href="#IonLoc">Ion</a>, <a href="#IonManagerLoc">IonManager</a>,</td>
+</tr>
 </tbody>
 </table>
-
-<p><br></p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -1643,7 +1651,7 @@ goes through that point, there might not actually be data there.</p>
 
 <ul>
 <li>
-<p><strong>Fit</strong> ( <em>splot</em>, <em>function</em> = InvertedLorentzian, <em>params</em> = None)</p>
+<p><strong>AutoFit</strong> ( <em>splot</em>, <em>function</em> = InvertedLorentzian, <em>params</em> = None)</p>
 
 <p>Given a <em>splot</em> of type Plot.SPlot, the user selects four points on the
 spectrum and a parameterized function is fit (an inverted Lorentzian by
@@ -1661,61 +1669,13 @@ not need to provide <em>params</em> for the default behavior.</p>
 <p><strong>Example:</strong></p>
 
 <div class="highlight highlight-python"><pre><span class="pl-c"># In this example I use an alternative function simply as an illustration.</span>
-<span class="pl-c"># I show the download, calibration, and fitting procedure involved ...</span>
+<span class="pl-c"># Here `spectrum` is a Spectrum object that has been imported and calibrated ...</span>
 
-<span class="pl-k">from</span> slipy <span class="pl-k">import</span> Fits, Simbad, Plot, Velocity, Telluric, Profile
-<span class="pl-k">from</span> slipy <span class="pl-k">import</span> Spectrum, Observatory, SlipyError, Units <span class="pl-k">as</span> u
-<span class="pl-k">from</span> slipy.Data <span class="pl-k">import</span> Elodie
+<span class="pl-k">from</span> slipy <span class="pl-k">import</span> Spectrum, Plot, Profile
+<span class="pl-k">from</span> astropy <span class="pl-k">import</span> units <span class="pl-k">as</span> u
 
-<span class="pl-c"># See the Data package for more information about this section</span>
-archive <span class="pl-k">=</span> Elodie.Archive()
 
-<span class="pl-c"># the one with highest S/N</span>
-sci_file <span class="pl-k">=</span> archive.files[<span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>]
-
-<span class="pl-c"># all files are in `data` member, first column is the file name</span>
-cal_files <span class="pl-k">=</span> [ entry[<span class="pl-c1">0</span>] <span class="pl-k">for</span> entry <span class="pl-k">in</span> archive.data[<span class="pl-s"><span class="pl-pds">'</span>HD087901A<span class="pl-pds">'</span></span>] ]
-
-Elodie.Download(
-        sci_file,                      <span class="pl-c"># file name to download</span>
-        <span class="pl-smi">resample</span> <span class="pl-k">=</span> (<span class="pl-c1">5850</span>, <span class="pl-c1">5950</span>, <span class="pl-c1">0.01</span>), <span class="pl-c"># pipeline command</span>
-        <span class="pl-smi">outpath</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Science-Files<span class="pl-pds">'</span></span>      <span class="pl-c"># put under this directory</span>
-    )
-
-Elodie.Download(
-        <span class="pl-k">*</span>cal_files,                    <span class="pl-c"># HD087901A is Regulus</span>
-        <span class="pl-smi">resample</span> <span class="pl-k">=</span> (<span class="pl-c1">5850</span>, <span class="pl-c1">5950</span>, <span class="pl-c1">0.01</span>), <span class="pl-c"># pipeline command</span>
-        <span class="pl-smi">outpath</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Calibration-Files<span class="pl-pds">'</span></span>  <span class="pl-c"># put under this directory</span>
-    )
-
-sci_file  <span class="pl-k">=</span> Fits.Find(<span class="pl-s"><span class="pl-pds">'</span>Science-Files<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>]  <span class="pl-c"># one file</span>
-cal_files <span class="pl-k">=</span> Fits.Find(<span class="pl-s"><span class="pl-pds">'</span>Calibration-Files<span class="pl-pds">'</span></span>) <span class="pl-c"># six files (list)</span>
-
-spectrum <span class="pl-k">=</span> Spectrum(sci_file)       <span class="pl-c"># create spectrum object</span>
-regulus  <span class="pl-k">=</span> Fits.GetData(<span class="pl-k">*</span>cal_files) <span class="pl-c"># return list of spectrum objects</span>
-
-<span class="pl-c"># remove absorption due to Earth's atmosphere</span>
-Telluric.Correct(spectrum, <span class="pl-k">*</span>regulus)
-
-<span class="pl-c"># attach `ra`, `dec` and `jd` to spectrum for HelioCorrect()</span>
-<span class="pl-c"># Simbad returns values in units of decimal degrees</span>
-ra, dec <span class="pl-k">=</span> Simbad.Position(<span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>)
-
-<span class="pl-c"># elements returned from Fits.Header() are unitless. Here we take</span>
-<span class="pl-c"># the MJD at beginning of exposure and solve for JD at middle of exposure</span>
-MJD     <span class="pl-k">=</span> Fits.Header(sci_file, <span class="pl-s"><span class="pl-pds">'</span>MJD-OBS<span class="pl-pds">'</span></span>)
-EXPTIME <span class="pl-k">=</span> Fits.Header(sci_file, <span class="pl-s"><span class="pl-pds">'</span>EXPTIME<span class="pl-pds">'</span></span>)
-JD      <span class="pl-k">=</span> MJD <span class="pl-k">+</span> <span class="pl-c1">2400000.5</span> <span class="pl-k">+</span> <span class="pl-c1">0.5</span> <span class="pl-k">*</span> EXPTIME <span class="pl-k">/</span> <span class="pl-c1">86400</span>
-
-<span class="pl-c"># attach to spectrum object as members</span>
-spectrum.ra  <span class="pl-k">=</span> ra
-spectrum.dec <span class="pl-k">=</span> dec
-spectrum.jd  <span class="pl-k">=</span> JD <span class="pl-k">*</span> u.day
-
-<span class="pl-c"># Elodie is at the Observatoire de Haute-Provence, France (OHP).</span>
-Velocity.HelioCorrect( Observatory.OHP(), spectrum )
-
-<span class="pl-c"># create figure</span>
+<span class="pl-c"># create a SPlot figure</span>
 fig <span class="pl-k">=</span> Plot.SPlot(spectrum, <span class="pl-smi">label</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>HD332329<span class="pl-pds">'</span></span>, <span class="pl-smi">marker</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>k-<span class="pl-pds">'</span></span>)
 fig.xlabel(<span class="pl-s"><span class="pl-pds">'</span>Wavelength (Angstrom)<span class="pl-pds">'</span></span>, <span class="pl-smi">labelpad</span><span class="pl-k">=</span><span class="pl-c1">20</span>)
 fig.ylabel(<span class="pl-s"><span class="pl-pds">'</span>Normalized Flux<span class="pl-pds">'</span></span>, <span class="pl-smi">labelpad</span><span class="pl-k">=</span><span class="pl-c1">20</span>)
@@ -1739,7 +1699,7 @@ fig.legend(<span class="pl-smi">frameon</span><span class="pl-k">=</span><span c
     <span class="pl-k">return</span> y.std().value
 
 <span class="pl-c"># call the Profile.Fit() function with our user defined parameterization</span>
-line <span class="pl-k">=</span> Profile.Fit(fig, <span class="pl-smi">function</span><span class="pl-k">=</span>InvertedGaussian, <span class="pl-smi">params</span><span class="pl-k">=</span>[A, mu, sigma])
+line <span class="pl-k">=</span> Profile.AutoFit(fig, <span class="pl-smi">function</span><span class="pl-k">=</span>InvertedGaussian, <span class="pl-smi">params</span><span class="pl-k">=</span>[A, mu, sigma])
 
 <span class="pl-c"># Please select four points identifying the spectral line.</span>
 <span class="pl-c"># Outer points mark the domain of the line.</span>
@@ -1748,8 +1708,7 @@ line <span class="pl-k">=</span> Profile.Fit(fig, <span class="pl-smi">function<
 
 <span class="pl-c"># now `line` is a Spectrum object generated by evaluating the</span>
 <span class="pl-c"># `InvertedGaussian` function on the larger domain selected by the</span>
-<span class="pl-c"># user with coefficients optimized using Profile.Fit().</span>
-<span class="pl-c"># You might use it to deblend this inner line with the overlapping ones.</span>
+<span class="pl-c"># user with coefficients optimized using Profile.AutoFit().</span>
 
 <span class="pl-c"># save the figure ...</span>
 fig.tight_layout()
@@ -1851,6 +1810,63 @@ snippet.</p>
 </li>
 </ul>
 
+<p><a name="MultiFitLoc"></a></p>
+
+<ul>
+<li>
+<p><strong>MultiFit</strong> ( <em>splot</em>, <em>function</em> = 'Lorentzian', <em>observatory</em> = None,
+<em>resolution</em> = None, **<em>kwargs</em>):</p>
+
+<p>The MultiFit routine takes a <em>splot</em> figure (type SPlot) and allows the
+user to interactively fit line profiles. <em>splot</em> may optionally be of type
+Spectrum, in which case a SPlot figure will be created for you. This function
+creates a <em>FittingGUI</em> object (not documented here) which uses the <em>Profile.Extract()</em>
+routine first (<em>kwargs</em> as passed this function). As in the Extract routine, the user
+will select four points that mark the boundaries of the line (blended or otherwise)
+and some surrounding continuum to sample. The <em>KernelFit1D</em> routine is applied with the
+user specified <em>bandwidth</em> to smooth the noise out of the continuum and interpolate, of
+type <em>kind</em>, across the line. After this, the user is asked to further select points
+marking the peaks of the line(s). The number of selection points indicates the number
+of lines to be fit. If you wish to deblend two or more lines, select all suspected
+locations. These are not only used to determine the number of lines to fit but to make
+initial guesses at the parameters for each line.</p>
+
+<p>After these selections, a slider for each parameter appears along with radio buttons for
+each line. The user can interactively adjust the parameter(s) for a given line by
+selecting it (the radio buttons) and dragging a slider. Each line is represented by a
+black, dashed line in the plot. The currently selected line is bold. The super-position
+(i.e., blended) lines are plotted with a solid green line.</p>
+
+<p>Each slider is labeled on the left side with the name of the parameter it controls. At
+the right of each slider is the current value of that parameter. The radio buttons are
+labeled "L1", "L2", etc. for each line.</p>
+
+<p>This routine returns a list of Spectrum objects. The length of the list is equal to the
+number of lines that were fit. This routine functions as both a single line fitting tool
+as well as a deblending tool.</p>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-c"># drawing from the above examples</span>
+
+L1, L2, L3, L4 <span class="pl-k">=</span> Profile.MultiFit(fig, <span class="pl-smi">function</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Gaussian<span class="pl-pds">'</span></span>, <span class="pl-smi">bandwidth</span> <span class="pl-k">=</span> u.Angstrom <span class="pl-k">/</span> <span class="pl-c1">8</span>)
+
+<span class="pl-c">#  We need to extract the lines from the continuum before we begin the fitting process.</span>
+<span class="pl-c"># Please select four points identifying the spectral line.</span>
+<span class="pl-c"># Outer intervals sample the continuum.</span>
+<span class="pl-c"># Center interval contains the line.</span>
+<span class="pl-c"># Press &lt;Return&gt; after making your selections ...</span>
+
+<span class="pl-c"># Now select the peaks of each line to be fit.</span>
+<span class="pl-c"># Initial guesses will be made for each line markered.</span>
+<span class="pl-c"># Press &lt;Return&gt; after making your selections ...</span></pre></div>
+
+<p><img src="Figures/MultiFit.png" alt="example"></p>
+
+<p><strong>Figure 4:</strong> Mid-session, annotated screen-shot of the above code-snippet/routine.</p>
+</li>
+</ul>
+
 <p><br></p>
 
 <h2>
@@ -1867,7 +1883,7 @@ mosaic each <em>site</em> before combining them into a <em>master</em> mosaic.</
 currently available <em>montage_wrapper</em>. This module will no longer be developed.
 Nevertheless, it remains a high level manager for creating mosaics.</p>
 
-<p>See the example in Figure 4.</p>
+<p>See the example in Figure 5.</p>
 
 <p><a name="MSolveGridLoc"></a></p>
 
@@ -2098,7 +2114,7 @@ fig.save(<span class="pl-s"><span class="pl-pds">'</span>Pleiades.png<span class
 
 <p><img src="Figures/Pleiades.png" alt="example"></p>
 
-<p><strong>Figure 4:</strong> Pleiades.png from the above code snippet.</p>
+<p><strong>Figure 5:</strong> Pleiades.png from the above code snippet.</p>
 </li>
 </ul>
 
@@ -2322,11 +2338,178 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
 </li>
 </ul>
 
+<p><br></p>
+
+<h2>
+<a id="atomic" class="anchor" href="#atomic" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="AtomicLoc"></a><a href="Data/Atomic.py">Atomic</a>
+</h2>
+
+<p>Convenient access to a large set of published atomic data for absorption lines:</p>
+
+<p>``Atomic data for resonance absorption lines. III. Wavelengths longward
+of the Lyman limit for the elements Hydrogen to Gallium''<br>
+Author: Donald C. Morton (2003)<br>
+Online: <a href="http://iopscience.iop.org/0067-0049/149/1/205/fulltext/">http://iopscience.iop.org/0067-0049/149/1/205/fulltext/</a></p>
+
+<p><a name="IonManagerLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>IonManager</strong> ():</p>
+
+<p>Managing class for the atomic data (Morton 2003). See SLiPy.Data.Archives.AtomicData.</p>
+
+<ul>
+<li>
+<p><em>__call__</em> ( <em>key</em>, **<em>kwargs</em> ):</p>
+
+<p>Retrieve data from the Archives.AtomicData table. If the <em>key</em> is a string
+type it is expected to be the name of an ion (e.g., 'C III'). If the <em>key</em> is
+a number it is expected to be a wavelength value (if not with units Angstroms are
+implied). The default is <em>vacuum</em> wavelength, but <em>air</em> can be specified with the
+keyword argument <code>wavelength='Air'</code>.</p>
+
+<p>If the key was the name of an ion, all the lines for that ion are returned. If the
+key was a wavelength, the closest line in the table to that wavelength is returned.
+You can request a wavelength range by giving the <em>key</em> as a tuple of two wavelengths
+specifying the range.</p>
+
+<p>The results default to the f-value (a.k.a. the oscillator strength) but can be
+changed with the keyword argument <em>lookup</em>. Options include, <em>air</em>, <em>vacuum</em>, <em>ion</em>,
+<em>elow</em>, <em>logwf</em>, and <em>fvalue</em>.</p>
+
+<p>The return is either a single pair or a list of pairs: the first element of each pair
+is always a wavelength value (in air if wavelength='air' or in vacuum otherwise), the
+second being the entries requested. The wavelength type is always that used for
+the look-up. That is, Vacuum by default, but if <code>wavelength='Air'</code> is given, the
+returns will be in air wavelengths. Be aware that <em>None</em> might be returned if
+there is not Air wavelength for the line. Further, all results will be returned
+as <em>None</em> where no data is available.</p>
+
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Defaults</th>
+<th>Alternatives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>wavelength</em></td>
+<td>'vacuum'</td>
+<td>'air'</td>
+</tr>
+<tr>
+<td><em>lookup</em></td>
+<td>'fvalue'</td>
+<td>'air', 'vacuum', 'ion', 'elow', 'logwf'</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>The <em>IonManager</em> can be imported via the member instance <em>IonSearch</em>.</p>
+
+<p><strong>Examples:</strong></p>
+
+<p>Import the data set:</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy.Data.Atomic <span class="pl-k">import</span> IonSearch
+<span class="pl-c"># equivalent to `from slipy.Data.Atomic import IonManager; IonSearch = IonManager()`</span></pre></div>
+
+<p>The member <em>.data</em> contains the entire table from Morton 2003. We can access information
+of interest directly however by calling the <em>Ions</em> object.</p>
+
+<div class="highlight highlight-python"><pre>IonSearch(<span class="pl-s"><span class="pl-pds">'</span>C III<span class="pl-pds">'</span></span>)</pre></div>
+
+<pre><code>[(&lt;Quantity 977.0201 Angstrom&gt;, 0.7570010842747638),
+ (&lt;Quantity 1908.734 Angstrom&gt;, 1.6875419997146983e-07)]
+</code></pre>
+
+<p>The second item in each of those pairs was the oscillator strength, or <em>fvalue</em>, for the
+lines. The wavelength given was in <em>vacuum</em>. We can request the same lines in <em>air</em>:</p>
+
+<div class="highlight highlight-python"><pre>IonSearch(<span class="pl-s"><span class="pl-pds">'</span>C III<span class="pl-pds">'</span></span>, <span class="pl-smi">wavelength</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>air<span class="pl-pds">'</span></span>)</pre></div>
+
+<pre><code>[(None, 0.7570010842747638), (None, 1.6875419997146983e-07)]
+</code></pre>
+
+<p>The result is <em>None</em> because those values don't exist in the data set. But they are indeed
+the same lines.</p>
+
+<p>We can ask for a wavelength range, and change what we are looking up:</p>
+
+<div class="highlight highlight-python"><pre>IonSearch( (<span class="pl-c1">5885</span>, <span class="pl-c1">5900</span>), <span class="pl-smi">wavelength</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>air<span class="pl-pds">'</span></span>, <span class="pl-smi">lookup</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>ion<span class="pl-pds">'</span></span>)</pre></div>
+
+<pre><code>[(&lt;Quantity 5889.951 Angstrom&gt;, 'Na I'),
+ (&lt;Quantity 5894.092 Angstrom&gt;, 'Ti I'),
+ (&lt;Quantity 5895.924 Angstrom&gt;, 'Na I')]
+</code></pre>
+
+<p>Units work as well:</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> astropy <span class="pl-k">import</span> units <span class="pl-k">as</span> u
+IonSearch( (<span class="pl-c1">588.5</span> <span class="pl-k">*</span> u.nm, <span class="pl-c1">590.0</span> <span class="pl-k">*</span> u.nm), <span class="pl-smi">wavelength</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>air<span class="pl-pds">'</span></span>, <span class="pl-smi">lookup</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>ion<span class="pl-pds">'</span></span>)</pre></div>
+
+<pre><code>[(&lt;Quantity 5889.951 Angstrom&gt;, 'Na I'),
+ (&lt;Quantity 5894.092 Angstrom&gt;, 'Ti I'),
+ (&lt;Quantity 5895.924 Angstrom&gt;, 'Na I')]
+</code></pre>
+
+<p><br>
+<a name="IonLoc"></a></p>
+
+<ul>
+<li>
+<p>class <strong>Ion</strong> ( <em>name</em> = None, <em>wavelength</em> = None, <em>fvalue</em> = None, <em>A</em> = None, **<em>kwargs</em>):</p>
+
+<p>An object for declaring atomic ions.</p>
+
+<p>An <em>Ion</em> should have a name, wavelength (air or vacuum), osciallator strength,
+and a transition probability (Einstein coefficient).</p>
+
+<p>Much of this data is available from the ..Data.Archives.AtomicData module searchable
+with the ..Data.Atomic.IonManager class. In the future, we hope to implement an
+internal database of transition probabilities for each ion in the AtomicData module
+from the Morton 2003 publication. Currently, the user must provide this data.</p>
+
+<p>The NIST Atomic Spectra Database Lines Data is a good source for atomic data values:
+<a href="http://physics.nist.gov/PhysRefData/ASD/lines_form.html">http://physics.nist.gov/PhysRefData/ASD/lines_form.html</a></p>
+
+<p>If no arguments are given the state remains uninitialized.
+The <em>name</em> (e.g., 'C III') is used to connect with the data in the
+..Data.Archives.AtomicData module via the IonManager class. The <em>wavelength</em> need
+not necessarily be the exact value of the line; the line closest to that given
+for the named ion is used. This is by default the wavelength in vacuum, but can
+be the wavelength in air if the keyword argument <code>medium='air'</code> is given.
+The created member attribute wavelength* and <em>fvalue</em> are automatically assigned
+based on this procedure, but can be explicitly assigned if the <em>fvalue</em> is
+provided directly. The transition probability (Einstein coefficient) <em>A</em> is simply
+attached as <em>A</em>. If no units are given for <em>A</em>, <em>per second</em> is assigned.</p>
+</li>
+</ul>
+
+<p><em>Example:</em></p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> slipy.Data <span class="pl-k">import</span> Atomic
+D2 <span class="pl-k">=</span> Atomic.Ion(<span class="pl-s"><span class="pl-pds">'</span>Na I<span class="pl-pds">'</span></span>, <span class="pl-c1">589.1</span> <span class="pl-k">*</span> u.nm, <span class="pl-smi">A</span> <span class="pl-k">=</span> <span class="pl-c1">6.16e7</span> <span class="pl-k">/</span> u.s)
+D2</pre></div>
+
+<pre><code>Ion:        Na I
+Wavelength: 589.1583300000001 nm
+fvalue:     0.6408671009122726
+A:          61600000.0 1 / s
+</code></pre>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/gLENTNER/SLiPy">SLiPy</a> is maintained by <a href="https://github.com/gLENTNER">gLENTNER</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-        <span class="site-footer-credits"><br><br><b>Notice: </b> The source for this page has been modified by Geoffrey Lentner.</span>
       </footer>
 
     </section>
@@ -2344,3 +2527,4 @@ Elodie.Download( <span class="pl-k">*</span>files, <span class="pl-smi">resample
 
   </body>
 </html>
+
