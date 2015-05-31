@@ -262,43 +262,82 @@ def Extract(splot, kernel = Gaussian, **kwargs):
 
     cont_rms = np.sqrt( np.sum( (cont_outside * yc.unit - yc)**2 ) / len(yc) )
 
-    return line, continuum, cont_rms
+    return line, continuum, cont_rms * continuum.data.unit
 
 def EquivalentWidth(line, continuum, error=None, boost=None):
 	"""
 	Given an absorption `line` and its background `continuum`, compute the
 	equivalent width, `W`, of the feature. Both the line and the continuum must
 	be of Spectrum type. The continuum will be resampled to the pixel space of the
-	line if it is not currently. Similarly, if provided, the `error` spectrum should
-	be a dimensionless Spectrum object with percent errors along the line. If provided,
-	an upper and lower uncertainty will be assigned. `boost` allows you artificially
-	increase the resolution by resampling to more pixels. If the spectrum is not of
-	sufficiently high resolution, the integration could suffer numerical errors. If
-	provide, this should be a percentage to increase the resolution by (e.g., `boost=2`)
-	would double the resolution by interpolating in between the pixels.
+	line if it is not currently.
+
+	If provided an `error` spectrum, it should be a dimensionless Spectrum object
+	giving percent errors along the line. An upper and lower uncertainty will be
+	computed by adding and subtracting before the calculation. Further, if an `rms`
+	value is attached tot he `continuum` giving the percent error in the continuum
+	fit, this will be added in quadrature to the error spectrum before hand.
+
+	`boost` allows you artificially increase the resolution by resampling to more pixels.
+	If the spectrum is not of sufficiently high resolution, the integration could suffer
+	numerical errors. If provided, this should be a percentage to increase the resolution
+	by (e.g., `boost=2`) would double the resolution by interpolating in between the pixels.
 
 	Integration is performed using the composite Simpson`s rule (scipy.integrate.simps)
-
-	This returns a `Measurement` object (..Framework.Measurement.Measurement).
+	This function returns a `Measurement` object (..Framework.Measurement.Measurement).
 	"""
-	if not isinstance(line, Spectrum): raise ProfileError('EquivalentWidth() expects the '
-		'first argument to be of `Spectrum` type!')
+	if not isinstance(line, Spectrum):
+		raise ProfileError('EquivalentWidth() expects the first argument to be of '
+		'`Spectrum` type!')
 
-	if not isinstance(continuum, Spectrum): raise ProfileError('EquivalentWidth() expects '
-		'the second argument to be of `Spectrum` type!')
+	if not isinstance(continuum, Spectrum):
+		raise ProfileError('EquivalentWidth() expects the second argument to be of '
+		'`Spectrum` type!')
 
-	if error and not isinstance(error, Spectrum): raise ProfileError('EquivalentWidth() '
-		'expects the `error` to be of `Spectrum` type!')
+	line      = line.copy()
+	continuum = continuum.copy()
 
-	if error and np.logical_and(error.data.value < 0, error.data.value > 1).any():
-		raise ProfileError('EquivalentWidth() expects any provided `error` spectrum to '
-		'contain percent errors, but I found quantities outside 0 and 1!')
+	if error:
+
+		if not isinstance(error, Spectrum):
+			raise ProfileError('EquivalentWidth() expects the `error` to be of `Spectrum` type!')
+
+		if error.data.unit not in [line.data.unit, u.percent]:
+			raise ProfileError('EquivalentWidth() expect the `error` spectrum to have either '
+			'the same units as the `line` or units of `percent`.')
+
+		error = error.copy()
+
+		if error.data.unit == u.percent:
+
+			if np.logical_and(error.data.value < 0, error.data.value > 100).any():
+				raise ProfileError('EquivalentWidth() was given an `error` spectrum in '
+				'units of `percent` with values outside of 0 and 100!')
+
+			error.data = (error.data * line.data).to(line.data.unit)
+
+	if hasattr(continuum, 'rms'):
+
+		if not hasattr(continuum.rms, 'unit') or (continuum.rms.unit not in
+			[continuum.data.unit, u.percent]):
+			raise ProfileError('EquivalentWidth() expects a `continuum` with an `rms` '
+			'attribute to have the same units or `percent` units.')
+
+		rms = continuum.rms
+		if rms.unit == u.percent:
+			rms *= continuum.data.mean()
+			rms  = rms.to(continuum.data.unit)
+
+		if not error:
+			error = rms
+
+		else:
+			# add the two error components in quadrature
+			error.resample(line)
+			error = Spectrum(np.sqrt(rms**2 + error.data**2) * line.data.unit,
+					line.wave)
 
 	# boost the resolution of the specrum if requested
 	if boost: line.resample( line.wave[0], line.wave[-1], len(line) * boost )
-
-	# resample the error spectrum in necessary
-	if error: error.resample(line)
 
 	# resample the continuum spectrum, nothing happens if they are already the same
 	continuum.resample(line)
@@ -309,7 +348,8 @@ def EquivalentWidth(line, continuum, error=None, boost=None):
 	if error:
 
 		# the lower and upper standard error for the line
-		line_lower, line_upper = line * (1 - error), line * (1 + error)
+		line_upper = line + error
+		line_lower = line - error
 
 		# the lower `W` is with the upper line
 		W_lower = Integrate(1 - (line_upper/continuum).data, line.wave) * line.wave.unit
@@ -401,7 +441,7 @@ class FittingGUI:
 				raise ProfileError('From FittingGUI.__init__(), the osciallator strength, '
 				'`fvalue` for an ion must be a dimensionless Quantity!')
 
-			if not hasattr(ion, 'A'):
+			if not hasattr(ion, 'A') or not ion.A:
 				raise ProfileError('From FittingGUI.__init__(), the provided `ion` does not '
 				'have an `A` (transition probability) attribute!')
 
@@ -423,8 +463,8 @@ class FittingGUI:
 			# the FWHM of the intrinsic line profile (Lorentzian) is proportional to the
 			# transition probability (Einstein coeff.) `A`...
 			# convert from km s-1 to wavelength units
-			self.gamma = wavelength * (wavelength * self.A / (2 * np.pi)).to(u.km / u.s) / c.si
-			self.gamma = self.gamma.to(wavelength.unit).value
+			self.gamma = (ion.wavelength * (ion.wavelength * ion.A / (2 * np.pi)).to(u.km / u.s) /
+				c.si).to(ion.wavelength.unit).value
 
 			# the leading constant in the computation of `N` (per Angstrom per cm-2)
 			self.leading_constant = (m_e.si * c.si / (np.sqrt(np.pi) * e.si**2 * ion.fvalue *
@@ -991,8 +1031,8 @@ class FittingGUI:
 		self.splot.draw()
 		del(self)
 
-def MultiFit(splot, error=None, obs=None, fvalue=None, A=None, wavelength=None, function='Voigt',
-	measure=True, boost=None, **kwargs):
+def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=True,
+	boost=None, **kwargs):
 	"""
 	The MultiFit routine takes a `splot` figure (type SPlot) and allows the
 	user to interactively fit line profiles. `splot` may optionally be of type
@@ -1051,8 +1091,7 @@ def MultiFit(splot, error=None, obs=None, fvalue=None, A=None, wavelength=None, 
 	"""
 
 	# running the user interface
-	gui = FittingGUI(splot, obs=obs, fvalue=fvalue, A=A, wavelength=wavelength,
-			function=function, **kwargs)
+	gui = FittingGUI(splot, obs=obs, ion=ion, function=function, **kwargs)
 
 	input('\n Press <Return> when you are finished fitting lines ...')
 
@@ -1062,7 +1101,8 @@ def MultiFit(splot, error=None, obs=None, fvalue=None, A=None, wavelength=None, 
 		lines[a].parameters = gui.Params[parameterization]
 
 	# attach the continuum to the line list
-	continuum = gui.GetContinuum()
+	continuum     = gui.GetContinuum()
+	continuum.rms = gui.rms
 
 	if not measure:
 		return lines, continuum
