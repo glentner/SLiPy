@@ -38,7 +38,7 @@ class IonManager:
             Ion     = entry[2]
 
             # conversion from 'cm-1' (Mohr & Taylor 2000)
-            ELow    = None if not entry[3] else entry[3] * 1.23984186 * u.eV
+            ELow    = entry[3] * 1.23984186 * u.eV
 
             # solve for oscillator strengths
             Logwf   = entry[4]
@@ -104,8 +104,7 @@ class IonManager:
             table = self.__getitem__(key)
 
         # map entries to index value
-        lookup_options = { 'air': 0, 'vacuum': 1, 'ion': 2, 'elow': 3, 'logwf': 4,
-            'fvalue' : 5 }
+        lookup_options = { 'air': 0, 'vacuum': 1, 'ion': 2, 'elow': 3, 'logwf': 4, 'fvalue' : 5 }
 
         if lookup not in lookup_options:
             raise AtomicError('`{}` is not an available search option!'.format(lookup))
@@ -118,7 +117,7 @@ class IonManager:
             # alter the index dictionary for column changes
             lookup_options = { 'air': 0, 'vacuum': 1, 'elow': 2, 'logwf': 3, 'fvalue' : 4 }
 
-            if lookup == 'Ion':
+            if lookup == 'ion':
                 # `Ion` column won't be present in the returned `table` !!!
                 raise AtomicError('You provided the name of an ion but requested the names '
                 'of the ions as the return value!')
