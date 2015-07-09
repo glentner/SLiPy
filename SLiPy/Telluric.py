@@ -95,7 +95,7 @@ def Correct(spectrum, *calibration, **kwargs):
 
         # build matrices with identical rows (len=npix-shift)
         if shift < 0:
-            
+
             calmatrix = np.tile(cal.data[:shift], (trials, 1))
             objmatrix = np.tile(spectrum.data[-shift:], (trials, 1))
 
@@ -103,7 +103,7 @@ def Correct(spectrum, *calibration, **kwargs):
 
             calmatrix = np.tile(cal.data[shift:], (trials, 1))
             objmatrix = np.tile(spectrum.data[:-shift], (trials, 1))
-	
+
         else:
 
             calmatrix = np.tile(cal.data, (trials, 1))
@@ -119,17 +119,17 @@ def Correct(spectrum, *calibration, **kwargs):
 
         # flip arrays for amplification
         diff = objmatrix - (1 - (1 - calmatrix) * ampmatrix)
-        
+
         # compute the RMS for each trial
         rmsvector = np.sqrt(( diff**2 ).sum(axis=1) / size)
-		
+
         if not best:
 
             # if first pass, assign to `best`
             best = ( rmsvector.min(), rmsvector.argmin(), shift, cal )
-			
+
         elif rmsvector.min() < best[0]:
-		
+
             # this fit is better, save it to `best`
             best = ( rmsvector.min(), rmsvector.argmin(), shift, cal )
 

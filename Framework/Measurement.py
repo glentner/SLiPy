@@ -2,7 +2,7 @@
 # See LICENSE (GPLv3)
 # slipy/Framework/Measurement.py
 """
-Contains the `Measurement` object: A container for a `value` and `error`.
+The `Measurement` is a container for a `value` and `error`.
 
 Astropy already has a very useful object, `Quantity` that is expanded into
 a `Constant` class. Something with a value, a name, abbreviation, uncertainty,

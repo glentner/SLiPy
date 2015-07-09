@@ -717,14 +717,14 @@ class Spectrum:
 
         The shift operations (>> and <<) are defined to mean a shift in the
         spectrum. The addition and subtraction operate on the `data`. These
-        operations apply to the `wave` array. `Spectrum << 2 * u.Angstrom` say
+        operations apply to the `wave` array. `Spectrum << 2 * u.Angstrom` says
         to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
         number, the wavelength units are implied. Also, one can shift a spectrum
         by another spectrum (e.g., `spectrumA >> spectrumB`), where the `wave`
         arrays would be operated on only. In these cases, they should
         have the same number of pixels! Finally, to get a variable shift across
         the spectrum without creating a whole spectrum with junk data, you can
-        shift using a numpy array (also of equal length). I no units are detected,
+        shift using a numpy array (also of equal length). If no units are detected,
         the wavelength units will be implied.
         """
 
@@ -732,7 +732,7 @@ class Spectrum:
 
             if len(self) != len(other):
                 raise SpectrumError('The left shift operator requires the '
-                'length of both spectrum objects be the same!')
+                'length of both Spectrum objects be the same!')
 
             result = self.copy()
             result.wave = result.wave - other.wave
@@ -740,7 +740,7 @@ class Spectrum:
 
         elif hasattr(other, 'unit'):
 
-            if hasattr(other, '__init__'):
+            if hasattr(other.value, '__iter__'):
                 if len(self) != len(other):
                     raise SpectrumError('The left shift operator requires '
                     'the length of both the spectrum and the RHS to have the '
@@ -776,14 +776,14 @@ class Spectrum:
 
         The shift operations (>> and <<) are defined to mean a shift in the
         spectrum. The addition and subtraction operate on the `data`. These
-        operations apply to the `wave` array. `Spectrum << 2 * u.Angstrom` say
+        operations apply to the `wave` array. `Spectrum << 2 * u.Angstrom` says
         to blue shift the spectrum by 2 Angstroms. If the RHS is a dimensionless
         number, the wavelength units are implied. Also, one can shift a spectrum
         by another spectrum (e.g., `spectrumA >> spectrumB`), where the `wave`
         arrays would be operated on only. In these cases, they should
         have the same number of pixels! Finally, to get a variable shift across
         the spectrum without creating a whole spectrum with junk data, you can
-        shift using a numpy array (also of equal length). I no units are detected,
+        shift using a numpy array (also of equal length). If no units are detected,
         the wavelength units will be implied.
         """
 
@@ -799,7 +799,7 @@ class Spectrum:
 
         elif hasattr(other, 'unit'):
 
-            if hasattr(other, '__init__'):
+            if hasattr(other.value, '__iter__'):
                 if len(self) != len(other):
                     raise SpectrumError('The right shift operator requires '
                     'the length of both the spectrum and the RHS to have the '

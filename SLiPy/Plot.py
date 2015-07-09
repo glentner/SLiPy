@@ -55,7 +55,7 @@ class SPlot:
             self.txkwargs = []
 
             if type(spectrum) is not Spectrum.Spectrum:
-                raise PlotError('Splot expects type Fits.Spectra!')
+                raise PlotError('Splot expects type `Spectrum`!')
 
             # data in `list` allows for overplotting
             self.data = [ spectrum.data ]

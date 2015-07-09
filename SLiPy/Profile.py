@@ -19,14 +19,16 @@ from astropy import units as u
 from astropy.constants import m_e, e, c
 
 from .. import SlipyError
+
 from .Observatory import Observatory
 from .Spectrum import Spectrum, SpectrumError
 from .Plot import SPlot, PlotError
+
 from ..Framework.Options import Options, OptionsError
 from ..Framework.Measurement import Measurement
-
 from ..Algorithms.Functions import Gaussian, Lorentzian, Voigt, InvertedLorentzian
 from ..Algorithms.KernelFit import KernelFit1D
+from ..Data import Atomic
 
 class ProfileError(SlipyError):
 	"""
@@ -38,23 +40,19 @@ def Pick(event):
     """
     Used to hand selection events.
     """
-
     if isinstance(event.artist, Line2D):
-
         # get the x, y data from the pick event
         thisline = event.artist
         xdata = thisline.get_xdata()
         ydata = thisline.get_ydata()
         ind = event.ind
-
         # update the selection dictionary
         global selected
         selected['wave'].append(np.take(xdata,ind)[0])
         selected['data'].append(np.take(ydata,ind)[0])
-
         # display points as a visual aid
         plt.scatter(np.take(xdata,ind)[0], np.take(ydata,ind)[0],
-            marker = 'o', s=75, c='r')
+            marker = 'o', s=75, edgecolor='red', facecolor='None', lw=2)
         plt.draw()
 
 # empty selection dictionary is filled with the Select() function
@@ -175,94 +173,178 @@ def AutoFit(splot, function = InvertedLorentzian, params = None):
 
 
 def Extract(splot, kernel = Gaussian, **kwargs):
-    """
-    Select locations in the `splot` figure, expected to be of type SPlot.
-    Exactly four points should be selected. These are used to extract a
-    line profile from the spectrum plotted in the splot figure. The inner
-    section is used for the line, and the outer selection is used to model
-    the continuum; these, respectively, and both returned as Spectrum objects.
-    The gap is jumped using 1D interpolation (scipy...interp1d).
-    """
-    try:
+	"""
+	Select locations in the `splot` figure, expected to be of type SPlot.
+	Exactly four points should be selected. These are used to extract a
+	line profile from the spectrum plotted in the splot figure. The inner
+	section is used for the line, and the outer selection is used to model
+	the continuum; these, respectively, and both returned as Spectrum objects.
+	The gap is jumped using 1D interpolation (scipy...interp1d).
+	"""
+	try:
 
-        options = Options( kwargs, {
-            'kind'      : 'cubic' , # given to scipy...interp1d for continuum
-            'bandwidth' : 0.1*u.nm, # user should provide this!
-            'rms'       : False     # measure the RMS of the line, continuum
-        })
+		options = Options( kwargs, {
+			'kind'      : 'cubic' , # given to scipy...interp1d for continuum
+			'bandwidth' : 0.1*u.nm  # user should provide this!
+			# 'rms'       : False     # measure the RMS of the line, continuum
+			})
 
-        kind      = options('kind')
-        bandwidth = options('bandwidth')
-        rms       = options('rms')
+		kind      = options('kind')
+		bandwidth = options('bandwidth')
+		# rms       = options('rms')
 
-    except OptionsError as err:
-        print(' --> OptionsError:', err)
-        raise ProfileError('Unrecognized option given to Extract()!')
+	except OptionsError as err:
+		print(' --> OptionsError:', err)
+		raise ProfileError('Unrecognized option given to Extract()!')
 
-    print(' Please select four points identifying the spectral line.')
-    print(' Outer intervals sample the continuum.')
-    print(' Center interval contains the line.')
+	print(' Please select four points identifying the spectral line.')
+	print(' Outer intervals sample the continuum.')
+	print(' Center interval contains the line.')
 
-    # make selections
-    selected = Select(splot)
+	# make selections
+	selected = Select(splot)
 
-    if len( selected['wave'] ) != 4:
-        raise ProfileError('Exactly 4 locations should be selected for '
-        'the profile modeling to work!')
+	if len( selected['wave'] ) != 4:
+		raise ProfileError('Exactly 4 locations should be selected for '
+		'the profile modeling to work!')
 
-    # order the selected wavelength locations
-    wave = selected['wave']
-    wave.sort()
+	# order the selected wavelength locations
+	wave = selected['wave']
+	wave.sort()
 
-    # create `line` profile
-    xl = splot.wave[0].copy()
-    yl = splot.data[0].copy()
-    yl = yl[ xl[ xl < wave[2] ] > wave[1] ]
-    xl = xl[ xl[ xl < wave[2] ] > wave[1] ]
-    line = Spectrum(yl, xl)
+	# create `line` profile
+	xl = splot.wave[0].copy()
+	yl = splot.data[0].copy()
+	yl = yl[ xl[ xl < wave[2] ] > wave[1] ]
+	xl = xl[ xl[ xl < wave[2] ] > wave[1] ]
+	line = Spectrum(yl, xl)
 
-    # extract continuum arrays
-    xc = splot.wave[0].copy()
-    yc = splot.data[0].copy()
-    # inside outer-most selections
-    yc = yc[ xc[ xc < wave[3] ] > wave[0] ]
-    xc = xc[ xc[ xc < wave[3] ] > wave[0] ]
-    # keep wavelengths whole domain for later
-    xx = xc.copy()
-    yy = yc.copy()
-    # but not the line
-    yc = yc[np.where(np.logical_or(xc < wave[1], xc > wave[2]))]
-    xc = xc[np.where(np.logical_or(xc < wave[1], xc > wave[2]))]
+	# extract continuum arrays
+	xc = splot.wave[0].copy()
+	yc = splot.data[0].copy()
+	# inside outer-most selections
+	yc = yc[ xc[ xc < wave[3] ] > wave[0] ]
+	xc = xc[ xc[ xc < wave[3] ] > wave[0] ]
+	# keep wavelengths whole domain for later
+	xx = xc.copy()
+	yy = yc.copy()
+	# but not the line
+	yc = yc[np.where(np.logical_or(xc < wave[1], xc > wave[2]))]
+	xc = xc[np.where(np.logical_or(xc < wave[1], xc > wave[2]))]
 
-    # use `kernel smoothing` to model the continuum
-    model = KernelFit1D(xc, yc, kernel = kernel, bandwidth = bandwidth)
+	# use `kernel smoothing` to model the continuum
+	model = KernelFit1D(xc, yc, kernel = kernel, bandwidth = bandwidth)
 
-    # interpolate to cross `the gap`
-    interp = interp1d(xc, model.mean(xc), kind = kind)
+	# interpolate to cross `the gap`
+	interp = interp1d(xc, model.mean(xc), kind = kind)
 
-    # continuum model outside the line
-    cont_outside = interp(xc)
+	# continuum model outside the line
+	cont_outside = interp(xc)
 
-    # continuum inside the line
-    cont_inside = interp(xl)
+	# continuum inside the line
+	cont_inside = interp(xl)
 
-    # continuum model for whole domain
-    cont_domain = interp(xx)
+	# continuum model for whole domain
+	cont_domain = interp(xx)
 
-    # build a spectrum from the arrays
-    continuum = Spectrum(cont_domain, xx)
+	# build a spectrum from the arrays
+	continuum = Spectrum(cont_domain, xx)
 
-    # display visual aid
-    plt.plot(xx, cont_domain, 'r--', linewidth = 3)
-    plt.fill_between(xl, yl, cont_inside, color = 'blue', alpha = 0.25)
-    plt.draw()
+	# display visual aid
+	plt.plot(xx, cont_domain, 'r--', linewidth = 3)
+	plt.fill_between(xl, yl, cont_inside, color = 'blue', alpha = 0.25)
+	plt.draw()
 
-    if not rms:
-        return line, continuum
+	# if not rms:
+	#     return line, continuum
 
-    cont_rms = np.sqrt( np.sum( (cont_outside * yc.unit - yc)**2 ) / len(yc) )
+	continuum.rms  = np.sqrt( np.sum( (cont_outside * yc.unit - yc)**2 ) / len(yc) )
+	continuum.rms *= continuum.data.unit
 
-    return line, continuum, cont_rms * continuum.data.unit
+	return line, continuum
+
+
+def OpticalDepth(line, continuum, error=None, boost=None):
+	"""
+	Given an absorption `line` and its background `continuum`, compute the
+	apparent optical depth Spectrum. Both the line and the continuum must
+	be of Spectrum type. The continuum will be resampled to the pixel space of the
+	line if it is not currently.
+
+	If provided an `error` spectrum, it should either have the same units as the `line`
+	or be in percent units (they should have identical wavelength arrays). An upper and
+	lower uncertainty will be computed by adding and subtracting before the calculation.
+	Further, if an `rms` value is attached to the `continuum` giving the percent error in
+	the continuum fit, this will be added in quadrature to the error spectrum before hand.
+
+	`boost` allows for artificially increasing the resolution by resampling to more pixels.
+	If the spectrum is not of sufficiently high resolution, the integration could suffer
+	numerical errors. If provided, this should be a percentage to increase the resolution
+	(e.g., `boost=2` would double the resolution by interpolating in between the pixels).
+
+	This function returns a Spectrum with `upper` and `lower` bounds attached.
+	"""
+	if not isinstance(line, Spectrum):
+		raise ProfileError('OpticalDepth() expects the first argument to be of '
+		'`Spectrum` type!')
+
+	if not isinstance(continuum, Spectrum):
+		raise ProfileError('OpticalDepth() expects the second argument to be of '
+		'`Spectrum` type!')
+
+	line      = line.copy()
+	continuum = continuum.copy()
+
+	if error:
+		if not isinstance(error, Spectrum):
+			raise ProfileError('OpticalDepth() expects the `error` to be of `Spectrum` type!')
+		if error.data.unit not in [line.data.unit, u.percent]:
+			raise ProfileError('OpticalDepth() expects the `error` spectrum to have either '
+			'the same units as the `line` or units of `percent`.')
+
+		error = error.copy()
+
+		if error.data.unit == u.percent:
+			if np.logical_and(error.data.value < 0, error.data.value > 100).any():
+				raise ProfileError('OpticalDepth() was given an `error` spectrum in '
+				'units of `percent` with values outside of 0 and 100!')
+
+			error.resample(line)
+			error.data = (error.data * line.data).to(line.data.unit)
+
+	if hasattr(continuum, 'rms'):
+		if not hasattr(continuum.rms, 'unit') or (continuum.rms.unit not in
+			[continuum.data.unit, u.percent]):
+			raise ProfileError('OpticalDepth() expects a `continuum` with an `rms` '
+			'attribute to have the same units or `percent` units.')
+
+		rms = continuum.rms
+		if rms.unit == u.percent:
+			rms = rms * continuum.data
+			rms = rms.to(continuum.data.unit)
+
+		if not error:
+			error = rms
+
+		else:
+			# add the two error components in quadrature
+			error.resample(line)
+			error = Spectrum(np.sqrt(rms**2 + error.data**2) * line.data.unit, line.wave)
+
+	# boost the resolution of the specrum if requested
+	if boost: line.resample( line.wave[0], line.wave[-1], len(line) * boost )
+
+	# resample the continuum spectrum, nothing happens if they are already the same
+	continuum.resample(line)
+
+	# compute the apparent optical depth
+	tau = Spectrum(np.log((continuum / line).data.decompose()), line.wave)
+
+	if error:
+		tau.lower = Spectrum(np.log((continuum / (line - error)).data.decompose()), line.wave)
+		tau.upper = Spectrum(np.log((continuum / (line + error)).data.decompose()), line.wave)
+
+	return tau
 
 def EquivalentWidth(line, continuum, error=None, boost=None):
 	"""
@@ -271,99 +353,118 @@ def EquivalentWidth(line, continuum, error=None, boost=None):
 	be of Spectrum type. The continuum will be resampled to the pixel space of the
 	line if it is not currently.
 
-	If provided an `error` spectrum, it should be a dimensionless Spectrum object
-	giving percent errors along the line. An upper and lower uncertainty will be
-	computed by adding and subtracting before the calculation. Further, if an `rms`
-	value is attached tot he `continuum` giving the percent error in the continuum
-	fit, this will be added in quadrature to the error spectrum before hand.
+	If provided an `error` spectrum, it should either have the same units as the `line`
+	or be in percent units (they should have identical wavelength arrays). An upper and
+	lower uncertainty will be computed by adding and subtracting before the calculation.
+	Further, if an `rms` value is attached to the `continuum` giving the percent error in
+	the continuum fit, this will be added in quadrature to the error spectrum before hand.
 
-	`boost` allows you artificially increase the resolution by resampling to more pixels.
+	`boost` allows for artificially increasing the resolution by resampling to more pixels.
 	If the spectrum is not of sufficiently high resolution, the integration could suffer
 	numerical errors. If provided, this should be a percentage to increase the resolution
-	by (e.g., `boost=2`) would double the resolution by interpolating in between the pixels.
+	(e.g., `boost=2` would double the resolution by interpolating in between the pixels).
 
 	Integration is performed using the composite Simpson`s rule (scipy.integrate.simps)
 	This function returns a `Measurement` object (..Framework.Measurement.Measurement).
 	"""
-	if not isinstance(line, Spectrum):
-		raise ProfileError('EquivalentWidth() expects the first argument to be of '
-		'`Spectrum` type!')
-
-	if not isinstance(continuum, Spectrum):
-		raise ProfileError('EquivalentWidth() expects the second argument to be of '
-		'`Spectrum` type!')
-
-	line      = line.copy()
-	continuum = continuum.copy()
+	tau = OpticalDepth(line, continuum, error=error, boost=boost)
+	W   = Integrate(1 - np.exp(-tau.data.decompose()), tau.wave) * line.wave.unit
 
 	if error:
 
-		if not isinstance(error, Spectrum):
-			raise ProfileError('EquivalentWidth() expects the `error` to be of `Spectrum` type!')
-
-		if error.data.unit not in [line.data.unit, u.percent]:
-			raise ProfileError('EquivalentWidth() expect the `error` spectrum to have either '
-			'the same units as the `line` or units of `percent`.')
-
-		error = error.copy()
-
-		if error.data.unit == u.percent:
-
-			if np.logical_and(error.data.value < 0, error.data.value > 100).any():
-				raise ProfileError('EquivalentWidth() was given an `error` spectrum in '
-				'units of `percent` with values outside of 0 and 100!')
-
-			error.data = (error.data * line.data).to(line.data.unit)
-
-	if hasattr(continuum, 'rms'):
-
-		if not hasattr(continuum.rms, 'unit') or (continuum.rms.unit not in
-			[continuum.data.unit, u.percent]):
-			raise ProfileError('EquivalentWidth() expects a `continuum` with an `rms` '
-			'attribute to have the same units or `percent` units.')
-
-		rms = continuum.rms
-		if rms.unit == u.percent:
-			rms *= continuum.data.mean()
-			rms  = rms.to(continuum.data.unit)
-
-		if not error:
-			error = rms
-
-		else:
-			# add the two error components in quadrature
-			error.resample(line)
-			error = Spectrum(np.sqrt(rms**2 + error.data**2) * line.data.unit,
-					line.wave)
-
-	# boost the resolution of the specrum if requested
-	if boost: line.resample( line.wave[0], line.wave[-1], len(line) * boost )
-
-	# resample the continuum spectrum, nothing happens if they are already the same
-	continuum.resample(line)
-
-	# compute the percent absorption for the line
-	W = Integrate( 1 - (line/continuum).data, line.wave) * line.wave.unit
-
-	if error:
-
-		# the lower and upper standard error for the line
-		line_upper = line + error
-		line_lower = line - error
-
-		# the lower `W` is with the upper line
-		W_lower = Integrate(1 - (line_upper/continuum).data, line.wave) * line.wave.unit
-
-		# the upper `W` is with the lower line
-		W_upper = Integrate(1 - (line_lower/continuum).data, line.wave) * line.wave.unit
+		upper = Integrate(1 - np.exp(-tau.lower.data.decompose()), tau.wave) * line.wave.unit
+		lower = Integrate(1 - np.exp(-tau.upper.data.decompose()), tau.wave) * line.wave.unit
 
 		# join upper/lower into +/- set
-		uncertainty = np.array([(W_upper - W).value, (W_lower - W).value]) * line.wave.unit
+		uncertainty = np.array([(upper - W).value, (lower - W).value]) * tau.wave.unit
 
 	else: uncertainty = None
 
 	return Measurement(W, error = uncertainty, name = 'Equivalent Width',
 		notes = 'Measured using Profile.EquivalentWidth() from SLiPy')
+
+
+def ColumnDensity(line, continuum, ion, error=None, boost=None, weakline=None, integrate=True):
+	"""
+	Given an absorption `line` and its background `continuum`, compute the
+	apparent column density, `N`, of the feature. Both the line and the continuum must
+	be of Spectrum type. The continuum will be resampled to the pixel space of the
+	line if it is not currently. An `ion` must be provided (type Atomic.Ion) with
+	members, `fvalue` (oscillator strength) and `wavelength` (will be converted to
+	Angstroms).
+
+	If provided an `error` spectrum, it should either have the same units as the `line`
+	or be in percent units (they should have identical wavelength arrays). An upper and
+	lower uncertainty will be computed by adding and subtracting before the calculation.
+	Further, if an `rms` value is attached to the `continuum` giving the percent error in
+	the continuum fit, this will be added in quadrature to the error spectrum before hand.
+
+	With `integrate` set to True (the default) the integrated apparent column density will
+	be returned (as type Measurement and in units of cm-2). Otherwise, a Spectrum is
+	returned as a function of wavelength and the `.upper` and `.lower` bounds are attached.
+
+	`boost` allows for artificially increasing the resolution by resampling to more pixels.
+	If the spectrum is not of sufficiently high resolution, the integration could suffer
+	numerical errors. If provided, this should be a percentage to increase the resolution
+	(e.g., `boost=2` would double the resolution by interpolating in between the pixels).
+
+	With a `weakline` provided (the results of this function on the weaker absorption
+	line for a doublet) a correction gives an approximate `true` column density (attached
+	to the returned Measurement as `.true`), see Savage & Sembach, 1991.
+	
+	Integration is performed using the composite Simpson`s rule (scipy.integrate.simps)
+	This function returns a `Measurement` object (..Framework.Measurement.Measurement).
+	"""
+	if (not isinstance(ion, Atomic.Ion) or not hasattr(ion, 'fvalue') or
+		not hasattr(ion, 'wavelength')): raise ProfileError("From ColumnDensity(), `ion` is "
+		"expected to be of type Atomic.Ion and have members `fvalue` and `wavelength`!")
+
+	if weakline and not hasattr(weakline, 'unit'):
+		raise ProfileError("From ColumnDensity(), `weakline` is expected to have units!")
+
+	const   = 1 / (ion.fvalue * ion.wavelength.to(u.AA)**2 * np.pi * e.si**2 / (m_e.si * c**2))
+	tau     = OpticalDepth(line, continuum, error=error, boost=boost)
+	N       = const.value * tau       / (u.cm**2 / tau.wave.unit)
+	N.upper = const.value * tau.upper / (u.cm**2 / tau.wave.unit)
+	N.lower = const.value * tau.upper / (u.cm**2 / tau.wave.unit)
+
+	if not integrate and not weakline:
+		return N
+
+	elif weakline and not integrate:
+		raise ProfileError("From ColumnDensity(), you gave `integrate` as False but we "
+		"need to integrate to solve for the correct N using the `weakline`!")
+
+	upper = Integrate(N.upper.data, N.wave) / u.cm**2
+	lower = Integrate(N.lower.data, N.wave) / u.cm**2
+	N     = Integrate(N.data, N.wave) / u.cm**2
+	uncertainty = np.array([(N - upper).value, (lower - N).value]) / u.cm**2
+
+	N = Measurement(N, name="Column Density (Apparent)",
+		error=uncertainty, notes="Measured using Profile.ColumnDensity() from SLiPy")
+
+	if not weakline:
+		return N
+
+	# attach the `correction` given the already computed `weakline` column density.
+	diff = np.log10(weakline.to(1 / u.cm**2).value) - np.log10(N.value)
+	if diff < 0.0 or diff > 0.24:
+		raise ProfileError("From ColumnDensity(), the difference between the doublet "
+		"lines is too great to solve for a correction using known physics.")
+
+	# Table 4: Column Density Corrections for an Isolated Gaussian Component
+	# Savage & Sembach (1991)
+	table = np.array([  [0.000, 0.000], [0.010, 0.010], [0.020, 0.020], [0.030, 0.030],
+		[0.040, 0.040], [0.050, 0.051], [0.060, 0.061], [0.070, 0.073], [0.080, 0.085],
+		[0.090, 0.097], [0.100, 0.111], [0.110, 0.125], [0.120, 0.140], [0.130, 0.157],
+		[0.140, 0.175], [0.150, 0.195], [0.160, 0.217], [0.170, 0.243], [0.180, 0.273],
+		[0.190, 0.307], [0.200, 0.348], [0.210, 0.396], [0.220, 0.453], [0.230, 0.520],
+		[0.240, 0.600]])
+
+	N.correction = interp1d(table[:,0], table[:,1], kind='cubic')(diff)
+	N.true       = 10**(np.log10(weakline.value) + N.correction) / u.cm**2
+	return N
+
 
 class FittingGUI:
 	"""
@@ -406,7 +507,7 @@ class FittingGUI:
 
 		# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		# if the profile `function` is `Voigt` and we have necessary parameters,
-		# show a preview for `b` and `N` and `z`.
+		# show a preview for `b` and `N` and `v`.
 		self.any_line_parameters = True if obs or  ion else False
 		self.has_line_parameters = True if obs and ion else False
 		if self.any_line_parameters and not self.has_line_parameters:
@@ -435,7 +536,7 @@ class FittingGUI:
 
 			if not hasattr(ion, 'fvalue'):
 				raise ProfileError('From FittingGUI.__init__(), the provide `ion` does not '
-				'have an `fvalue` (osciallator strength) attribute!')
+				'have an `fvalue` (oscillator strength) attribute!')
 
 			if hasattr(ion.fvalue, 'unit') and ion.fvalue.unit != u.dimensionless_unscaled:
 				raise ProfileError('From FittingGUI.__init__(), the osciallator strength, '
@@ -467,8 +568,10 @@ class FittingGUI:
 				c.si).to(ion.wavelength.unit).value
 
 			# the leading constant in the computation of `N` (per Angstrom per cm-2)
-			self.leading_constant = (m_e.si * c.si / (np.sqrt(np.pi) * e.si**2 * ion.fvalue *
-				ion.wavelength.to(u.Angstrom))).value
+			# self.leading_constant = (m_e.si * c.si / (np.sqrt(np.pi) * e.si**2 * ion.fvalue *
+			# 	ion.wavelength.to(u.Angstrom))).value
+			self.leading_constant = 1 / (ion.fvalue * ion.wavelength.to(u.AA)**2 * np.pi *
+				e.si**2 / (m_e.si * c**2)).value
 
 			# setting `function` to `ModifiedVoigt` only makes a change in how the `Voigt`
 			# profile is evaluated by using `self.gamma` instead of self.Params[...]['Gamma']
@@ -480,8 +583,8 @@ class FittingGUI:
 		'begin the fitting process.')
 
 		# extract the line, continuum, rms from the spectrum
-		self.line, self.continuum, self.rms = Extract(splot, bandwidth=bandwidth,
-			kind=kind, rms=True)
+		self.line, self.continuum = Extract(splot, bandwidth=bandwidth, kind=kind)
+		self.rms = self.continuum.rms
 
 		print('\n Now select the peaks of each line to be fit.')
 		print(' Initial guesses will be made for each line markered.')
@@ -630,10 +733,9 @@ class FittingGUI:
 		# add the initial text for `N` and `b` if applicable.
 		# text is along 20% below the y-axis
 		if self.has_line_parameters:
-			self.b, self.N, self.z = self.solve_b(), self.solve_N(), self.solve_z()
+			self.b, self.N, self.v = self.solve_b(), self.solve_N(), self.solve_v()
 			self.preview = self.ax.text(xmin, ymin - 0.1 * (ymax - ymin),
-				'z:\t{0:.4f}\nb:\t{1:.4f}\nN:\t{2:.4e}'.format(self.z, self.b, self.N),
-				va = 'top')
+				'v:\t{0:.4f}\nb:\t{1:.4f}\nN:\t{2:.4e}'.format(self.v, self.b, self.N),va = 'top')
 
 		# display the text
 		self.fig.canvas.draw_idle()
@@ -642,72 +744,25 @@ class FittingGUI:
 		"""
 		Choose the initial parameters of `function` given the peak `loc`.
 		"""
-
 		if function == 'Voigt':
-
-			return {
-
-					# from the Lorentzian
-					'Gamma': 0.10 * self.domainsize / self.numlines,
-
-					# from the Gaussian
-					'Sigma': 0.20 * self.domainsize / self.numlines,
-
-					# center of the line
-					'Peak' : loc[0],
-
-					# depth of the line
-					'Depth': self.continuum[ loc[0] ].value - loc[1]
-
-				}
+			return {'Gamma': 0.10 * self.domainsize / self.numlines,
+				'Sigma': 0.20 * self.domainsize / self.numlines, 'Peak' : loc[0],
+				'Depth': self.continuum[ loc[0] ].value - loc[1]}
 
 		if function == 'Lorentzian':
-
-			return {
-
-					# FWHM of the Lorentzian
-					'FWHM': 0.5 * self.domainsize / self.numlines,
-
-					# center of the line
-					'Peak': loc[0],
-
-					# depth of the line
-					'Depth': self.continuum[ loc[0] ].value - loc[1]
-				}
+			return {'FWHM': 0.5 * self.domainsize / self.numlines, 'Peak': loc[0],
+				'Depth': self.continuum[ loc[0] ].value - loc[1]}
 
 		elif function == 'Gaussian':
-
-			return {
-
-					# FWHM / Ln(2) of Gaussian
-					'FWHM': 0.5 * self.domainsize / self.numlines,
-
-					# center of line
-					'Peak': loc[0],
-
-					# depth of the line
-					'Depth': self.continuum[ loc[0] ].value - loc[1]
-				}
+			return {'FWHM': 0.5 * self.domainsize / self.numlines, 'Peak': loc[0],
+				'Depth': self.continuum[ loc[0] ].value - loc[1]}
 
 		elif function == 'ModifiedVoigt':
+			return {'Sigma': (self.Maximum('Sigma') - self.Minimum('Sigma'))/2,
+				'Peak' : loc[0], 'Depth': self.continuum[ loc[0] ].value - loc[1]}
 
-			return {
-
-					# from the Lorentzian
-					# Gamma was provided via the transition probability, `A`...
-
-					# from the Gaussian
-					'Sigma': (self.Maximum('Sigma') - self.Minimum('Sigma'))/2,
-
-					# center of the line
-					'Peak' : loc[0],
-
-					# depth of the line
-					'Depth': self.continuum[ loc[0] ].value - loc[1]
-
-				}
-
-		else: raise ProfileError('From FittingGUI.Parameterize(), the only '
+		else:
+			raise ProfileError('From FittingGUI.Parameterize(), the only '
 			'currently implemented functions are the `Gaussian`, `Lorentzian`, and '
 			'`Voigt` profiles!')
 
@@ -715,15 +770,8 @@ class FittingGUI:
 		"""
 		Return how to `Evaluate` the profile given the `function`.
 		"""
-
-		options = {
-
-			# local versions of functions handle parameters
-			'Voigt'         : self.__Voigt,
-			'Lorentzian'    : self.__Lorentzian,
-			'Gaussian'      : self.__Gaussian,
-			'ModifiedVoigt' : self.__ModifiedVoigt
-		}
+		options = {'Voigt': self.__Voigt, 'Lorentzian': self.__Lorentzian,
+			'Gaussian': self.__Gaussian, 'ModifiedVoigt': self.__ModifiedVoigt}
 
 		if function not in options:
 			raise ProfileError('From FittingGUI.SetFunction(), the only '
@@ -736,89 +784,33 @@ class FittingGUI:
 		"""
 		A Gaussian profile. See ..Algorithms.Functions.Gaussian
 		"""
-		return Gaussian(
-
-				x,
-
-				# Amplitude of the Gaussian
-				params['Depth'],
-
-				# center
-				params['Peak'],
-
-				# sigma = FWHM / 2 sqrt{2 log 2}
-				params['FWHM'] / 2.3548200450309493
-			)
-
+		return Gaussian(x, params['Depth'], params['Peak'], params['FWHM'] / 2.3548200450309493)
 
 	def __Lorentzian(self, x, **params):
 		"""
 		A Lorentzian profile. See ..Algorithms.Functions.Lorentzian
 		"""
-		return params['Depth'] * Lorentzian(
-
-				x,
-
-				# location of the peak
-				params['Peak'],
-
-				# gamma *is* the FWHM
-				params['FWHM']
-			)
+		return params['Depth'] * Lorentzian(x, params['Peak'], params['FWHM'])
 
 	def __Voigt(self, x, **params):
 		"""
 		The Voigt profile. See ..Algorithms.Functions.Voigt
 		"""
-		return Voigt(
-
-				x,
-
-				# depth of the line
-				params['Depth'],
-
-				# location of the peak
-				params['Peak'],
-
-				# sigma from the Gaussian
-				params['Sigma'],
-
-				# gamma from the Lorentzian
-				params['Gamma']
-			)
+		return Voigt(x, params['Depth'], params['Peak'], params['Sigma'], params['Gamma'])
 
 	def __ModifiedVoigt(self, x, **params):
 		"""
 		This is the Voigt profile, but `gamma` was already set.
 		"""
-		return Voigt(
-
-				x,
-
-				# depth of the line
-				params['Depth'],
-
-				# location of the peak
-				params['Peak'],
-
-				# sigma from the Gaussian
-				params['Sigma'],
-
-				# `gamma` provided by the transition probability
-				self.gamma
-			)
+		return Voigt(x, params['Depth'], params['Peak'], params['Sigma'], self.gamma)
 
 	def SuperPosition(self):
 		"""
 		Superposition of each line component (blended line)
 		"""
-		# emtpy result
 		combined = np.zeros(np.shape(self.x))
-
-		# additional lines
 		for parameters in self.Params.values():
 			combined += self.Evaluate(self.x, **parameters)
-
 		return combined
 
 	def Minimum(self, param):
@@ -826,60 +818,49 @@ class FittingGUI:
 		Set the lower bound on the `param`eter for its slider.
 		"""
 		if param == 'Peak':
-
 			return self.x[0]
 
 		elif param == 'FWHM':
-
-			# don't divide by zero!!!!
 			return 1e-6
 
 		elif param == 'Depth':
-
 			return 1e-6
 
 		elif param == 'Sigma':
-
 			if self.Evaluate != self.__ModifiedVoigt:
 				return 1e-6
-
 			else:
-				# you can't have `b` < 0
 				return self.sigma_instrument.value
 
 		elif param == 'Gamma':
-
 			return 1e-6
 
-		else: raise ProfileError('From FittingGUI.Minimum(), `{}` is not '
+		else:
+			raise ProfileError('From FittingGUI.Minimum(), `{}` is not '
 			'currently implemented as a parameter to set the minumum '
 			'for!'.format(param))
 
 	def Maximum(self, param):
 		"""
-		Set the upper bound on the `param`eter for it's slider.
+		Set the upper bound on the `param`eter for its slider.
 		"""
 		if param == 'Peak':
-
 			return self.x[-1]
 
 		elif param == 'FWHM':
-
 			return 0.9 * self.domainsize
 
 		elif param == 'Depth':
-
 			return 1.5 * self.continuum.max()
 
 		elif param == 'Sigma':
-
 			return 0.9 * self.domainsize / self.numlines
 
 		elif param == 'Gamma':
-
 			return 0.9 * self.domainsize / self.numlines
 
-		else: raise ProfileError('From FittingGUI.Maximum(), `{}` is not '
+		else:
+			raise ProfileError('From FittingGUI.Maximum(), `{}` is not '
 			'currently implemented as a parameter to set the maximum '
 			'for!'.format(param))
 
@@ -887,7 +868,6 @@ class FittingGUI:
 		"""
 		Cycle thru Sliders and update Parameter dictionary. Re-draw graphs.
 		"""
-
 		# `self.stall` suppresses this procedure while inside `ToggleComponent`
 		if not self.stall:
 
@@ -896,10 +876,8 @@ class FittingGUI:
 
 			# update the appropriate parameters in the dictionary
 			for parameter, slider in self.Slider.items():
-
 				if parameter == 'Continuum':
 					self.y = self.continuum + (slider.val - self.continuum_level)
-
 				else:
 					self.Params[line][parameter] = slider.val
 
@@ -925,7 +903,6 @@ class FittingGUI:
 		Toggle function for the radio buttons. Switch between line components
 		`L1`, `L2`, etc. Update the sliders to reflect changing parameters.
 		"""
-
 		# reassign the current component that is selected
 		self.current_component = label
 
@@ -960,66 +937,54 @@ class FittingGUI:
 		given the instrument profile and the observed broadening.
 		"""
 		# b = sqrt(2) * sigma_v
-		return 1.4142135623730951 * np.sqrt(self.Params[self.current_component]['Sigma']**2
-			- self.sigma_instrument_squared) * self.wavelength.unit
+		return (c.si * (1.4142135623730951 *
+			np.sqrt(self.Params[self.current_component]['Sigma']**2
+			- self.sigma_instrument_squared) * self.wavelength.unit) / self.wavelength).to(u.km /
+			u.second)
 
 	def solve_N(self):
 		"""
-		Solve for the column density of the currently selected line component. Assumes
-		the `b` has already been updated.
+		Solve for the column density of the currently selected line component.
 		"""
-		# find the location of the line center
 		line_data   = self.Component[self.current_component].get_ydata()
-		line_center = line_data.argmin()
+		line_wave   = self.Component[self.current_component].get_xdata()
+		# line_center = line_data.argmin()
 
-		# apparent optical depth at the line center
-		tau_0 = np.log( self.y[line_center] / line_data[line_center] )
+		# tau_0 = np.log( self.y[line_center] / line_data[line_center] )
+		# return self.leading_constant * self.solve_b().value * tau_0 / u.cm**2
+		tau = np.log(self.y / line_data)
+		return self.leading_constant * Integrate(tau, line_wave) / u.cm**2
 
-		# compute the column density
-		return self.leading_constant * self.solve_b().value * tau_0 / u.cm**2
-
-	def solve_z(self):
+	def solve_v(self):
 		"""
-		Solve for the `red shift` in the line given the expected wavelength.
-		The result is presented in km s-1.
+		Solve for the velocity of the line given the expected wavelength.
+		The result is returned in km s-1.
 		"""
-		return (c.si * (self.Params[self.current_component]['Peak'] - self.wavelength.value) /
-			self.wavelength.value).to(u.km/u.s)
+		line_center = self.Params[self.current_component]['Peak'] * self.wavelength.unit
+		return c.to(u.km / u.second) * (line_center - self.wavelength) / self.wavelength
 
 	def Update_Preview(self):
 		"""
-		Re-compute the `b`, `N`, and `z` values, update the text in the plot.
+		Re-compute the `b`, `N`, and `v` values, update the text in the plot.
 		"""
-		self.b, self.N, self.z = self.solve_b(), self.solve_N(), self.solve_z()
-		self.preview.set_text('z:\t{0:.4f}\nb:\t{1:.4f}\nN:\t{2:.4e}'.format(self.z,
+		self.b, self.N, self.v = self.solve_b(), self.solve_N(), self.solve_v()
+		self.preview.set_text('v:\t{0:.4f}\nb:\t{1:.4f}\nN:\t{2:.4e}'.format(self.v,
 			self.b, self.N))
 
 	def GetSpectra(self):
 		"""
 		Return the current graphs as Spectrum objects.
 		"""
-		return [
-
-				Spectrum(
-						# build a spectrum based on numpy arrays from plot
-						self.Component[graph].get_ydata() * self.line.data.unit,
-						self.x * self.line.wave.unit
-					)
-
-				# for all `L1`, `L2`, etc...
-				for graph in sorted( self.Component.keys() )
-			]
+		return [Spectrum(self.Component[line].get_ydata() * self.line.data.unit,
+			self.x * self.line.wave.unit) for line in sorted(self.Component.keys())]
 
 	def GetContinuum(self):
 		"""
 		Return the current graph of the continuum.
 		"""
-		return Spectrum(
-
-				# data from the graph, with applied units
-				self.y * self.line.data.unit,
-				self.x * self.line.wave.unit
-			)
+		continuum = Spectrum(self.y * self.line.data.unit, self.x * self.line.wave.unit)
+		continuum.rms = self.rms
+		return continuum
 
 	def kill(self):
 		"""
@@ -1029,7 +994,7 @@ class FittingGUI:
 		self.splot.fig = plt.figure("Spectral-Plot (SLiPy)")
 		self.splot.ax  = self.splot.fig.add_subplot(111)
 		self.splot.draw()
-		del(self)
+		#del(self)
 
 def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=True,
 	boost=None, **kwargs):
@@ -1037,12 +1002,12 @@ def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=Tr
 	The MultiFit routine takes a `splot` figure (type SPlot) and allows the
 	user to interactively fit line profiles. `splot` may optionally be of type
 	Spectrum, in which case a SPlot figure will be created for you. This function
-	creates a *FittingGUI* object (not documented here) which uses the *Profile.Extract()*
-	routine first (*kwargs* are passed to this function). As in the Extract routine, the user
+	creates a *FittingGUI* object (not documented here) which uses the Profile.Extract()
+	routine first (`kwargs` are passed to this function). As in the Extract routine, the user
 	will select four points that mark the boundaries of the line (blended or otherwise)
 	and some surrounding continuum to sample. The KernelFit1D (..Algorithms.KernelFit) routine
 	is applied with the user specified `bandwidth` to smooth the noise out of the continuum
-	and interpolate, of type *kind*, across the line gap. After this, the user is asked to
+	and interpolate, of type `kind`, across the line gap. After this, the user is asked to
 	further select points marking the peaks of the line(s). The number of selection points
 	indicates the number of lines to be fit. If you wish to deblend two or more lines, select
 	all suspected locations. These are not only used to determine the number of lines to fit
@@ -1050,24 +1015,23 @@ def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=Tr
 	for the sliders.
 
 	After these selections, a slider for each parameter appears along with radio buttons for
-	each line. The user can interactively adjust the parameter(s) for a given line by
+	each line. The user can interactively adjusts the parameter(s) for a given line by
 	selecting it (the radio buttons) and dragging a slider. The parameters available to
 	adjust depend on the `function` argument. There are currently three available line shapes:
 	'Gaussian', 'Lorentzian', and 'Voigt'. See ..Algorithms.Functions for information on
 	these.
 
-	Each line is represented by a black, dashed line in the plot. The currently selected line
-	is bold. The combined (i.e., blended) line is plotted with a solid green line.
+	Each line is represented by a black, dashed curve in the plot. The currently selected line
+	is bold. The combined (i.e., blended) line is plotted as a solid green curve.
 
-	If an Observatory with a `.resolution` is provided via `obs` than the thermal broadening
-	parameter `b` can be computed (and displayed). This is only applicable with either a
-	`Gaussian` or `Voigt` profile.
-
-	If all three: oscillator strength (`fvalue`), transition probability (`A`), and a
-	wavelength (`wavelength`) are provided, the column density `N` can be computed and
-	displayed during the fitting process. This along with the `b` value are relevant when
-	fitting interstellar absorption lines. With transition probability, `A`, `gamma` from
-	the Voigt profile is determined, and this slider will disappear.
+	If an Observatory with a `.resolution` is provided via the `obs` argument then the
+	thermal broadening parameter `b` can be computed (and displayed). This is only applicable
+	with either a `Gaussian` or `Voigt` profile. Further, an `ion` needs to be provided in
+	this scenario (type ..Data.Atomic.Ion) with an oscillator strength (fvalue), transition
+	probability (A) and wavelength as members. With these data, we can interactively show
+	the broadening prameter, the velocity, and the apparent column density during the fitting
+	process. Note: the `gamma` slider will disappear in this context because it has already
+	been determined via the transition probability.
 
 	Each slider is labeled on the left side with the name of the parameter it controls. At
 	the right of each slider is the current value of that parameter. The radio buttons are
@@ -1078,21 +1042,15 @@ def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=Tr
 	as a deblending tool. By default, the final parameterizations are attached to each spectrum
 	as a dictionary, `.parameters`.
 
-	If `measure` is set as True, the equivalent width is computed and attached to each
-	spectrum (`L1`, `L2`, etc...) and can be accessed with `.W`. If `b` and/or `N` are
+	If `measure` is passed as True (the default), the equivalent width is computed and attached
+	to each spectrum (`L1`, `L2`, etc...) and can be accessed with `.W`. If `b` and/or `N` are
 	available for each line these will be attached as well, accessible as `.b` and `.N`
 	respectively. This functionality can be suppressed by setting `measure` to False. `boost`
-	and `error` are passed to .EquivalentWidth().
-
-	If an `error` spectrum is given indicating the percent error (from counting statistics)
-	in the line(s) being fit and/or deblended, upper and lower standard errors will be attached to
-	these `Measurement`s (see ..Framework.Measurment.Measurement). This is passed on to
-	EquivalentWidth().
+	and `error` are passed to EquivalentWidth() and ColumnDensity().
 	"""
 
 	# running the user interface
 	gui = FittingGUI(splot, obs=obs, ion=ion, function=function, **kwargs)
-
 	input('\n Press <Return> when you are finished fitting lines ...')
 
 	# attach the parameter dictionaries to each spectrum
@@ -1101,26 +1059,23 @@ def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=Tr
 		lines[a].parameters = gui.Params[parameterization]
 
 	# attach the continuum to the line list
-	continuum     = gui.GetContinuum()
-	continuum.rms = gui.rms
+	continuum = gui.GetContinuum()
 
 	if not measure:
 		return lines, continuum
 
-	# attach the equivalent widths
-	for line in lines:
-		line.W = EquivalentWidth(line, continuum, error=error, boost=boost)
-
 	if gui.has_line_parameters:
 		for line, key in zip(lines, sorted(gui.Params.keys())):
-
 			# set the line to `L1`, `L2`, etc...
 			gui.current_componenet = key
-
 			# attach the measured quantities
 			notes  = 'Measurement made using Profile.MultiFit() from SLiPy'
+
+			line.W = EquivalentWidth(line, continuum, error=error, boost=boost)
+			line.N = ColumnDensity(line, continuum, ion, error=error, boost=boost)
 			line.b = Measurement(gui.solve_b(), name='Doppler Broadening Paramater', notes=notes)
-			line.z = Measurement(gui.solve_z(), name='Red Shift', notes=notes)
-			line.N = Measurement(gui.solve_N(), name='Column Density', notes=notes)
+			line.v = Measurement(gui.solve_v(), name='Velocity', notes=notes)
+
+	gui.kill()
 
 	return lines, continuum
