@@ -162,17 +162,17 @@ def HelioCorrect( obs, *spectra, **kwargs ):
             # the `astrolibpy...helcorr` function doesn't work with units,
             # so I convert to appropriate units and strip them.
             hcorr = helcorr(
-                    obs.longitude.to(u.degree).value, 
-                    obs.latitude.to(u.degree).value, 
+                    obs.longitude.to(u.degree).value,
+                    obs.latitude.to(u.degree).value,
                     obs.altitude.to(u.meter).value,
-                    spectrum.ra.to(u.hourangle).value, 
-                    spectrum.dec.to(u.degree).value, 
+                    spectrum.ra.to(u.hourangle).value,
+                    spectrum.dec.to(u.degree).value,
                     spectrum.jd.to(u.day).value
-                )[1] * u.Unit('km s-1')
+                )[1] * u.km / u.second
 
-            # apply correction to wave vector, 
+            # apply correction to wave vector,
             # del[Lambda] / Lambda = del[V] / c
-            spectrum.wave -= spectrum.wave * hcorr / c
+            spectrum.wave -= spectrum.wave * hcorr / c.to(u.km / u.second)
 
             # show progress if desired
             if verbose: display.progress(a, len(spectra))
@@ -231,20 +231,20 @@ def BaryCorrect( obs, *spectra, **kwargs ):
 				.format(len(spectra)))
 
 		for a, spectrum in enumerate(spectra):
-			
+
             # heliocentric velocity correction in km s^-1,
             # the `astrolibpy...helcorr` function doesn't work with units,
             # so I convert to appropriate units and strip them.
 			hcorr = helcorr(
-                    obs.longitude.to(u.degree).value, 
-                    obs.latitude.to(u.degree).value, 
+                    obs.longitude.to(u.degree).value,
+                    obs.latitude.to(u.degree).value,
                     obs.altitude.to(u.meter).value,
-                    spectrum.ra.to(u.hourangle).value, 
-                    spectrum.dec.to(u.degree).value, 
+                    spectrum.ra.to(u.hourangle).value,
+                    spectrum.dec.to(u.degree).value,
                     spectrum.jd.to(u.second).value
                 )[0] * u.Unit('km s-1')
-                
-			# apply correction to wave vector, 
+
+			# apply correction to wave vector,
             # del[Lambda] / Lambda = del[V] / c
 			spectrum.wave -= spectrum.wave * hcorr / c
 

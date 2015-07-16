@@ -411,7 +411,7 @@ def ColumnDensity(line, continuum, ion, error=None, boost=None, weakline=None, i
 	With a `weakline` provided (the results of this function on the weaker absorption
 	line for a doublet) a correction gives an approximate `true` column density (attached
 	to the returned Measurement as `.true`), see Savage & Sembach, 1991.
-	
+
 	Integration is performed using the composite Simpson`s rule (scipy.integrate.simps)
 	This function returns a `Measurement` object (..Framework.Measurement.Measurement).
 	"""
@@ -422,7 +422,8 @@ def ColumnDensity(line, continuum, ion, error=None, boost=None, weakline=None, i
 	if weakline and not hasattr(weakline, 'unit'):
 		raise ProfileError("From ColumnDensity(), `weakline` is expected to have units!")
 
-	const   = 1 / (ion.fvalue * ion.wavelength.to(u.AA)**2 * np.pi * e.si**2 / (m_e.si * c**2))
+	const   = 1 / (ion.fvalue * ion.wavelength.to(u.AA)**2 * np.pi * e.emu**2 / (m_e.si *
+				c.to(u.km / u.second)**2))
 	tau     = OpticalDepth(line, continuum, error=error, boost=boost)
 	N       = const.value * tau       / (u.cm**2 / tau.wave.unit)
 	N.upper = const.value * tau.upper / (u.cm**2 / tau.wave.unit)
@@ -450,7 +451,7 @@ def ColumnDensity(line, continuum, ion, error=None, boost=None, weakline=None, i
 	diff = np.log10(weakline.to(1 / u.cm**2).value) - np.log10(N.value)
 	if diff < 0.0 or diff > 0.24:
 		raise ProfileError("From ColumnDensity(), the difference between the doublet "
-		"lines is too great to solve for a correction using known physics.")
+		"lines is too great to solve for a correction using published results!")
 
 	# Table 4: Column Density Corrections for an Isolated Gaussian Component
 	# Savage & Sembach (1991)
@@ -462,7 +463,7 @@ def ColumnDensity(line, continuum, ion, error=None, boost=None, weakline=None, i
 		[0.240, 0.600]])
 
 	N.correction = interp1d(table[:,0], table[:,1], kind='cubic')(diff)
-	N.true       = 10**(np.log10(weakline.value) + N.correction) / u.cm**2
+	N.true       = 10**(np.log10(weakline.to(1/u.cm**2).value) + N.correction) / u.cm**2
 	return N
 
 
@@ -571,7 +572,7 @@ class FittingGUI:
 			# self.leading_constant = (m_e.si * c.si / (np.sqrt(np.pi) * e.si**2 * ion.fvalue *
 			# 	ion.wavelength.to(u.Angstrom))).value
 			self.leading_constant = 1 / (ion.fvalue * ion.wavelength.to(u.AA)**2 * np.pi *
-				e.si**2 / (m_e.si * c**2)).value
+				e.emu**2 / (m_e.si * c.to(u.km/u.s)**2)).value
 
 			# setting `function` to `ModifiedVoigt` only makes a change in how the `Voigt`
 			# profile is evaluated by using `self.gamma` instead of self.Params[...]['Gamma']
@@ -733,9 +734,12 @@ class FittingGUI:
 		# add the initial text for `N` and `b` if applicable.
 		# text is along 20% below the y-axis
 		if self.has_line_parameters:
-			self.b, self.N, self.v = self.solve_b(), self.solve_N(), self.solve_v()
+			# self.b, self.N, self.v = self.solve_b(), self.solve_N(), self.solve_v()
 			self.preview = self.ax.text(xmin, ymin - 0.1 * (ymax - ymin),
-				'v:\t{0:.4f}\nb:\t{1:.4f}\nN:\t{2:.4e}'.format(self.v, self.b, self.N),va = 'top')
+				'v: {:>10.4f}        km s-1            b: {:>10.4f}    km s-1'
+				'       W: {:>10.4f}\nN:   {:>10.4e}    cm-2      tau_0: {:>10.4f}'.format(
+				self.solve_v().value, self.solve_b().value, self.solve_W(), self.solve_N().value,
+				self.solve_tau0()), va = 'top')
 
 		# display the text
 		self.fig.canvas.draw_idle()
@@ -937,23 +941,46 @@ class FittingGUI:
 		given the instrument profile and the observed broadening.
 		"""
 		# b = sqrt(2) * sigma_v
-		return (c.si * (1.4142135623730951 *
-			np.sqrt(self.Params[self.current_component]['Sigma']**2
-			- self.sigma_instrument_squared) * self.wavelength.unit) / self.wavelength).to(u.km /
-			u.second)
+		sigma_obs = self.Params[self.current_component]['Sigma']
+		sigma_v   = np.sqrt(sigma_obs**2 - self.sigma_instrument_squared) * self.wavelength.unit
+		b = np.sqrt(2) * (c * sigma_v / self.wavelength)
+		return b.to(u.km / u.second)
+		# return (c.si * (1.4142135623730951 *
+		# 	np.sqrt(self.Params[self.current_component]['Sigma']**2
+		# 	- self.sigma_instrument_squared) * self.wavelength.unit) / self.wavelength).to(u.km /
+		# 	u.second)
+
+	def solve_tau0(self):
+		"""
+		Solve for the apparent optical depth at line center.
+		"""
+		line_data = self.Component[self.current_component].get_ydata()
+		line_wave = self.Component[self.current_component].get_xdata()
+		line_center = line_data.argmin()
+
+		return np.log(self.y[line_center] / line_data[line_center])
+
+	def solve_W(self):
+		"""
+		Solve for the equivalent width of the currently selected line.
+		"""
+		line_data = self.Component[self.current_component].get_ydata()
+		line_wave = self.Component[self.current_component].get_xdata()
+
+		# apparent optical depth
+		tau = np.log(self.y / line_data)
+		return Integrate(1 - np.exp(-tau), line_wave) * self.wavelength.unit
 
 	def solve_N(self):
 		"""
 		Solve for the column density of the currently selected line component.
 		"""
-		line_data   = self.Component[self.current_component].get_ydata()
-		line_wave   = self.Component[self.current_component].get_xdata()
-		# line_center = line_data.argmin()
+		# equivalent width (dimensionless)
+		W = self.solve_W() / self.wavelength
 
-		# tau_0 = np.log( self.y[line_center] / line_data[line_center] )
-		# return self.leading_constant * self.solve_b().value * tau_0 / u.cm**2
-		tau = np.log(self.y / line_data)
-		return self.leading_constant * Integrate(tau, line_wave) / u.cm**2
+		# m_e c^2 / pi e^2 \approx 1.13e12 cm-1 ???? How is that?
+		const = (1.13e12 / u.cm) / (self.fvalue * self.wavelength.to(u.cm))
+		return const * W
 
 	def solve_v(self):
 		"""
@@ -967,9 +994,11 @@ class FittingGUI:
 		"""
 		Re-compute the `b`, `N`, and `v` values, update the text in the plot.
 		"""
-		self.b, self.N, self.v = self.solve_b(), self.solve_N(), self.solve_v()
-		self.preview.set_text('v:\t{0:.4f}\nb:\t{1:.4f}\nN:\t{2:.4e}'.format(self.v,
-			self.b, self.N))
+		# self.b, self.N, self.v = self.solve_b(), self.solve_N(), self.solve_v()
+		self.preview.set_text('v: {:>10.4f}        km s-1            b: {:>10.4f}    km s-1'
+		'       W: {:>10.4f}\nN:   {:>10.4e}    cm-2      tau_0: {:>10.4f}'.format(
+		self.solve_v().value, self.solve_b().value, self.solve_W(), self.solve_N().value,
+		self.solve_tau0()))
 
 	def GetSpectra(self):
 		"""
