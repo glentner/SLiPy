@@ -422,12 +422,11 @@ def ColumnDensity(line, continuum, ion, error=None, boost=None, weakline=None, i
 	if weakline and not hasattr(weakline, 'unit'):
 		raise ProfileError("From ColumnDensity(), `weakline` is expected to have units!")
 
-	const   = 1 / (ion.fvalue * ion.wavelength.to(u.AA)**2 * np.pi * e.emu**2 / (m_e.si *
-				c.to(u.km / u.second)**2))
+	const   = (1.13e12 / u.cm) / (ion.fvalue * ion.wavelength.to(u.cm))
 	tau     = OpticalDepth(line, continuum, error=error, boost=boost)
-	N       = const.value * tau       / (u.cm**2 / tau.wave.unit)
-	N.upper = const.value * tau.upper / (u.cm**2 / tau.wave.unit)
-	N.lower = const.value * tau.upper / (u.cm**2 / tau.wave.unit)
+	N       = tau       * const / ion.wavelength.to(u.AA).value
+	N.upper = tau.upper * const / ion.wavelength.to(u.AA).value
+	N.lower = tau.lower * const / ion.wavelength.to(u.AA).value
 
 	if not integrate and not weakline:
 		return N
