@@ -11,7 +11,7 @@ from .. import SlipyError
 from ..Framework.Options import Options, OptionsError
 from . import Fits, Spectrum
 
-mpl.rcParams['figure.facecolor'] = 'w'
+# mpl.rcParams['figure.facecolor'] = 'w'
 plt.ion()
 
 class PlotError(SlipyError):

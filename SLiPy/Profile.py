@@ -484,10 +484,12 @@ class FittingGUI:
 
 					'kind'      : 'cubic' , # given to interp1d for continuum
 					'bandwidth' : 0.1*u.nm, # user should provide this!
+                    'linecolor' : 'k'       # color passed to plt.plot() for lines
 				})
 
 			kind      = options('kind')
 			bandwidth = options('bandwidth')
+			linecolor = options('linecolor')
 
 		except OptionsError as err:
 			print(' --> OptionsError:', err)
@@ -654,11 +656,8 @@ class FittingGUI:
 
 		# add plots of each line, keep dictionary of handles
 		self.Component = {
-
-			line : plt.plot(self.x,
-					self.y - self.Evaluate(self.x, **parameters), 'k--')[0]
-
-			for line, parameters in self.Params.items()
+			line : plt.plot(self.x, self.y - self.Evaluate(self.x, **parameters),
+                linecolor+'--')[0] for line, parameters in self.Params.items()
 		}
 
 		# add plot of the continuum
@@ -672,16 +671,23 @@ class FittingGUI:
 		ymin, ymax = splot.ax.get_ylim()
 		plt.axis([xmin, xmax, ymin, ymax])
 
+		# color scheme for sliders
+		theme = {
+
+			'light': {'bg': 'white', 'fg': 'blue'},
+			'dark' : {'bg': 'black', 'fg': 'red'}
+		}
+
 		# axes for parameter sliders
 		self.Axis = {
 
 			# key : axis     xpos , ypos + dy       , xsize, ysize
-			line  : plt.axes([0.10, 0.05 + (k+1) * 0.03, 0.65, 0.02], axisbg = 'white')
+			line  : plt.axes([0.10, 0.05 + (k+1) * 0.03, 0.65, 0.02], axisbg = 'black')
 			for k, line in enumerate( self.Params['L1'].keys() )
 		}
 
 		# add an axis to make adjustments to the continuum
-		self.Axis['Continuum'] = plt.axes([0.10, 0.05, 0.65, 0.02], axisbg='white')
+		self.Axis['Continuum'] = plt.axes([0.10, 0.05, 0.65, 0.02], axisbg='black')
 
 		# create the sliders for the parameters
 		self.Slider = {
@@ -693,7 +699,8 @@ class FittingGUI:
 				param,               # name of parameter (and the slider)
 				self.Minimum(param), # set the minimum of the slider
 				self.Maximum(param), # set the maximum of the slider
-				valinit = self.Params['L1'][param] # initial value
+				valinit = self.Params['L1'][param], # initial value
+				facecolor = 'c'
 			)
 
 			# create a slider for each parameter
@@ -701,9 +708,10 @@ class FittingGUI:
 		}
 
 		# create the slider for the continuum (10% adjustments)
-		self.Slider['Continuum'] = widgets.Slider(self.Axis['Continuum'], 'Continuum',
-			0.90 * self.continuum_level, 1.10 * self.continuum_level,
-			valinit = self.continuum_level)
+		self.Slider['Continuum'] = widgets.Slider(self.Axis['Continuum'],
+			'Continuum', 0.90 * self.continuum_level, 1.10 *
+			self.continuum_level, valinit = self.continuum_level,
+			facecolor = 'c')
 
 		# connect sliders to update function
 		for slider in self.Slider.values():
@@ -711,11 +719,12 @@ class FittingGUI:
 
 		# create axis for radio buttons
 		self.RadioAxis = plt.axes([0.85, 0.01, 0.1, 0.2],
-			axisbg = 'white', frameon = False)
+			axisbg = 'black', frameon = False)
 
 		# create the radio button widget
 		self.Radio = widgets.RadioButtons(self.RadioAxis,
-			tuple(['L' + str(i+1) for i in range(self.numlines)]), active = 0)
+			tuple(['L' + str(i+1) for i in range(self.numlines)]),
+			active = 0, activecolor = 'c')
 
 		# connect the radio button to it's update function
 		self.Radio.on_clicked(self.ToggleComponent)
@@ -1018,92 +1027,136 @@ class FittingGUI:
 		"""
 		Close the plot to destroy widgets and restore the `splot` to its original state.
 		"""
-		plt.close(self.fig)
+		plt.clf()
 		self.splot.fig = plt.figure("Spectral-Plot (SLiPy)")
 		self.splot.ax  = self.splot.fig.add_subplot(111)
 		self.splot.draw()
+		plt.tight_layout()
+		plt.draw()
 		#del(self)
 
-def MultiFit(splot, error=None, obs=None, ion=None, function='Voigt', measure=True,
-	boost=None, **kwargs):
-	"""
-	The MultiFit routine takes a `splot` figure (type SPlot) and allows the
-	user to interactively fit line profiles. `splot` may optionally be of type
-	Spectrum, in which case a SPlot figure will be created for you. This function
-	creates a *FittingGUI* object (not documented here) which uses the Profile.Extract()
-	routine first (`kwargs` are passed to this function). As in the Extract routine, the user
-	will select four points that mark the boundaries of the line (blended or otherwise)
-	and some surrounding continuum to sample. The KernelFit1D (..Algorithms.KernelFit) routine
-	is applied with the user specified `bandwidth` to smooth the noise out of the continuum
-	and interpolate, of type `kind`, across the line gap. After this, the user is asked to
-	further select points marking the peaks of the line(s). The number of selection points
-	indicates the number of lines to be fit. If you wish to deblend two or more lines, select
-	all suspected locations. These are not only used to determine the number of lines to fit
-	but to make initial guesses at the parameters for each line and determine reasonable scales
-	for the sliders.
+def MultiFit(splot, error=None, obs=None, ion=None, ion2=None, function='Voigt', measure=True,
+    boost=None, **kwargs):
+    """
+    The MultiFit routine takes a `splot` figure (type SPlot) and allows the
+    user to interactively fit line profiles. `splot` may optionally be of type
+    Spectrum, in which case a SPlot figure will be created for you. This function
+    creates a *FittingGUI* object (not documented here) which uses the Profile.Extract()
+    routine first (`kwargs` are passed to this function). As in the Extract routine, the user
+    will select four points that mark the boundaries of the line (blended or otherwise)
+    and some surrounding continuum to sample. The KernelFit1D (..Algorithms.KernelFit) routine
+    is applied with the user specified `bandwidth` to smooth the noise out of the continuum
+    and interpolate, of type `kind`, across the line gap. After this, the user is asked to
+    further select points marking the peaks of the line(s). The number of selection points
+    indicates the number of lines to be fit. If you wish to deblend two or more lines, select
+    all suspected locations. These are not only used to determine the number of lines to fit
+    but to make initial guesses at the parameters for each line and determine reasonable scales
+    for the sliders.
 
-	After these selections, a slider for each parameter appears along with radio buttons for
-	each line. The user can interactively adjusts the parameter(s) for a given line by
-	selecting it (the radio buttons) and dragging a slider. The parameters available to
-	adjust depend on the `function` argument. There are currently three available line shapes:
-	'Gaussian', 'Lorentzian', and 'Voigt'. See ..Algorithms.Functions for information on
-	these.
+    After these selections, a slider for each parameter appears along with radio buttons for
+    each line. The user can interactively adjusts the parameter(s) for a given line by
+    selecting it (the radio buttons) and dragging a slider. The parameters available to
+    adjust depend on the `function` argument. There are currently three available line shapes:
+    'Gaussian', 'Lorentzian', and 'Voigt'. See ..Algorithms.Functions for information on
+    these.
 
-	Each line is represented by a black, dashed curve in the plot. The currently selected line
-	is bold. The combined (i.e., blended) line is plotted as a solid green curve.
+    Each line is represented by a black, dashed curve in the plot. The currently selected line
+    is bold. The combined (i.e., blended) line is plotted as a solid green curve.
 
-	If an Observatory with a `.resolution` is provided via the `obs` argument then the
-	thermal broadening parameter `b` can be computed (and displayed). This is only applicable
-	with either a `Gaussian` or `Voigt` profile. Further, an `ion` needs to be provided in
-	this scenario (type ..Data.Atomic.Ion) with an oscillator strength (fvalue), transition
-	probability (A) and wavelength as members. With these data, we can interactively show
-	the broadening prameter, the velocity, and the apparent column density during the fitting
-	process. Note: the `gamma` slider will disappear in this context because it has already
-	been determined via the transition probability.
+    If an Observatory with a `.resolution` is provided via the `obs` argument then the
+    thermal broadening parameter `b` can be computed (and displayed). This is only applicable
+    with either a `Gaussian` or `Voigt` profile. Further, an `ion` needs to be provided in
+    this scenario (type ..Data.Atomic.Ion) with an oscillator strength (fvalue), transition
+    probability (A) and wavelength as members. With these data, we can interactively show
+    the broadening prameter, the velocity, and the apparent column density during the fitting
+    process. Note: the `gamma` slider will disappear in this context because it has already
+    been determined via the transition probability.
 
-	Each slider is labeled on the left side with the name of the parameter it controls. At
-	the right of each slider is the current value of that parameter. The radio buttons are
-	labeled "L1", "L2", etc. for each line.
+    Each slider is labeled on the left side with the name of the parameter it controls. At
+    the right of each slider is the current value of that parameter. The radio buttons are
+    labeled "L1", "L2", etc. for each line.
 
-	This routine returns both a list of Spectrum `lines` as well as the `continuum` that was
-	fit using the FittingGUI. This functions acts as both a single line fitting tool as well
-	as a deblending tool. By default, the final parameterizations are attached to each spectrum
-	as a dictionary, `.parameters`.
+    This routine returns both a list of Spectrum `lines` as well as the `continuum` that was
+    fit using the FittingGUI. This functions acts as both a single line fitting tool as well
+    as a deblending tool. By default, the final parameterizations are attached to each spectrum
+    as a dictionary, `.parameters`.
 
-	If `measure` is passed as True (the default), the equivalent width is computed and attached
-	to each spectrum (`L1`, `L2`, etc...) and can be accessed with `.W`. If `b` and/or `N` are
-	available for each line these will be attached as well, accessible as `.b` and `.N`
-	respectively. This functionality can be suppressed by setting `measure` to False. `boost`
-	and `error` are passed to EquivalentWidth() and ColumnDensity().
-	"""
+    If `measure` is passed as True (the default), the equivalent width is computed and attached
+    to each spectrum (`L1`, `L2`, etc...) and can be accessed with `.W`. If `b` and/or `N` are
+    available for each line these will be attached as well, accessible as `.b` and `.N`
+    respectively. This functionality can be suppressed by setting `measure` to False. `boost`
+    and `error` are passed to EquivalentWidth() and ColumnDensity().
+    """
 
-	# running the user interface
-	gui = FittingGUI(splot, obs=obs, ion=ion, function=function, **kwargs)
-	input('\n Press <Return> when you are finished fitting lines ...')
+    # running the user interface
+    gui = FittingGUI(splot, obs=obs, ion=ion, function=function, **kwargs)
+    input('\n Press <Return> when you are finished fitting lines ...')
 
-	# attach the parameter dictionaries to each spectrum
-	lines = gui.GetSpectra()
-	for a, parameterization in enumerate( sorted(gui.Params.keys()) ):
-		lines[a].parameters = gui.Params[parameterization]
+    # attach the parameter dictionaries to each spectrum
+    lines = gui.GetSpectra()
+    for a, parameterization in enumerate( sorted(gui.Params.keys()) ):
+        lines[a].parameters = gui.Params[parameterization]
 
-	# attach the continuum to the line list
-	continuum = gui.GetContinuum()
+    # attach the continuum to the line list
+    continuum = gui.GetContinuum()
 
-	if not measure:
-		return lines, continuum
+    # kill the attached rms to suppress auto-calculation of erros
+    rms = continuum.rms
+    # continuum.rms = None
 
-	if gui.has_line_parameters:
-		for line, key in zip(lines, sorted(gui.Params.keys())):
-			# set the line to `L1`, `L2`, etc...
-			gui.current_componenet = key
-			# attach the measured quantities
-			notes  = 'Measurement made using Profile.MultiFit() from SLiPy'
+    if not measure:
+        return lines, continuum
 
-			line.W = EquivalentWidth(line, continuum, error=error, boost=boost)
-			line.N = ColumnDensity(line, continuum, ion, error=error, boost=boost)
-			line.b = Measurement(gui.solve_b(), name='Doppler Broadening Paramater', notes=notes)
-			line.v = Measurement(gui.solve_v(), name='Velocity', notes=notes)
+    if gui.has_line_parameters:
+        print("Computing line measurements ", end="", flush=True)
+        for line, key in zip(lines, sorted(gui.Params.keys())):
 
-	gui.kill()
+            print(".", end="", flush=True)
 
-	return lines, continuum
+            # set the line to `L1`, `L2`, etc...
+            gui.current_componenet = key
+
+            # The error estimates from here using the EquivalentWidth and
+            # ColumnDensity (from OpticalDepth) are broken. The continuum
+            # rises and falls with added/subtracted error levels. Approximate
+            # errors by boosting/lowering the `Depth` of the line.
+
+            # compute the errors for the line from the depth only
+            depth = gui.Params[key]['Depth']
+            err = np.sqrt(rms.value**2 + (depth*error.data.mean()).to(gui.line.data.unit).value**2)
+
+            # solve for the line with upper error bound
+            gui.Params[key]['Depth'] = depth + err
+            lu = Spectrum(gui.y - gui.Evaluate(gui.x, **gui.Params[key]) * gui.line.data.unit,
+            gui.x * gui.line.wave.unit)
+
+            # solve for the line with lower error bound
+            gui.Params[key]['Depth'] *= depth - err
+            ll = Spectrum(gui.y - gui.Evaluate(gui.x, **gui.Params[key]) * gui.line.data.unit,
+            gui.x * gui.line.wave.unit)
+
+
+            W     = EquivalentWidth(line, continuum, boost=boost) * 1.0 # decay to a Quantity
+            W.upp = EquivalentWidth(lu  , continuum, boost=boost) * 1.0 # decay to a Quantity
+            W.low = EquivalentWidth(ll  , continuum, boost=boost) * 1.0 # decay to a Quantity
+
+            N     = ColumnDensity(line, continuum, ion, boost=boost) * 1.0 # decay to a Quantity
+            N.upp = ColumnDensity(lu  , continuum, ion, boost=boost) * 1.0 # decay to a Quantity
+            N.low = ColumnDensity(ll  , continuum, ion, boost=boost) * 1.0 # decay to a Quantity
+
+
+            # attach the measured quantities
+            notes  = 'Measurement made using Profile.MultiFit() from SLiPy'
+
+            line.W = Measurement(W, error=np.array([(W-W.upp).value, (W-W.low).value])*W.unit,
+            name="Equivalent Width", notes=notes)
+
+            line.N = Measurement(N, error=np.array([(N-N.upp).value, (N-N.low).value])*N.unit,
+            name="Column Density (Apparent)", notes=notes)
+
+            line.b = Measurement(gui.solve_b(), name='Doppler Broadening Paramater', notes=notes)
+            line.v = Measurement(gui.solve_v(), name='Velocity', notes=notes)
+
+
+    gui.kill()
+    return lines, continuum
