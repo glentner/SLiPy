@@ -138,7 +138,7 @@ def Header( filename, keyword = None, **kwargs ):
             print( header )
             return
 
-        else: 
+        else:
             return header
 
     except OptionsError as err:
