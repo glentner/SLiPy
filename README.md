@@ -133,7 +133,10 @@ The above badge is generated using the following snippet
 # Documentation
 
 <br>
-##<a name=SpectrumLoc></a>[Spectrum](SLiPy/Spectrum.py)
+<a name=SpectrumLoc></a>
+
+[Spectrum](SLiPy/Spectrum.py)
+-----------------------------
 
 Objects for representing astronomical data. Currently, this includes the
 *Spectrum* class and it's helper function *WaveVector*.
@@ -378,7 +381,10 @@ Objects for representing astronomical data. Currently, this includes the
 
 
 <br>
-##<a name=FitsLoc></a>[Fits](SLiPy/Fits.py)
+<a name=FitsLoc></a>
+
+[Fits](SLiPy/Fits.py)
+---------------------
 
 Manipulate FITS files. Import data into *Spectrum* objects. Filter results
 by right ascension and declination. Grab header elements. Search for attributes
@@ -459,7 +465,10 @@ of the data such as distance, spectral type, etc.
 
 
 <br>
-## <a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
+<a name=SimbadLoc></a>
+
+[Simbad](SLiPy/Simbad.py)
+-------------------------
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts. It's four current major functions
@@ -554,7 +563,10 @@ $ Simbad.py
 
 
 <br>
-## <a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
+<a name=CorrelateLoc></a>
+
+[Correlate](SLiPy/Correlate.py)
+-------------------------------
 
 Correlation functions for astronomical data.
 
@@ -570,7 +582,10 @@ Correlation functions for astronomical data.
 
 
 <br>
-## <a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
+<a name=TelluricLoc></a>
+
+[Telluric](SLiPy/Telluric.py)
+-----------------------------
 
 Removal of atmospheric absorption lines in spectra.
 
@@ -601,7 +616,10 @@ Removal of atmospheric absorption lines in spectra.
 
 
 <br>
-## <a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
+<a name=VelocityLoc></a>
+
+[Velocity](SLiPy/Velocity.py)
+-----------------------------
 
 Radial velocity corrections for 1D spectra.
 
@@ -647,7 +665,10 @@ Radial velocity corrections for 1D spectra.
 
 
 <br>
-## <a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
+<a name=ObservatoryLoc></a>
+
+[Observatory](SLiPy/Observatory.py)
+-----------------------------------
 
 Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
@@ -744,7 +765,10 @@ There are currently 69 defined observatories:
 
 
 <br>
-## <a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
+<a name=PlotLoc></a>
+
+[Plot](SLiPy/Plot.py)
+---------------------
 
 Convenient wrapper to matplotlib for plotting spectra. A *SPlot* is simply a manager
 of figure attributes, to quickly go from looking
@@ -794,10 +818,10 @@ at one spectra to another. One can also *overlay* spectra.
 
         Given one or more *splots*, *overlay* the figures.
 
-	- *markers*( \**args* ):
+    - *markers*( \**args* ):
 
-		Reassign the values for the `marker`s in the figure. The number
-		of arguments must equal the number of spectra in the figure.
+        Reassign the values for the `marker`s in the figure. The number
+        of arguments must equal the number of spectra in the figure.
 
     - *restore*( ):
 
@@ -811,8 +835,8 @@ at one spectra to another. One can also *overlay* spectra.
 <a name=IterateLoc></a>
 - **Iterate**( \**splots*, \*\**kwargs* ):
 
-	Iterate thru *splots* to inspect data, the user marks spectra of
-	interest. The function returns a list of *keepers*.
+    Iterate thru *splots* to inspect data, the user marks spectra of
+    interest. The function returns a list of *keepers*.
 
     | Options | Defaults  | Descriptions          |
     |---------|-----------|-----------------------|
@@ -820,6 +844,7 @@ at one spectra to another. One can also *overlay* spectra.
 
     <br>
     **Example:**
+    
     ```python
     from slipy import Fits, Plot
 
@@ -840,7 +865,10 @@ at one spectra to another. One can also *overlay* spectra.
 
 
 <br>
-## <a name=ProfileLoc></a>[Profile](SLiPy/Profile.py)
+<a name=ProfileLoc></a>
+
+[Profile](SLiPy/Profile.py)
+---------------------------
 
 Profile fitting tasks for spectra.
 
@@ -855,10 +883,10 @@ Profile fitting tasks for spectra.
     locations selected by the user. This can always be retrieved later by
     accessing the module member *Profile.selected*.
 
-	While the user makes selections, temporary markers appear on the figure
-	indicating the data point that was just selected. If a mark does not
-	appear, try moving the curser slightly and trying again. Even if the line
-	goes through that point, there might not actually be data there.
+    While the user makes selections, temporary markers appear on the figure
+    indicating the data point that was just selected. If a mark does not
+    appear, try moving the curser slightly and trying again. Even if the line
+    goes through that point, there might not actually be data there.
 
 <a name=FitLoc></a>
 - **AutoFit** ( *splot*, *function* = InvertedLorentzian, *params* = None)
@@ -973,21 +1001,21 @@ Profile fitting tasks for spectra.
     | Options      | Defaults   | Descriptions                            |
     |--------------|------------|-----------------------------------------|
     | *kind*       | 'cubic'    | given to scipy...interp1d for continuum |
-	| *bandwidth*  | 0.1 * u.nm | for kernel, user should provide this!   |
-	| *rms*        | False      | return an error estimate for the line   |
+    | *bandwidth*  | 0.1 * u.nm | for kernel, user should provide this!   |
+    | *rms*        | False      | return an error estimate for the line   |
 
-	<br>
-	**Example:**
-	```python
-	# drawing from the previous example, but using HD200723 instead.
+    <br>
+    **Example:**
+    ```python
+    # drawing from the previous example, but using HD200723 instead.
 
-	line, continuum, rms = Profile.Extract(fig, bandwidth=u.Angstrom/15, rms=True)
+    line, continuum, rms = Profile.Extract(fig, bandwidth=u.Angstrom/15, rms=True)
 
     # Please select four points identifying the spectral line.
     # Outer intervals sample the continuum.
     # Center interval contains the line.
-	# Press <Return> after making your selections ...
-	```
+    # Press <Return> after making your selections ...
+    ```
 
     ![example](Figures/Profile-Extract.png)
 
@@ -1048,7 +1076,10 @@ Profile fitting tasks for spectra.
     **Figure 4:** Mid-session, annotated screen-shot of the above code-snippet/routine.
 
 <br>
-## <a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
+<a name=MontageLoc></a>
+
+[Montage](SLiPy/Montage.py)
+---------------------------
 
 [Montage](http://montage.ipac.caltech.edu/) is a very powerful suite of C code
 for creating image mosaics. This module is a wrapper to automate not only the
@@ -1253,7 +1284,10 @@ See the example in Figure 5.
 
 
 <br>
-## <a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
+<a name=ElodieLoc></a>
+
+[Elodie](Data/Elodie.py)
+------------------------
 
 Methods for data retrieval from the Elodie Archive.
 
@@ -1318,12 +1352,15 @@ Methods for data retrieval from the Elodie Archive.
     ```
 
 <br>
-##<a name=AtomicLoc></a>[Atomic](Data/Atomic.py)
+<a name=AtomicLoc></a>
+
+[Atomic](Data/Atomic.py)
+------------------------
 
 Convenient access to a large set of published atomic data for absorption lines:
 
-``Atomic data for resonance absorption lines. III. Wavelengths longward
-of the Lyman limit for the elements Hydrogen to Gallium''<br>
+"Atomic data for resonance absorption lines. III. Wavelengths longward
+of the Lyman limit for the elements Hydrogen to Gallium"<br>
 Author: Donald C. Morton (2003)<br>
 Online: http://iopscience.iop.org/0067-0049/149/1/205/fulltext/
 
