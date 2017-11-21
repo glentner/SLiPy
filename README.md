@@ -110,7 +110,7 @@ Department of Physics & Astronomy
 University of Louisville
 
 
-##Acknowledge SLiPy
+## Acknowledge SLiPy
 
 If you have made use of SLiPy in your project/research, you can acknowledge
 your use in the following ways:
@@ -459,7 +459,7 @@ of the data such as distance, spectral type, etc.
 
 
 <br>
-##<a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
+## <a name=SimbadLoc></a>[Simbad](SLiPy/Simbad.py)
 
 This module allows the user to query the SIMBAD astronomical database from
 inside Python or shell commands/scripts. It's four current major functions
@@ -554,7 +554,7 @@ $ Simbad.py
 
 
 <br>
-##<a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
+## <a name=CorrelateLoc></a>[Correlate](SLiPy/Correlate.py)
 
 Correlation functions for astronomical data.
 
@@ -570,7 +570,7 @@ Correlation functions for astronomical data.
 
 
 <br>
-##<a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
+## <a name=TelluricLoc></a>[Telluric](SLiPy/Telluric.py)
 
 Removal of atmospheric absorption lines in spectra.
 
@@ -601,7 +601,7 @@ Removal of atmospheric absorption lines in spectra.
 
 
 <br>
-##<a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
+## <a name=VelocityLoc></a>[Velocity](SLiPy/Velocity.py)
 
 Radial velocity corrections for 1D spectra.
 
@@ -647,7 +647,7 @@ Radial velocity corrections for 1D spectra.
 
 
 <br>
-##<a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
+## <a name=ObservatoryLoc></a>[Observatory](SLiPy/Observatory.py)
 
 Define observatory parameter similar to the IRAF task. All observatories
 should follow the following pattern. The user can add as many as they like
@@ -744,9 +744,9 @@ There are currently 69 defined observatories:
 
 
 <br>
-##<a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
+## <a name=PlotLoc></a>[Plot](SLiPy/Plot.py)
 
-Convenient wrapper to matplotlib for plotting spectra. A *SPlot* simply a manager
+Convenient wrapper to matplotlib for plotting spectra. A *SPlot* is simply a manager
 of figure attributes, to quickly go from looking
 at one spectra to another. One can also *overlay* spectra.
 
@@ -840,7 +840,7 @@ at one spectra to another. One can also *overlay* spectra.
 
 
 <br>
-##<a name=ProfileLoc></a>[Profile](SLiPy/Profile.py)
+## <a name=ProfileLoc></a>[Profile](SLiPy/Profile.py)
 
 Profile fitting tasks for spectra.
 
@@ -1048,7 +1048,7 @@ Profile fitting tasks for spectra.
     **Figure 4:** Mid-session, annotated screen-shot of the above code-snippet/routine.
 
 <br>
-##<a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
+## <a name=MontageLoc></a>[Montage](SLiPy/Montage.py)
 
 [Montage](http://montage.ipac.caltech.edu/) is a very powerful suite of C code
 for creating image mosaics. This module is a wrapper to automate not only the
@@ -1253,7 +1253,7 @@ See the example in Figure 5.
 
 
 <br>
-##<a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
+## <a name=ElodieLoc></a>[Elodie](Data/Elodie.py)
 
 Methods for data retrieval from the Elodie Archive.
 
