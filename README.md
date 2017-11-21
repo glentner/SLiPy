@@ -844,7 +844,6 @@ at one spectra to another. One can also *overlay* spectra.
 
     
     **Example:**
-    
     ```python
     from slipy import Fits, Plot
 
