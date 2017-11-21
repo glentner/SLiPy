@@ -842,7 +842,7 @@ at one spectra to another. One can also *overlay* spectra.
     |---------|-----------|-----------------------|
     | *keep*  | 'name'    | alternative is 'plot' |
 
-    <br>
+    
     **Example:**
     
     ```python
